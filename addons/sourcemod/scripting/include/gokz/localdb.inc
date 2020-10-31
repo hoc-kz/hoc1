@@ -158,8 +158,10 @@ forward void GOKZ_DB_OnDatabaseConnect(DatabaseType DBType);
  * @param client		Client index.
  * @param steamID		SteamID32 of the player (from GetSteamAccountID()).
  * @param cheater		Whether player is marked as a cheater in the database.
+ * @param experience	Level experience.
+ * @param prestige		How many times the player prestiged.
  */
-forward void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater);
+forward void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige);
 
 /**
  * Called when the current map is ready for database interaction.
@@ -246,6 +248,15 @@ native bool GOKZ_DB_IsCheater(int client);
  * @param cheater		Whether to mark the player as a cheater.
  */
 native void GOKZ_DB_SetCheater(int client, bool cheater);
+
+/**
+ * Sets player level experience and prestige.
+ *
+ * @param client		Client index.
+ * @param experience	Level experience.
+ * @param prestige		How many times the player prestiged.
+ */
+native void GOKZ_DB_SetLevel(int client, int experience, int prestige);
 
 
 

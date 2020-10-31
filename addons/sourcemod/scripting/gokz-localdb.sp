@@ -46,6 +46,7 @@ int gI_DBCurrentMapID;
 #include "gokz-localdb/db/save_js.sp"
 #include "gokz-localdb/db/save_time.sp"
 #include "gokz-localdb/db/set_cheater.sp"
+#include "gokz-localdb/db/set_level.sp"
 #include "gokz-localdb/db/setup_client.sp"
 #include "gokz-localdb/db/setup_database.sp"
 #include "gokz-localdb/db/setup_map.sp"

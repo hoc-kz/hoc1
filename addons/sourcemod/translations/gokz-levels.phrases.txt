@@ -1,0 +1,17 @@
+﻿Phrases
+{
+	// =====[ CHAT MESSAGES ]=====
+	"Level Up"
+	{
+		"#format"	"{1:d}"
+		"en"		"You are now level {lime}{1}{grey}."
+	}
+	"Prestige"
+	{
+		"en"		"You prestiged."
+	}
+	"Prestige Failed (Not Max Level)"
+	{
+		"en"		"{darkred}You can't prestige yet."
+	}
+}

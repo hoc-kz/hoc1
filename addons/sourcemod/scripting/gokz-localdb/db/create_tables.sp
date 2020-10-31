@@ -19,6 +19,7 @@ void DB_CreateTables()
 			txn.AddQuery(sqlite_jumpstats_create);
 			txn.AddQuery(sqlite_vbpos_create);
 			txn.AddQuery(sqlite_startpos_create);
+			txn.AddQuery(sqlite_levels_create);
 		}
 		case DatabaseType_MySQL:
 		{
@@ -29,6 +30,7 @@ void DB_CreateTables()
 			txn.AddQuery(mysql_jumpstats_create);
 			txn.AddQuery(mysql_vbpos_create);
 			txn.AddQuery(mysql_startpos_create);
+			txn.AddQuery(mysql_levels_create);
 		}
 	}
 	

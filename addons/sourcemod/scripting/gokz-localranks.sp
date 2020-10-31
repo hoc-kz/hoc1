@@ -6,6 +6,7 @@
 #include <gokz/core>
 #include <gokz/localdb>
 #include <gokz/localranks>
+#include <gokz/levels>
 
 #include <sourcemod-colors>
 
@@ -109,7 +110,7 @@ public void OnAllPluginsLoaded()
 	{
 		if (GOKZ_DB_IsClientSetUp(i))
 		{
-			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i));
+			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), GOKZ_LV_GetExperience(i), GOKZ_LV_GetPrestige(i));
 		}
 	}
 }
@@ -145,7 +146,7 @@ public void GOKZ_OnTimerStart_Post(int client, int course)
 	ResetPBMissed(client);
 }
 
-public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater)
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige)
 {
 	if (GOKZ_DB_IsMapSetUp())
 	{

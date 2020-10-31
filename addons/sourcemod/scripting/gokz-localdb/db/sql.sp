@@ -386,3 +386,36 @@ SELECT SteamID32, MapID, X, Y, Z, Angle0, Angle1 \
 	WHERE \
 		SteamID32 = %d AND \
 		MapID = %d";
+
+
+
+// =====[ LEVELS ]=====
+
+char sqlite_levels_create[] = "\
+CREATE TABLE IF NOT EXISTS Levels ( \
+	SteamID32 INTEGER NOT NULL, \
+	Experience INTEGER NOT NULL DEFAULT '0', \
+    Prestige INTEGER NOT NULL DEFAULT '0', \
+	CONSTRAINT PK_Levels PRIMARY KEY (SteamID32), \
+    CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+    ON UPDATE CASCADE ON DELETE CASCADE)";
+
+char mysql_levels_create[] = "\
+CREATE TABLE IF NOT EXISTS Levels ( \
+	SteamID32 INTEGER UNSIGNED NOT NULL, \
+	Experience INTEGER UNSIGNED NOT NULL DEFAULT '0', \
+    Prestige INTEGER UNSIGNED NOT NULL DEFAULT '0', \
+	CONSTRAINT PK_Levels PRIMARY KEY (SteamID32), \
+    CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+    ON UPDATE CASCADE ON DELETE CASCADE)";
+
+char sql_levels_upsert[] = "\
+REPLACE INTO Levels (SteamID32, Experience, Prestige) \
+    VALUES (%d, %d, %d)";
+
+char sql_levels_get[] = "\
+SELECT SteamID32, Experience, Prestige \
+    FROM \
+        Levels \
+    WHERE \
+        SteamID32 = %d";

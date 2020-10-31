@@ -37,7 +37,7 @@ void DB_SetupClient(int client)
 	data.WriteCell(steamID);
 	
 	Transaction txn = SQL_CreateTransaction();
-	
+
 	// Insert/Update player into Players table
 	switch (g_DBType)
 	{
@@ -57,8 +57,12 @@ void DB_SetupClient(int client)
 			txn.AddQuery(query);
 		}
 	}
-	
+
 	FormatEx(query, sizeof(query), sql_players_get_cheater, steamID);
+	txn.AddQuery(query);
+
+	// Select client level jumps/prestige
+	FormatEx(query, sizeof(query), sql_levels_get, steamID);
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_SetupClient, DB_TxnFailure_Generic_DataPack, data, DBPrio_High);
@@ -75,7 +79,9 @@ public void DB_TxnSuccess_SetupClient(Handle db, DataPack data, int numQueries, 
 	{
 		return;
 	}
-	
+
+	int experience = 0;
+	int prestige = 0;
 	switch (g_DBType)
 	{
 		case DatabaseType_SQLite:
@@ -84,6 +90,11 @@ public void DB_TxnSuccess_SetupClient(Handle db, DataPack data, int numQueries, 
 			{
 				gB_Cheater[client] = SQL_FetchInt(results[2], 0) == 1;
 			}
+			if (SQL_FetchRow(results[3])) 
+			{
+				experience = SQL_FetchInt(results[3], 1);
+				prestige = SQL_FetchInt(results[3], 2);
+			}
 		}
 		case DatabaseType_MySQL:
 		{
@@ -91,9 +102,14 @@ public void DB_TxnSuccess_SetupClient(Handle db, DataPack data, int numQueries, 
 			{
 				gB_Cheater[client] = SQL_FetchInt(results[1], 0) == 1;
 			}
+			if (SQL_FetchRow(results[2])) 
+			{
+				experience = SQL_FetchInt(results[2], 1);
+				prestige = SQL_FetchInt(results[2], 2);
+			}
 		}
 	}
-	
+
 	gB_ClientSetUp[client] = true;
-	Call_OnClientSetup(client, steamID, gB_Cheater[client]);
+	Call_OnClientSetup(client, steamID, gB_Cheater[client], experience, prestige);
 } 
