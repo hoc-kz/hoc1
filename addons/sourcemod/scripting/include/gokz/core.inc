@@ -77,7 +77,7 @@ enum
 {
 	Mode_Vanilla = 0, 
 	Mode_SimpleKZ, 
-	Mode_KZTimer, 
+	Mode_NoPre, 
 	MODE_COUNT
 };
 
@@ -222,28 +222,28 @@ stock char gC_ModeNames[MODE_COUNT][] =
 {
 	"Vanilla", 
 	"SimpleKZ", 
-	"KZTimer"
+	"NoPre"
 };
 
 stock char gC_ModeNamesShort[MODE_COUNT][] = 
 {
 	"VNL", 
 	"SKZ", 
-	"KZT"
+	"NOPRE"
 };
 
 stock char gC_ModeKeys[MODE_COUNT][] = 
 {
 	"vanilla", 
 	"simplekz", 
-	"kztimer"
+	"nopre"
 };
 
 stock float gF_ModeVirtualButtonRanges[MODE_COUNT] = 
 {
 	0.0, 
 	32.0, 
-	70.0
+	32.0
 };
 
 stock char gC_ModeStartSounds[MODE_COUNT][] = 
@@ -292,7 +292,7 @@ stock char gC_CoreOptionNames[OPTION_COUNT][] =
 
 stock char gC_CoreOptionDescriptions[OPTION_COUNT][] = 
 {
-	"Movement Mode - 0 = Vanilla, 1 = SimpleKZ, 2 = KZTimer", 
+	"Movement Mode - 0 = Vanilla, 1 = SimpleKZ, 2 = NoPre", 
 	"Movement Style - 0 = Normal", 
 	"Automatic Restart Upon Teleport to Start - 0 = Disabled, 1 = Enabled", 
 	"Checkpoint Messages - 0 = Disabled, 1 = Enabled", 
@@ -338,7 +338,7 @@ stock int gI_CoreOptionCounts[OPTION_COUNT] =
 
 stock int gI_CoreOptionDefaults[OPTION_COUNT] = 
 {
-	Mode_KZTimer, 
+	Mode_NoPre, 
 	Style_Normal, 
 	AutoRestart_Disabled, 
 	CheckpointMessages_Disabled, 

@@ -385,9 +385,9 @@ void OnPlayerRunCmd_Playback(int client, int &buttons)
 						{
 							botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], (0.2 * botLandingSpeed[bot] + 200));
 						}
-						else if (botMode[bot] == Mode_KZTimer)
+						else if (botMode[bot] == Mode_NoPre)
 						{
-							botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], 380.0);
+							botTakeoffSpeed[bot] = botLandingSpeed[bot];
 						}
 						else
 						{

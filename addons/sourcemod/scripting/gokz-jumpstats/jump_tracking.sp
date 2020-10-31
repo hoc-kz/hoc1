@@ -119,7 +119,6 @@ enum struct JumpTracker
 	{
 		// Initialize stats
 		this.CalcTakeoff();
-		this.AdjustLowpreJumptypes();
 		
 		this.failstatBlockDetected = this.jump.type != JumpType_LadderJump;
 		this.failstatFailed = false;
@@ -244,24 +243,6 @@ enum struct JumpTracker
 		// Correct the takeoff speed and velocity
 		this.jump.preSpeed = GOKZ_GetTakeoffSpeed(this.jumper);
 		poseHistory[this.jumper][0].speed = this.jump.preSpeed;
-	}
-	
-	void AdjustLowpreJumptypes()
-	{
-		// Exclude SKZ and VNL stats.
-		if (GOKZ_GetCoreOption(this.jumper, Option_Mode) == Mode_KZTimer)
-		{
-			if (this.jump.type == JumpType_Bhop &&
-				this.jump.preSpeed < 360.0)
-			{
-				this.jump.type = JumpType_LowpreBhop;
-			}
-			else if (this.jump.type == JumpType_WeirdJump &&
-					 this.jump.preSpeed < 300.0)
-			{
-				this.jump.type = JumpType_LowpreWeirdJump;
-			}
-		}
 	}
 	
 	int DetermineType(bool jumped, bool ladderJump, bool jumpbug)
