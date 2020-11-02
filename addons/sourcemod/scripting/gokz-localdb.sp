@@ -156,7 +156,7 @@ public void GOKZ_OnOptionsLoaded(int client)
 	}
 }
 
-public void OnClientDisconnect(int client)
+public void OnClientDisconnect_Post(int client)
 {
 	gB_ClientSetUp[client] = false;
 	gB_ClientPostAdminChecked[client] = false;

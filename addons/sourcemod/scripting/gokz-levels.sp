@@ -81,11 +81,14 @@ public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int exp
 {
 	gI_Experience[client] = experience;
 	gI_Prestige[client] = prestige;
+
+	int level = GOKZ_LV_LevelForExperience(experience);
+	Call_OnLevelChanged(client, level, prestige);
 }
 
 public void Movement_OnPlayerJump(int client, bool jumpbug)
 {
-	AddExperience(client, 1);
+	AddExperience(client, 10000);
 }
 
 

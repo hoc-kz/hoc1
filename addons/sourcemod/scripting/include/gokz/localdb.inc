@@ -309,5 +309,6 @@ public void __pl_gokz_localdb_SetNTVOptional()
 	MarkNativeAsOptional("GOKZ_DB_GetCurrentMapID");
 	MarkNativeAsOptional("GOKZ_DB_IsCheater");
 	MarkNativeAsOptional("GOKZ_DB_SetCheater");
+	MarkNativeAsOptional("GOKZ_DB_SetLevel");
 }
 #endif

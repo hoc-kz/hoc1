@@ -12,6 +12,9 @@
 #include <basecomm>
 #include <updater>
 
+#include <gokz/levels>
+#include <gokz/localdb>
+
 #pragma newdecls required
 #pragma semicolon 1
 
@@ -29,6 +32,7 @@ public Plugin myinfo =
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-chat.txt"
 
 bool gB_BaseComm;
+bool gB_GOKZLevels;
 
 ConVar gCV_gokz_chat_processing;
 ConVar gCV_gokz_connection_messages;
@@ -60,6 +64,7 @@ public void OnAllPluginsLoaded()
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_BaseComm = LibraryExists("basecomm");
+	gB_GOKZLevels = LibraryExists("gokz-levels");
 }
 
 public void OnLibraryAdded(const char[] name)
@@ -69,11 +74,13 @@ public void OnLibraryAdded(const char[] name)
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_BaseComm = gB_BaseComm || StrEqual(name, "basecomm");
+	gB_GOKZLevels = gB_GOKZLevels || StrEqual(name, "gokz-levels");
 }
 
 public void OnLibraryRemoved(const char[] name)
 {
 	gB_BaseComm = gB_BaseComm && !StrEqual(name, "basecomm");
+	gB_GOKZLevels = gB_GOKZLevels && !StrEqual(name, "gokz-levels");
 }
 
 
@@ -167,18 +174,39 @@ void OnClientSayCommand_ChatProcessing(int client, const char[] command, const c
 	{
 		return;
 	}
-	
+
+	// TODO: This is hella ugly after adding levels...
 	if (IsSpectating(client))
 	{
-		GOKZ_PrintToChatAll(false, "{default}* {lime}%s{default} : %s", sanitisedName, sanitisedMessage);
-		PrintToConsoleAll("* %s : %s", sanitisedName, sanitisedMessage);
-		PrintToServer("* %s : %s", sanitisedName, sanitisedMessage);
+		if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
+		{
+			int level = GOKZ_LV_GetLevel(client);
+			GOKZ_PrintToChatAll(false, "{default}[{lightred}Lv%d{default}] *{lime}%s{default}: %s", level, sanitisedName, sanitisedMessage);
+			PrintToConsoleAll("[Lv%d] *%s: %s", level, sanitisedName, sanitisedMessage);
+			PrintToServer("[Lv%d] *%s: %s", level, sanitisedName, sanitisedMessage);
+		}
+		else
+		{
+			GOKZ_PrintToChatAll(false, "{default}*{lime}%s{default}: %s", sanitisedName, sanitisedMessage);
+			PrintToConsoleAll("*%s: %s", sanitisedName, sanitisedMessage);
+			PrintToServer("*%s: %s", sanitisedName, sanitisedMessage);
+		}
 	}
 	else
 	{
-		GOKZ_PrintToChatAll(false, "{lime}%s{default} : %s", sanitisedName, sanitisedMessage);
-		PrintToConsoleAll("%s : %s", sanitisedName, sanitisedMessage);
-		PrintToServer("%s : %s", sanitisedName, sanitisedMessage);
+		if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
+		{
+			int level = GOKZ_LV_GetLevel(client);
+			GOKZ_PrintToChatAll(false, "{default}[{lightred}Lv%d{default}] {lime}%s{default}: %s", level, sanitisedName, sanitisedMessage);
+			PrintToConsoleAll("[Lv%d] %s: %s", level, sanitisedName, sanitisedMessage);
+			PrintToServer("[Lv%d] %s: %s", level, sanitisedName, sanitisedMessage);
+		}
+		else
+		{
+			GOKZ_PrintToChatAll(false, "{lime}%s{default}: %s", sanitisedName, sanitisedMessage);
+			PrintToConsoleAll("%s: %s", sanitisedName, sanitisedMessage);
+			PrintToServer("%s: %s", sanitisedName, sanitisedMessage);
+		}
 	}
 }
 
