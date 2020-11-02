@@ -6,7 +6,6 @@
 #include <gokz/core>
 #include <gokz/localdb>
 #include <gokz/localranks>
-#include <gokz/levels>
 
 #include <sourcemod-colors>
 
@@ -14,6 +13,7 @@
 #undef REQUIRE_PLUGIN
 #include <gokz/global>
 #include <gokz/jumpstats>
+#include <gokz/levels>
 #include <updater>
 
 #pragma newdecls required
@@ -106,11 +106,14 @@ public void OnAllPluginsLoaded()
 		GOKZ_DB_OnMapSetup(GOKZ_DB_GetCurrentMapID());
 	}
 	
+	bool gokzLevels = LibraryExists("gokz-levels");
 	for (int i = 1; i <= MaxClients; i++)
 	{
 		if (GOKZ_DB_IsClientSetUp(i))
 		{
-			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), GOKZ_LV_GetExperience(i), GOKZ_LV_GetPrestige(i));
+			int experience = gokzLevels ? GOKZ_LV_GetExperience(i) : 0;
+			int prestige = gokzLevels ? GOKZ_LV_GetPrestige(i) : 0;
+			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), experience, prestige);
 		}
 	}
 }
