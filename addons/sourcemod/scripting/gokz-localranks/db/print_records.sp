@@ -4,7 +4,7 @@
 
 
 
-void DB_PrintRecords(int client, int mapID, int course, int mode)
+void DB_PrintRecords(int client, int mapID, int course, int mode, int style)
 {
 	char query[1024];
 	
@@ -23,10 +23,10 @@ void DB_PrintRecords(int client, int mapID, int course, int mode)
 	txn.AddQuery(query);
 	
 	// Get Map WR
-	FormatEx(query, sizeof(query), sql_getmaptop, mapID, course, mode, 1);
+	FormatEx(query, sizeof(query), sql_getmaptop, mapID, course, mode, style, 1);
 	txn.AddQuery(query);
 	// Get PRO WR
-	FormatEx(query, sizeof(query), sql_getmaptoppro, mapID, course, mode, 1);
+	FormatEx(query, sizeof(query), sql_getmaptoppro, mapID, course, mode, style, 1);
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintRecords, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
@@ -129,13 +129,14 @@ public void DB_TxnSuccess_PrintRecords(Handle db, DataPack data, int numQueries,
 	}
 }
 
-void DB_PrintRecords_FindMap(int client, const char[] mapSearch, int course, int mode)
+void DB_PrintRecords_FindMap(int client, const char[] mapSearch, int course, int mode, int style)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
 	data.WriteString(mapSearch);
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	DB_FindMap(mapSearch, DB_TxnSuccess_PrintRecords_FindMap, data, DBPrio_Low);
 }
@@ -148,6 +149,7 @@ public void DB_TxnSuccess_PrintRecords_FindMap(Handle db, DataPack data, int num
 	data.ReadString(mapSearch, sizeof(mapSearch));
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -162,7 +164,7 @@ public void DB_TxnSuccess_PrintRecords_FindMap(Handle db, DataPack data, int num
 	}
 	else if (SQL_FetchRow(results[0]))
 	{  // Result is the MapID
-		DB_PrintRecords(client, SQL_FetchInt(results[0], 0), course, mode);
+		DB_PrintRecords(client, SQL_FetchInt(results[0], 0), course, mode, style);
 		if (gB_GOKZGlobal)
 		{
 			char map[33];

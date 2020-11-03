@@ -203,7 +203,7 @@ public Action CommandWR(int client, int args)
 
 	if (args == 0)
 	{  // Print record times for current map and their current mode
-		DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		if (gB_GOKZGlobal)
 		{
 			GOKZ_GL_PrintRecords(client, "", 0, GOKZ_GetCoreOption(client, Option_Mode));
@@ -213,7 +213,7 @@ public Action CommandWR(int client, int args)
 	{  // Print record times for specified map and their current mode
 		char argMap[33];
 		GetCmdArg(1, argMap, sizeof(argMap));
-		DB_PrintRecords_FindMap(client, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintRecords_FindMap(client, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	return Plugin_Handled;
 }
@@ -227,7 +227,7 @@ public Action CommandBWR(int client, int args)
 
 	if (args == 0)
 	{  // Print Bonus 1 record times for current map and their current mode
-		DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		if (gB_GOKZGlobal)
 		{
 			GOKZ_GL_PrintRecords(client, "", 1, GOKZ_GetCoreOption(client, Option_Mode));
@@ -240,7 +240,7 @@ public Action CommandBWR(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintRecords(client, GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 			if (gB_GOKZGlobal)
 			{
 				GOKZ_GL_PrintRecords(client, "", bonus, GOKZ_GetCoreOption(client, Option_Mode));
@@ -259,7 +259,7 @@ public Action CommandBWR(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintRecords_FindMap(client, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintRecords_FindMap(client, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{

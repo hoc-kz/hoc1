@@ -164,12 +164,12 @@ public int DisplayMapTopSubmenuCallback(bool failure, const char[] top, DataPack
 	if (mapTopCourse[client] == 0)
 	{
 		menu.SetTitle("%T", "Global Map Top Submenu - Title", client, 
-			gC_TimeTypeNames[timeType], mapTopMap[client], gC_ModeNames[mapTopMode[client]]);
+			gC_TimeTypeNames[timeType], mapTopMap[client], gC_ModeNames[mapTopMode[client]], gC_StyleNames[mapTopStyle[client]]);
 	}
 	else
 	{
 		menu.SetTitle("%T", "Global Map Top Submenu - Title (Bonus)", client, 
-			gC_TimeTypeNames[timeType], mapTopMap[client], mapTopCourse[client], gC_ModeNames[mapTopMode[client]]);
+			gC_TimeTypeNames[timeType], mapTopMap[client], mapTopCourse[client], gC_ModeNames[mapTopMode[client]], gC_StyleNames[mapTopStyle[client]]);
 	}
 	
 	if (MapTopSubmenuAddItems(menu, top, timeType) == 0)

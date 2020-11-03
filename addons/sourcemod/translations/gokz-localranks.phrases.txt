@@ -1,4 +1,4 @@
-"Phrases"
+﻿"Phrases"
 {
 	// =====[ CHAT MESSAGES ]=====
 	"Player Not Found"
@@ -417,6 +417,28 @@
 		"en"		"Bonus Top\n \nMap - {1} (Bonus {2})\n \nSelect a Mode"
 		"ru"		"Топ бонуса\n \nКарта - {1} (Бонус {2})\n \nВыбрать режим"
 	}
+	"Map Top Style Menu - Title"
+	{
+		// Map Top
+		//
+		// Map - kz_map
+		// Mode - Vanilla
+		//
+		// Select a Mode
+		"#format"	"{1:s},{2:s}"
+		"en"		"Map Top\n \nMap - {1}\nMode - {2}\n \nSelect a Style"
+	}
+	"Map Top Style Menu - Title (Bonus)"
+	{
+		// Bonus Top
+		//
+		// Map - kz_map (Bonus 1)
+		// Mode - Vanilla
+		//
+		// Select a Mode
+		"#format"	"{1:s},{2:d},{3:s}"
+		"en"		"Bonus Top\n \nMap - {1} (Bonus {2})\nMode - {3}\n \nSelect a Style"
+	}
 	"Map Top Menu - Title"
 	{
 		// Map Top
@@ -424,10 +446,8 @@
 		// Map - kz_map
 		// Mode - Vanilla
 		//
-		"#format"	"{1:s},{2:s}"
-		"en"		"Map Top\n \nMap - {1}\nMode - {2}\n "
-		"chi"		"地图排行\n \n地图 - {1}\n模式 - {2}\n "
-		"ru"		"Топ карты\n \nКарта - {1}\nРежим - {2}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Map Top\n \nMap - {1}\nMode - {2}\nStyle - {3}\n "
 	}
 	"Map Top Menu - Title (Bonus)"
 	{
@@ -436,10 +456,8 @@
 		// Map - kz_map (Bonus 1)
 		// Mode - Vanilla
 		//
-		"#format"	"{1:s},{2:d},{3:s}"
-		"en"		"Bonus Top\n \nMap - {1} (Bonus {2})\nMode - {3}\n "
-		"chi"		"加成阶层排行\n \n地图 - {1} (加成{2}阶)\n模式 - {3}\n "
-		"ru"		"Топ бонуса\n \nКарта - {1} (Бонус {2})\nРежим - {3}\n "
+		"#format"	"{1:s},{2:d},{3:s},{4:s}"
+		"en"		"Bonus Top\n \nMap - {1} (Bonus {2})\nMode - {3}\nStyle - {4}\n "
 	}
 	"Map Top Menu - Top"
 	{
@@ -463,10 +481,8 @@
 		// Map - kz_map
 		// Mode - Vanilla
 		//
-		"#format"	"{1:d},{2:s},{3:s},{4:s}"
-		"en"		"Server Top {1} {2} Times\n \nMap - {3}\nMode - {4}\n "
-		"chi"		"服务器 {2} 前{1}\n \n地图- {3}\n模式 - {4}\n "	
-		"ru"		"Топ {1} сервера {2} времени\n \nКарта - {3}\nРежим - {4}\n "
+		"#format"	"{1:d},{2:s},{3:s},{4:s},{5:s}"
+		"en"		"Server Top {1} {2} Times\n \nMap - {3}\nMode - {4}\nStyle - {5}\n "
 	}
 	"Map Top Submenu - Title (Bonus)"
 	{
@@ -475,10 +491,8 @@
 		// Map - kz_map (Bonus 1)
 		// Mode - Vanilla
 		//
-		"#format"	"{1:d},{2:s},{3:s},{4:d},{5:s}"
-		"en"		"Server Top {1} {2} Times\n \nMap - {3} (Bonus {4})\nMode - {5}\n "
-		"chi"		"服务器 {2} 前{1}\n \n地图 - {3} (加成{4}阶)\n模式 - {5}\n "
-		"ru"		"Топ {1} сервера {2} времени\n \nКарта - {3} (Бонус {4})\nРежим - {5}\n "
+		"#format"	"{1:d},{2:s},{3:s},{4:d},{5:s},{6:s}"
+		"en"		"Server Top {1} {2} Times\n \nMap - {3} (Bonus {4})\nMode - {5}\nStyle - {6}\n "
 	}
 
 
