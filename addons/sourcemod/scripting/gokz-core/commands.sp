@@ -28,6 +28,7 @@ void RegisterCommands()
 	RegConsoleCmd("sm_virtualbuttons", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_vb", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_mode", CommandMode, "[KZ] Open the movement mode selection menu.");
+	RegConsoleCmd("sm_style", CommandStyle, "[KZ] Open the movement style selection menu.");
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_vnl", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_v", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
@@ -230,6 +231,12 @@ public Action CommandToggleVirtualButtonsLock(int client, int args)
 public Action CommandMode(int client, int args)
 {
 	DisplayModeMenu(client);
+	return Plugin_Handled;
+}
+
+public Action CommandStyle(int client, int args)
+{
+	DisplayStyleMenu(client);
 	return Plugin_Handled;
 }
 

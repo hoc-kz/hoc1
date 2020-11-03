@@ -1,4 +1,4 @@
-"Phrases"
+﻿"Phrases"
 {
 	// =====[ CHAT MESSAGES ]=====
 	"Beat Map (NUB)"
@@ -209,6 +209,12 @@
 		"en"		"Switch Modes"
 		"chi"		"切换模式"
 		"ru"		"Сменить режим"
+	}
+
+	// =====[ STYLE MENU ]=====
+	"Style Menu - Title"
+	{
+		"en"		"Switch Styles"
 	}
 
 

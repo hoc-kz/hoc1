@@ -66,6 +66,7 @@ ConVar gCV_sv_full_alltalk;
 #include "gokz-core/map/end.sp"
 
 #include "gokz-core/menus/mode_menu.sp"
+#include "gokz-core/menus/style_menu.sp"
 #include "gokz-core/menus/options_menu.sp"
 
 #include "gokz-core/timer/pause.sp"

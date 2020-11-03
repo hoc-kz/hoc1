@@ -84,6 +84,8 @@ enum
 enum
 {
 	Style_Normal = 0, 
+	Style_AutoBhop,
+	Style_WOnly,
 	STYLE_COUNT
 };
 
@@ -269,12 +271,16 @@ stock char gC_ModeFalseEndSounds[MODE_COUNT][] =
 
 stock char gC_StyleNames[STYLE_COUNT][] = 
 {
-	"Normal"
+	"Normal",
+	"Auto Bhop",
+	"W Only"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
 {
-	"NRM"
+	"NRM",
+	"AUTOBHOP",
+	"WONLY"
 };
 
 stock char gC_CoreOptionNames[OPTION_COUNT][] = 
@@ -293,7 +299,7 @@ stock char gC_CoreOptionNames[OPTION_COUNT][] =
 stock char gC_CoreOptionDescriptions[OPTION_COUNT][] = 
 {
 	"Movement Mode - 0 = Vanilla, 1 = SimpleKZ, 2 = NoPre", 
-	"Movement Style - 0 = Normal", 
+	"Movement Style - 0 = Normal, 1 = AutoBhop", 
 	"Automatic Restart Upon Teleport to Start - 0 = Disabled, 1 = Enabled", 
 	"Checkpoint Messages - 0 = Disabled, 1 = Enabled", 
 	"Checkpoint Sounds - 0 = Disabled, 1 = Enabled", 
@@ -1315,6 +1321,35 @@ stock void GOKZ_MenuAddModeItems(int client, Menu menu, bool disableUnloadedMode
 		{
 			menu.AddItem("", display, ITEMDRAW_DISABLED);
 		}
+	}
+}
+
+/**
+ * Clears and populates a menu with an item for each style
+ * in order of the style enumeration. Highlights the client's
+ * selected style with an asterisk.
+ *
+ * @param client					Client index to check selected style.
+ * @param menu						Menu to populate items with.
+ * @param disableUnloadedStyles		Draw items for unloaded styles as disabled.
+ */
+stock void GOKZ_MenuAddStyleItems(int client, Menu menu, bool disableUnloadedStyles)
+{
+	int selectedStyle = GOKZ_GetCoreOption(client, Option_Style);
+	char display[32];
+	
+	menu.RemoveAllItems();
+	
+	for (int style = 0; style < STYLE_COUNT; style++)
+	{
+		FormatEx(display, sizeof(display), "%s", gC_StyleNames[style]);
+		// Add asterisk to selected style
+		if (style == selectedStyle)
+		{
+			Format(display, sizeof(display), "%s*", display);
+		}
+		
+		menu.AddItem("", display, ITEMDRAW_DEFAULT);
 	}
 }
 
