@@ -222,13 +222,14 @@ void UpdateRecordMissed(int client)
 	
 	int course = GOKZ_GetCourse(client);
 	int mode = GOKZ_GetCoreOption(client, Option_Mode);
+	int style = GOKZ_GetCoreOption(client, Option_Style);
 	float currentTime = GOKZ_GetTime(client);
 	
-	bool nubRecordExists = gB_RecordExistsCache[course][mode][TimeType_Nub];
-	float nubRecordTime = gF_RecordTimesCache[course][mode][TimeType_Nub];
+	bool nubRecordExists = gB_RecordExistsCache_Nub[course][mode][style];
+	float nubRecordTime = gF_RecordTimesCache_Nub[course][mode][style];
 	bool nubRecordMissed = gB_RecordMissed[client][TimeType_Nub];
-	bool proRecordExists = gB_RecordExistsCache[course][mode][TimeType_Pro];
-	float proRecordTime = gF_RecordTimesCache[course][mode][TimeType_Pro];
+	bool proRecordExists = gB_RecordExistsCache_Pro[course][mode][style];
+	float proRecordTime = gF_RecordTimesCache_Pro[course][mode][style];
 	bool proRecordMissed = gB_RecordMissed[client][TimeType_Pro];
 	
 	if (nubRecordExists && !nubRecordMissed && currentTime >= nubRecordTime)
@@ -276,13 +277,14 @@ void UpdatePBMissed(int client)
 	
 	int course = GOKZ_GetCourse(client);
 	int mode = GOKZ_GetCoreOption(client, Option_Mode);
+	int style = GOKZ_GetCoreOption(client, Option_Style);
 	float currentTime = GOKZ_GetTime(client);
 	
-	bool nubPBExists = gB_PBExistsCache[client][course][mode][TimeType_Nub];
-	float nubPBTime = gF_PBTimesCache[client][course][mode][TimeType_Nub];
+	bool nubPBExists = gB_PBExistsCache_Nub[client][course][mode][style];
+	float nubPBTime = gF_PBTimesCache_Nub[client][course][mode][style];
 	bool nubPBMissed = gB_PBMissed[client][TimeType_Nub];
-	bool proPBExists = gB_PBExistsCache[client][course][mode][TimeType_Pro];
-	float proPBTime = gF_PBTimesCache[client][course][mode][TimeType_Pro];
+	bool proPBExists = gB_PBExistsCache_Pro[client][course][mode][style];
+	float proPBTime = gF_PBTimesCache_Pro[client][course][mode][style];
 	bool proPBMissed = gB_PBMissed[client][TimeType_Pro];
 	
 	if (nubPBExists && !nubPBMissed && currentTime >= nubPBTime)
@@ -293,17 +295,17 @@ void UpdatePBMissed(int client)
 		if (proPBExists && FloatAbs(nubPBTime - proPBTime) < EPSILON)
 		{
 			gB_PBMissed[client][TimeType_Pro] = true;
-			Call_OnPBMissed(client, nubPBTime, course, mode, Style_Normal, RecordType_NubAndPro);
+			Call_OnPBMissed(client, nubPBTime, course, mode, style, RecordType_NubAndPro);
 		}
 		else
 		{
-			Call_OnPBMissed(client, nubPBTime, course, mode, Style_Normal, RecordType_Nub);
+			Call_OnPBMissed(client, nubPBTime, course, mode, style, RecordType_Nub);
 		}
 	}
 	else if (proPBExists && !proPBMissed && currentTime >= proPBTime)
 	{
 		gB_PBMissed[client][TimeType_Pro] = true;
-		Call_OnPBMissed(client, proPBTime, course, mode, Style_Normal, RecordType_Pro);
+		Call_OnPBMissed(client, proPBTime, course, mode, style, RecordType_Pro);
 	}
 }
 

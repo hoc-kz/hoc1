@@ -15,9 +15,10 @@ void DB_CachePBs(int client, int steamID)
 	{
 		for (int mode = 0; mode < MODE_COUNT; mode++)
 		{
-			for (int timeType = 0; timeType < TIMETYPE_COUNT; timeType++)
+			for (int style = 0; style < STYLE_COUNT; style++)
 			{
-				gB_PBExistsCache[client][course][mode][timeType] = false;
+				gB_PBExistsCache_Nub[client][course][mode][style] = false;
+				gB_PBExistsCache_Pro[client][course][mode][style] = false;
 			}
 		}
 	}
@@ -31,32 +32,37 @@ void DB_CachePBs(int client, int steamID)
 	FormatEx(query, sizeof(query), sql_getpbspro, steamID, mapID);
 	txn.AddQuery(query);
 	
+	PrintToServer("Caching PBs for %N", client);
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_CachePBs, DB_TxnFailure_Generic, GetClientUserId(client), DBPrio_High);
 }
 
 public void DB_TxnSuccess_CachePBs(Handle db, int userID, int numQueries, Handle[] results, any[] queryData)
 {
 	int client = GetClientOfUserId(userID);
-	if (!IsValidClient(client))
+	if (!IsClientAuthorized(client))
 	{
 		return;
 	}
 	
-	int course, mode;
+	int course, mode, style;
 	
 	while (SQL_FetchRow(results[0]))
 	{
 		course = SQL_FetchInt(results[0], 1);
 		mode = SQL_FetchInt(results[0], 2);
-		gB_PBExistsCache[client][course][mode][TimeType_Nub] = true;
-		gF_PBTimesCache[client][course][mode][TimeType_Nub] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[0], 0));
+		style = SQL_FetchInt(results[0], 3);
+		gB_PBExistsCache_Nub[client][course][mode][style] = true;
+		gF_PBTimesCache_Nub[client][course][mode][style] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[0], 0));
 	}
 	
 	while (SQL_FetchRow(results[1]))
 	{
 		course = SQL_FetchInt(results[1], 1);
 		mode = SQL_FetchInt(results[1], 2);
-		gB_PBExistsCache[client][course][mode][TimeType_Pro] = true;
-		gF_PBTimesCache[client][course][mode][TimeType_Pro] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[1], 0));
+		style = SQL_FetchInt(results[1], 3);
+		gB_PBExistsCache_Pro[client][course][mode][style] = true;
+		gF_PBTimesCache_Pro[client][course][mode][style] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[1], 0));
+
+		PrintToServer("%N PRO PB (course: %d, mode: %d, style: %d) - %f", client, course, mode, style, gF_PBTimesCache_Pro[client][course][mode][style]);
 	}
 } 

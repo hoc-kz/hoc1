@@ -15,9 +15,10 @@ void DB_CacheRecords(int mapID)
 	{
 		for (int mode = 0; mode < MODE_COUNT; mode++)
 		{
-			for (int timeType = 0; timeType < TIMETYPE_COUNT; timeType++)
+			for (int style = 0; style < STYLE_COUNT; style++)
 			{
-				gB_RecordExistsCache[course][mode][timeType] = false;
+				gB_RecordExistsCache_Nub[course][mode][style] = false;
+				gB_RecordExistsCache_Pro[course][mode][style] = false;
 			}
 		}
 	}
@@ -34,21 +35,23 @@ void DB_CacheRecords(int mapID)
 
 public void DB_TxnSuccess_CacheRecords(Handle db, any data, int numQueries, Handle[] results, any[] queryData)
 {
-	int course, mode;
+	int course, mode, style;
 	
 	while (SQL_FetchRow(results[0]))
 	{
 		course = SQL_FetchInt(results[0], 1);
 		mode = SQL_FetchInt(results[0], 2);
-		gB_RecordExistsCache[course][mode][TimeType_Nub] = true;
-		gF_RecordTimesCache[course][mode][TimeType_Nub] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[0], 0));
+		style = SQL_FetchInt(results[0], 3);
+		gB_RecordExistsCache_Nub[course][mode][style] = true;
+		gF_RecordTimesCache_Nub[course][mode][style] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[0], 0));
 	}
 	
 	while (SQL_FetchRow(results[1]))
 	{
 		course = SQL_FetchInt(results[1], 1);
 		mode = SQL_FetchInt(results[1], 2);
-		gB_RecordExistsCache[course][mode][TimeType_Pro] = true;
-		gF_RecordTimesCache[course][mode][TimeType_Pro] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[1], 0));
+		style = SQL_FetchInt(results[1], 3);
+		gB_RecordExistsCache_Pro[course][mode][style] = true;
+		gF_RecordTimesCache_Pro[course][mode][style] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[1], 0));
 	}
 } 

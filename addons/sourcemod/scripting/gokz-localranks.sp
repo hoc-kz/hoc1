@@ -35,14 +35,19 @@ public Plugin myinfo =
 bool gB_GOKZGlobal;
 Database gH_DB = null;
 DatabaseType g_DBType = DatabaseType_None;
-bool gB_RecordExistsCache[GOKZ_MAX_COURSES][MODE_COUNT][TIMETYPE_COUNT];
-float gF_RecordTimesCache[GOKZ_MAX_COURSES][MODE_COUNT][TIMETYPE_COUNT];
 bool gB_RecordMissed[MAXPLAYERS + 1][TIMETYPE_COUNT];
-bool gB_PBExistsCache[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][TIMETYPE_COUNT];
-float gF_PBTimesCache[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][TIMETYPE_COUNT];
 bool gB_PBMissed[MAXPLAYERS + 1][TIMETYPE_COUNT];
 char gC_BeatRecordSound[256];
 
+// Nobody will ever need more than 4 array dimensions, right? Well, we did.
+bool gB_PBExistsCache_Nub[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+bool gB_PBExistsCache_Pro[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+float gF_PBTimesCache_Nub[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+float gF_PBTimesCache_Pro[MAXPLAYERS + 1][GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+bool gB_RecordExistsCache_Nub[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+bool gB_RecordExistsCache_Pro[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+float gF_RecordTimesCache_Nub[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
+float gF_RecordTimesCache_Pro[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
 
 #include "gokz-localranks/api.sp"
 #include "gokz-localranks/commands.sp"

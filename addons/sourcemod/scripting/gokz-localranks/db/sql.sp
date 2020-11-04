@@ -117,34 +117,34 @@ SELECT t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
     LIMIT %d";
 
 char sql_getwrs[] = "\
-SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode \
+SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode, Times.Style \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    GROUP BY MapCourses.Course, Times.Mode";
+    GROUP BY MapCourses.Course, Times.Mode, Times.Style";
 
 char sql_getwrspro[] = "\
-SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode \
+SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode, Times.Style \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d AND Times.Teleports=0 \
-    GROUP BY MapCourses.Course, Times.Mode";
+    GROUP BY MapCourses.Course, Times.Mode, Times.Style";
 
 char sql_getpbs[] = "\
-SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode \
+SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode, Times.Style \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     WHERE Times.SteamID32=%d AND MapCourses.MapID=%d \
-    GROUP BY MapCourses.Course, Times.Mode";
+    GROUP BY MapCourses.Course, Times.Mode, Times.Style";
 
 char sql_getpbspro[] = "\
-SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode \
+SELECT MIN(Times.RunTime), MapCourses.Course, Times.Mode, Times.Style \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     WHERE Times.SteamID32=%d AND MapCourses.MapID=%d AND Times.Teleports=0 \
-    GROUP BY MapCourses.Course, Times.Mode";
+    GROUP BY MapCourses.Course, Times.Mode, Times.Style";
 
 char sql_getmaprank[] = "\
 SELECT COUNT(DISTINCT Times.SteamID32) \
