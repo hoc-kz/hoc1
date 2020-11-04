@@ -32,7 +32,6 @@ void DB_CachePBs(int client, int steamID)
 	FormatEx(query, sizeof(query), sql_getpbspro, steamID, mapID);
 	txn.AddQuery(query);
 	
-	PrintToServer("Caching PBs for %N", client);
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_CachePBs, DB_TxnFailure_Generic, GetClientUserId(client), DBPrio_High);
 }
 
@@ -62,7 +61,5 @@ public void DB_TxnSuccess_CachePBs(Handle db, int userID, int numQueries, Handle
 		style = SQL_FetchInt(results[1], 3);
 		gB_PBExistsCache_Pro[client][course][mode][style] = true;
 		gF_PBTimesCache_Pro[client][course][mode][style] = GOKZ_DB_TimeIntToFloat(SQL_FetchInt(results[1], 0));
-
-		PrintToServer("%N PRO PB (course: %d, mode: %d, style: %d) - %f", client, course, mode, style, gF_PBTimesCache_Pro[client][course][mode][style]);
 	}
 } 
