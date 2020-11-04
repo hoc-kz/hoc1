@@ -74,6 +74,12 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 	if (StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
 		ReplicateConVars(client);
+
+		float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
+		if (FloatAbs(laggedMovement) > EPSILON)
+		{
+			SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
+		}
 	}
 }
 
@@ -84,7 +90,23 @@ public void SDKHook_OnClientPreThink_Post(int client)
 		return;
 	}
 
-	TweakConVars(client);
+	if (GetStyle(client) == Style_AutoBhop)
+	{
+		gCV_AutoBunnyHopping.BoolValue = true;
+	}
+	else
+	{
+		gCV_AutoBunnyHopping.BoolValue = false;
+	}
+
+	if (GetStyle(client) == Style_SlowMotion)
+	{
+		float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
+		if (FloatAbs(laggedMovement) > EPSILON) 
+		{
+			SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 0.5);
+		}
+	}
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon, int &subtype, int &cmdnum, int &tickcount, int &seed, int mouse[2])
@@ -130,18 +152,6 @@ int GetStyle(int client)
 void CreateConVars()
 {
 	gCV_AutoBunnyHopping = FindConVar("sv_autobunnyhopping");
-}
-
-void TweakConVars(int client)
-{
-	if (GetStyle(client) == Style_AutoBhop)
-	{
-		gCV_AutoBunnyHopping.BoolValue = true;
-	}
-	else
-	{
-		gCV_AutoBunnyHopping.BoolValue = false;
-	}
 }
 
 void ReplicateConVars(int client)
