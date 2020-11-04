@@ -239,6 +239,13 @@ void OnOptionChanged_Timer(int client, Option option)
 			GOKZ_PrintToChat(client, true, "%t", "Timer Stopped (Changed Mode)");
 		}
 	}
+	else if (option == Option_Style)
+	{
+		if (TimerStop(client))
+		{
+			GOKZ_PrintToChat(client, true, "%t", "Timer Stopped (Changed Style)");
+		}
+	}
 }
 
 void OnRoundStart_Timer()

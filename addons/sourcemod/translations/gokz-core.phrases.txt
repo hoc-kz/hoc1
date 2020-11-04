@@ -45,6 +45,10 @@
 		"chi"		"{darkred}你切换了模式,计时已中止."
 		"ru"		"{darkred}Ваш таймер обнулен, потому что вы переключили режим."
 	}
+	"Timer Stopped (Changed Style)"
+	{
+		"en"		"{darkred}Your timer has stopped because you switched style."
+	}
 	"Make Checkpoint"
 	{
 		// You have made a checkpoint (#3).
