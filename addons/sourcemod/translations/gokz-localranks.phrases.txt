@@ -307,19 +307,19 @@
 	}
 	"Average Time Header"
 	{
-		// Server Average Times on kz_map [Mode]
-		"#format"	"{1:s},{2:s}"
-		"en"		"{grey}Server Average Times on {default}{1}{grey} {grey}[{purple}{2}{grey}]"
-		"chi"		"{grey}本服平均完成时间: {default}{1}{grey} {grey}[{purple}{2}{grey}]"
-		"ru"		"{grey}Среднее время прохождения на {default}{1}{grey} {grey}[{purple}{2}{grey}]"
+		// Server Average Times on kz_map [Mode Style]
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"{grey}Server Average Times on {default}{1}{grey} {grey}[{purple}{2} {3}{grey}]"
+		"chi"		"{grey}本服平均完成时间: {default}{1}{grey} {grey}[{purple}{2} {3}{grey}]"
+		"ru"		"{grey}Среднее время прохождения на {default}{1}{grey} {grey}[{purple}{2} {3}{grey}]"
 	}
 	"Average Time Header (Bonus)"
 	{
-		// Server Average Times on kz_map Bonus 1 [Mode]
-		"#format"	"{1:s},{2:d},{3:s}"
-		"en"		"{grey}Server Average Times on {default}{1}{grey} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
-		"chi"		"{grey}本服在{bluegrey}加成{2}阶{grey}下的平均完成时间: {default}{1}{grey}[{purple}{3}{grey}]"
-		"ru"		"{grey}Среднее время прохождения на {default}{1}{grey} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
+		// Server Average Times on kz_map Bonus 1 [Mode Style]
+		"#format"	"{1:s},{2:d},{3:s},{4:s}"
+		"en"		"{grey}Server Average Times on {default}{1}{grey} {bluegrey}Bonus {2} {grey}[{purple}{3} {4}{grey}]"
+		"chi"		"{grey}本服在{bluegrey}加成{2}阶{grey}下的平均完成时间: {default}{1}{grey}[{purple}{3} {4}{grey}]"
+		"ru"		"{grey}Среднее время прохождения на {default}{1}{grey} {bluegrey}Bonus {2} {grey}[{purple}{3} {4}{grey}]"
 	}
 	"Average Time - NUB"
 	{

@@ -4,7 +4,7 @@
 
 
 
-void DB_PrintAverage(int client, int mapID, int course, int mode)
+void DB_PrintAverage(int client, int mapID, int course, int mode, int style)
 {
 	char query[1024];
 	
@@ -12,6 +12,7 @@ void DB_PrintAverage(int client, int mapID, int course, int mode)
 	data.WriteCell(GetClientUserId(client));
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	Transaction txn = SQL_CreateTransaction();
 	
@@ -37,6 +38,7 @@ public void DB_TxnSuccess_PrintAverage(Handle db, DataPack data, int numQueries,
 	int client = GetClientOfUserId(data.ReadCell());
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -89,11 +91,11 @@ public void DB_TxnSuccess_PrintAverage(Handle db, DataPack data, int numQueries,
 	// Print average time header to chat
 	if (course == 0)
 	{
-		GOKZ_PrintToChat(client, true, "%t", "Average Time Header", mapName, gC_ModeNamesShort[mode]);
+		GOKZ_PrintToChat(client, true, "%t", "Average Time Header", mapName, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
 	}
 	else
 	{
-		GOKZ_PrintToChat(client, true, "%t", "Average Time Header (Bonus)", mapName, course, gC_ModeNamesShort[mode]);
+		GOKZ_PrintToChat(client, true, "%t", "Average Time Header (Bonus)", mapName, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
 	}
 	
 	if (mapCompletions == 0)
@@ -114,13 +116,14 @@ public void DB_TxnSuccess_PrintAverage(Handle db, DataPack data, int numQueries,
 	}
 }
 
-void DB_PrintAverage_FindMap(int client, const char[] mapSearch, int course, int mode)
+void DB_PrintAverage_FindMap(int client, const char[] mapSearch, int course, int mode, int style)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
 	data.WriteString(mapSearch);
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	DB_FindMap(mapSearch, DB_TxnSuccess_PrintAverage_FindMap, data, DBPrio_Low);
 }
@@ -133,6 +136,7 @@ public void DB_TxnSuccess_PrintAverage_FindMap(Handle db, DataPack data, int num
 	data.ReadString(mapSearch, sizeof(mapSearch));
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -147,6 +151,6 @@ public void DB_TxnSuccess_PrintAverage_FindMap(Handle db, DataPack data, int num
 	}
 	else if (SQL_FetchRow(results[0]))
 	{  // Result is the MapID
-		DB_PrintAverage(client, SQL_FetchInt(results[0], 0), course, mode);
+		DB_PrintAverage(client, SQL_FetchInt(results[0], 0), course, mode, style);
 	}
 } 

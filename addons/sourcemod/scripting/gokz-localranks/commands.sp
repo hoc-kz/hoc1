@@ -278,13 +278,13 @@ public Action CommandAVG(int client, int args)
 
 	if (args == 0)
 	{  // Print average times for current map and their current mode
-		DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	else if (args >= 1)
 	{  // Print average times for specified map and their current mode
 		char argMap[33];
 		GetCmdArg(1, argMap, sizeof(argMap));
-		DB_PrintAverage_FindMap(client, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintAverage_FindMap(client, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	return Plugin_Handled;
 }
@@ -298,7 +298,7 @@ public Action CommandBAVG(int client, int args)
 
 	if (args == 0)
 	{  // Print Bonus 1 average times for current map and their current mode
-		DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	else if (args == 1)
 	{  // Print specified Bonus # average times for current map and their current mode
@@ -307,7 +307,7 @@ public Action CommandBAVG(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintAverage(client, GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{
@@ -322,7 +322,7 @@ public Action CommandBAVG(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintAverage_FindMap(client, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintAverage_FindMap(client, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{
