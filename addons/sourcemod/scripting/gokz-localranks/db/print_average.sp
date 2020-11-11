@@ -23,10 +23,10 @@ void DB_PrintAverage(int client, int mapID, int course, int mode, int style)
 	FormatEx(query, sizeof(query), sql_mapcourses_findid, mapID, course);
 	txn.AddQuery(query);
 	// Get Average PB Time
-	FormatEx(query, sizeof(query), sql_getaverage, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getaverage, mapID, course, mode, style);
 	txn.AddQuery(query);
 	// Get Average PRO PB Time
-	FormatEx(query, sizeof(query), sql_getaverage_pro, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getaverage_pro, mapID, course, mode, style);
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintAverage, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);

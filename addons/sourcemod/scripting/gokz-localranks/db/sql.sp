@@ -281,7 +281,7 @@ SELECT AVG(PBTime), COUNT(*) \
     INNER JOIN MapCourses ON Times.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Players ON Times.SteamID32=Players.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d \
     GROUP BY Times.SteamID32) AS PBTimes";
 
 char sql_getaverage_pro[] = "\
@@ -292,7 +292,7 @@ SELECT AVG(PBTime), COUNT(*) \
     INNER JOIN MapCourses ON Times.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Players ON Times.SteamID32=Players.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Teleports=0 \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     GROUP BY Times.SteamID32) AS PBTimes";
 
 char sql_getrecentrecords[] = "\
