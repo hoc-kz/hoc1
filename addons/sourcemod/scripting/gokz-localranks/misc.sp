@@ -8,7 +8,7 @@
 
 void CompletionMVPStarsUpdate(int client)
 {
-	DB_GetCompletion(client, GetSteamAccountID(client), GOKZ_GetDefaultMode(), false);
+	DB_GetCompletion(client, GetSteamAccountID(client), GOKZ_GetDefaultMode(), Style_Normal, false);
 }
 
 void CompletionMVPStarsUpdateAll()

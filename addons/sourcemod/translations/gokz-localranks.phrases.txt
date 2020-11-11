@@ -345,11 +345,11 @@
 	}
 	"Map Completion"
 	{
-		// Bill has beaten 12/234 and PRO'd 6/234 maps, and has beaten 3/21 and PRO'd 1/21 bonuses [Mode].
-		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:d},{10:s}"
-		"en"		"{lime}{1}{grey} has beaten {default}{2}{grey}/{default}{3}{grey} and {blue}PRO{grey}'d {default}{4}{grey}/{default}{5}{grey} maps, and has beaten {default}{6}{grey}/{default}{7}{grey} and {blue}PRO{grey}'d {default}{8}{grey}/{default}{9}{grey} bonuses [{purple}{10}{grey}]."
-		"chi"		"{lime}{1}{grey} 完成地图进度: 存点完成{default}{2}{grey}/{default}{3}{grey}张,{blue}裸跳{grey}完成{default}{4}{grey}/{default}{5}{grey}张地图, 在含加成阶级的地图上读点完成{default}{6}{grey}/{default}{7}{grey}张,{blue}裸跳{grey}完成{default}{8}{grey}/{default}{9}{grey}张地图. [{purple}{10}{grey}]"
-		"ru"		"{lime}{1}{grey} прошел {default}{2}{grey}/{default}{3}{grey} и {blue}PRO{grey} время {default}{4}{grey}/{default}{5}{grey} карт, а также {default}{6}{grey}/{default}{7}{grey} и {blue}PRO{grey} время {default}{8}{grey}/{default}{9}{grey} бонусов [{purple}{10}{grey}]."
+		// Bill has beaten 12/234 and PRO'd 6/234 maps, and has beaten 3/21 and PRO'd 1/21 bonuses [Mode Style].
+		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:d},{10:s},{11:s}"
+		"en"		"{lime}{1}{grey} has beaten {default}{2}{grey}/{default}{3}{grey} and {blue}PRO{grey}'d {default}{4}{grey}/{default}{5}{grey} maps, and has beaten {default}{6}{grey}/{default}{7}{grey} and {blue}PRO{grey}'d {default}{8}{grey}/{default}{9}{grey} bonuses [{purple}{10} {11}{grey}]."
+		"chi"		"{lime}{1}{grey} 完成地图进度: 存点完成{default}{2}{grey}/{default}{3}{grey}张,{blue}裸跳{grey}完成{default}{4}{grey}/{default}{5}{grey}张地图, 在含加成阶级的地图上读点完成{default}{6}{grey}/{default}{7}{grey}张,{blue}裸跳{grey}完成{default}{8}{grey}/{default}{9}{grey}张地图. [{purple}{10} {11}{grey}]"
+		"ru"		"{lime}{1}{grey} прошел {default}{2}{grey}/{default}{3}{grey} и {blue}PRO{grey} время {default}{4}{grey}/{default}{5}{grey} карт, а также {default}{6}{grey}/{default}{7}{grey} и {blue}PRO{grey} время {default}{8}{grey}/{default}{9}{grey} бонусов [{purple}{10} {11}{grey}]."
 	}
 	"Missed PB (NUB)"
 	{

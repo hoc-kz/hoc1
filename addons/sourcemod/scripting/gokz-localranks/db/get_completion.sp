@@ -4,7 +4,7 @@
 
 
 
-void DB_GetCompletion(int client, int targetSteamID, int mode, bool print)
+void DB_GetCompletion(int client, int targetSteamID, int mode, int style, bool print)
 {
 	char query[1024];
 	
@@ -12,6 +12,7 @@ void DB_GetCompletion(int client, int targetSteamID, int mode, bool print)
 	data.WriteCell(GetClientUserId(client));
 	data.WriteCell(targetSteamID);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	data.WriteCell(print);
 	
 	Transaction txn = SQL_CreateTransaction();
@@ -22,19 +23,19 @@ void DB_GetCompletion(int client, int targetSteamID, int mode, bool print)
 	// Get total number of ranked main courses
 	txn.AddQuery(sql_getcount_maincourses);
 	// Get number of main course completions
-	FormatEx(query, sizeof(query), sql_getcount_maincoursescompleted, targetSteamID, mode);
+	FormatEx(query, sizeof(query), sql_getcount_maincoursescompleted, targetSteamID, mode, style);
 	txn.AddQuery(query);
 	// Get number of main course completions (PRO)
-	FormatEx(query, sizeof(query), sql_getcount_maincoursescompletedpro, targetSteamID, mode);
+	FormatEx(query, sizeof(query), sql_getcount_maincoursescompletedpro, targetSteamID, mode, style);
 	txn.AddQuery(query);
 	
 	// Get total number of ranked bonuses
 	txn.AddQuery(sql_getcount_bonuses);
 	// Get number of bonus completions
-	FormatEx(query, sizeof(query), sql_getcount_bonusescompleted, targetSteamID, mode);
+	FormatEx(query, sizeof(query), sql_getcount_bonusescompleted, targetSteamID, mode, style);
 	txn.AddQuery(query);
 	// Get number of bonus completions (PRO)
-	FormatEx(query, sizeof(query), sql_getcount_bonusescompletedpro, targetSteamID, mode);
+	FormatEx(query, sizeof(query), sql_getcount_bonusescompletedpro, targetSteamID, mode, style);
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_GetCompletion, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
@@ -46,6 +47,7 @@ public void DB_TxnSuccess_GetCompletion(Handle db, DataPack data, int numQueries
 	int client = GetClientOfUserId(data.ReadCell());
 	int targetSteamID = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	bool print = data.ReadCell();
 	delete data;
 	
@@ -108,23 +110,24 @@ public void DB_TxnSuccess_GetCompletion(Handle db, DataPack data, int numQueries
 				playerName, 
 				completions, totalMainCourses, completionsPro, totalMainCourses, 
 				bonusCompletions, totalBonuses, bonusCompletionsPro, totalBonuses, 
-				gC_ModeNamesShort[mode]);
+				gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
 		}
 	}
 	
 	// Set scoreboard MVP stars to percentage PRO completion of server's default mode
-	if (totalMainCourses + totalBonuses != 0 && targetSteamID == GetSteamAccountID(client) && mode == GOKZ_GetDefaultMode())
+	if (totalMainCourses + totalBonuses != 0 && targetSteamID == GetSteamAccountID(client) && mode == GOKZ_GetDefaultMode() && style == Style_Normal)
 	{
 		CS_SetMVPCount(client, RoundToFloor(float(completionsPro + bonusCompletionsPro) / float(totalMainCourses + totalBonuses) * 100.0));
 	}
 }
 
-void DB_GetCompletion_FindPlayer(int client, const char[] target, int mode)
+void DB_GetCompletion_FindPlayer(int client, const char[] target, int mode, int style)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
 	data.WriteString(target);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	DB_FindPlayer(target, DB_TxnSuccess_GetCompletion_FindPlayer, data, DBPrio_Low);
 }
@@ -136,6 +139,7 @@ public void DB_TxnSuccess_GetCompletion_FindPlayer(Handle db, DataPack data, int
 	char playerSearch[33];
 	data.ReadString(playerSearch, sizeof(playerSearch));
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -150,6 +154,6 @@ public void DB_TxnSuccess_GetCompletion_FindPlayer(Handle db, DataPack data, int
 	}
 	else if (SQL_FetchRow(results[0]))
 	{
-		DB_GetCompletion(client, SQL_FetchInt(results[0], 0), mode, true);
+		DB_GetCompletion(client, SQL_FetchInt(results[0], 0), mode, style, true);
 	}
 } 

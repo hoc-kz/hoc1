@@ -341,13 +341,13 @@ public Action CommandPC(int client, int args)
 
 	if (args < 1)
 	{
-		DB_GetCompletion(client, GetSteamAccountID(client), GOKZ_GetCoreOption(client, Option_Mode), true);
+		DB_GetCompletion(client, GetSteamAccountID(client), GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style), true);
 	}
 	else if (args >= 1)
 	{  // Print record times for specified map and their current mode
 		char argPlayer[MAX_NAME_LENGTH];
 		GetCmdArg(1, argPlayer, sizeof(argPlayer));
-		DB_GetCompletion_FindPlayer(client, argPlayer, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_GetCompletion_FindPlayer(client, argPlayer, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	return Plugin_Handled;
 }
