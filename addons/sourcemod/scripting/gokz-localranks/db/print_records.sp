@@ -12,6 +12,7 @@ void DB_PrintRecords(int client, int mapID, int course, int mode, int style)
 	data.WriteCell(GetClientUserId(client));
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	Transaction txn = SQL_CreateTransaction();
 	
@@ -38,6 +39,7 @@ public void DB_TxnSuccess_PrintRecords(Handle db, DataPack data, int numQueries,
 	int client = GetClientOfUserId(data.ReadCell());
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -99,13 +101,27 @@ public void DB_TxnSuccess_PrintRecords(Handle db, DataPack data, int numQueries,
 	}
 	
 	// Print WR header to chat
-	if (course == 0)
+	if (style == Style_Normal)
 	{
-		GOKZ_PrintToChat(client, true, "%t", "WR Header", mapName, gC_ModeNamesShort[mode]);
+		if (course == 0)
+		{
+			GOKZ_PrintToChat(client, true, "%t", "WR Header", mapName, gC_ModeNamesShort[mode]);
+		}
+		else
+		{
+			GOKZ_PrintToChat(client, true, "%t", "WR Header (Bonus)", mapName, course, gC_ModeNamesShort[mode]);
+		}
 	}
 	else
 	{
-		GOKZ_PrintToChat(client, true, "%t", "WR Header (Bonus)", mapName, course, gC_ModeNamesShort[mode]);
+		if (course == 0)
+		{
+			GOKZ_PrintToChat(client, true, "%t", "WR Header - Style", mapName, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+		}
+		else
+		{
+			GOKZ_PrintToChat(client, true, "%t", "WR Header - Style (Bonus)", mapName, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+		}
 	}
 	
 	// Print WR times to chat

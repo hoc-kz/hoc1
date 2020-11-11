@@ -263,6 +263,22 @@
 		"chi"		"{grey}地图{default}{1}在{bluegrey}加成{2}阶下{grey}的本服最快纪录[{purple}{3}{grey}]"
 		"ru"		"{grey}Рекорды сервера на {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
 	}
+	"WR Header - Style"
+	{
+		// Server Records on kz_map [Mode]
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"{grey}Server Records on {default}{1} {grey}[{purple}{2} {3}{grey}]"
+		"chi"		"{grey}地图{default}{1}{grey}的本服最快纪录[{purple}{2} {3}{grey}]"
+		"ru"		"{grey}Рекорды сервера на {default}{1} {grey}[{purple}{2} {3}{grey}]"
+	}
+	"WR Header - Style (Bonus)"
+	{
+		// Server Records on kz_map Bonus 1 [Mode]
+		"#format"	"{1:s},{2:d},{3:s},{4:s}"
+		"en"		"{grey}Server Records on {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3} {4}{grey}]"
+		"chi"		"{grey}地图{default}{1}在{bluegrey}加成{2}阶下{grey}的本服最快纪录[{purple}{3} {4}{grey}]"
+		"ru"		"{grey}Рекорды сервера на {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3} {4}{grey}]"
+	}
 	"WR Time - NUB"
 	{
 		// NUB RECORD: 01:23.45 (5 TP) by Bill
