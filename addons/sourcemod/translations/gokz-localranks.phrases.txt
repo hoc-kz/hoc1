@@ -197,29 +197,13 @@
 	}
 	"PB Header"
 	{
-		// Bill on kz_map [Mode]
-		"#format"	"{1:s},{2:s},{3:s}"
-		"en"		"{lime}{1}{grey} on {default}{2} {grey}[{purple}{3}{grey}]"
-		"chi"		"{lime}{1}{grey} 在地图{default}{2} {grey}上的表现[{purple}{3}{grey}]"
-		"ru"		"{lime}{1}{grey} на {default}{2} {grey}[{purple}{3}{grey}]"
-	}
-	"PB Header (Bonus)"
-	{
-		// Bill on kz_map Bonus 1 [Mode]
-		"#format"	"{1:s},{2:s},{3:d},{4:s}"
-		"en"		"{lime}{1}{grey} on {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4}{grey}]"
-		"chi"		"{lime}{1}{grey} 在地图{default}{2} {bluegrey}上附带加成{3}阶下的表现{grey}[{purple}{4}{grey}]"
-		"ru"		"{lime}{1}{grey} на {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4}{grey}]"
-	}
-	"PB Header - Style"
-	{
 		// Bill on kz_map [Mode Style]
 		"#format"	"{1:s},{2:s},{3:s},{4:s}"
 		"en"		"{lime}{1}{grey} on {default}{2} {grey}[{purple}{3} {4}{grey}]"
 		"chi"		"{lime}{1}{grey} 在地图{default}{2} {grey}上的表现[{purple}{3} {4}{grey}]"
 		"ru"		"{lime}{1}{grey} на {default}{2} {grey}[{purple}{3} {4}{grey}]"
 	}
-	"PB Header (Bonus) - Style"
+	"PB Header (Bonus)"
 	{
 		// Bill on kz_map Bonus 1 [Mode Style]
 		"#format"	"{1:s},{2:s},{3:d},{4:s},{5:s}"
@@ -265,31 +249,15 @@
 	}
 	"WR Header"
 	{
-		// Server Records on kz_map [Mode]
-		"#format"	"{1:s},{2:s}"
-		"en"		"{grey}Server Records on {default}{1} {grey}[{purple}{2}{grey}]"
-		"chi"		"{grey}地图{default}{1}{grey}的本服最快纪录[{purple}{2}{grey}]"
-		"ru"		"{grey}Рекорды сервера на {default}{1} {grey}[{purple}{2}{grey}]"
-	}
-	"WR Header (Bonus)"
-	{
-		// Server Records on kz_map Bonus 1 [Mode]
-		"#format"	"{1:s},{2:d},{3:s}"
-		"en"		"{grey}Server Records on {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
-		"chi"		"{grey}地图{default}{1}在{bluegrey}加成{2}阶下{grey}的本服最快纪录[{purple}{3}{grey}]"
-		"ru"		"{grey}Рекорды сервера на {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
-	}
-	"WR Header - Style"
-	{
-		// Server Records on kz_map [Mode]
+		// Server Records on kz_map [Mode Style]
 		"#format"	"{1:s},{2:s},{3:s}"
 		"en"		"{grey}Server Records on {default}{1} {grey}[{purple}{2} {3}{grey}]"
 		"chi"		"{grey}地图{default}{1}{grey}的本服最快纪录[{purple}{2} {3}{grey}]"
 		"ru"		"{grey}Рекорды сервера на {default}{1} {grey}[{purple}{2} {3}{grey}]"
 	}
-	"WR Header - Style (Bonus)"
+	"WR Header (Bonus)"
 	{
-		// Server Records on kz_map Bonus 1 [Mode]
+		// Server Records on kz_map Bonus 1 [Mode Style]
 		"#format"	"{1:s},{2:d},{3:s},{4:s}"
 		"en"		"{grey}Server Records on {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3} {4}{grey}]"
 		"chi"		"{grey}地图{default}{1}在{bluegrey}加成{2}阶下{grey}的本服最快纪录[{purple}{3} {4}{grey}]"

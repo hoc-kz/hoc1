@@ -137,27 +137,13 @@ public void DB_TxnSuccess_PrintPBs(Handle db, DataPack data, int numQueries, Han
 	}
 	
 	// Print PB header to chat
-	if (style == Style_Normal)
+	if (course == 0)
 	{
-		if (course == 0)
-		{
-			GOKZ_PrintToChat(client, true, "%t", "PB Header", playerName, mapName, gC_ModeNamesShort[mode]);
-		}
-		else
-		{
-			GOKZ_PrintToChat(client, true, "%t", "PB Header (Bonus)", playerName, mapName, course, gC_ModeNamesShort[mode]);
-		}
+		GOKZ_PrintToChat(client, true, "%t", "PB Header", playerName, mapName, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
 	}
 	else
 	{
-		if (course == 0)
-		{
-			GOKZ_PrintToChat(client, true, "%t", "PB Header - Style", playerName, mapName, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
-		}
-		else
-		{
-			GOKZ_PrintToChat(client, true, "%t", "PB Header - Style (Bonus)", playerName, mapName, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
-		}
+		GOKZ_PrintToChat(client, true, "%t", "PB Header (Bonus)", playerName, mapName, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
 	}
 	
 	// Print PB times to chat
