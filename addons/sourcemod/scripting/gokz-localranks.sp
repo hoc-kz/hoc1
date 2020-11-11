@@ -198,7 +198,7 @@ public void GOKZ_LR_OnTimeProcessed(
 		return;
 	}
 	
-	AnnounceNewTime(client, course, mode, runTime, teleportsUsed, firstTime, pbDiff, rank, maxRank, firstTimePro, pbDiffPro, rankPro, maxRankPro);
+	AnnounceNewTime(client, course, mode, style, runTime, teleportsUsed, firstTime, pbDiff, rank, maxRank, firstTimePro, pbDiffPro, rankPro, maxRankPro);
 	
 	if (mode == GOKZ_GetDefaultMode() && firstTimePro)
 	{
@@ -219,7 +219,7 @@ public void GOKZ_LR_OnNewRecord(int client, int steamID, int mapID, int course, 
 		return;
 	}
 	
-	AnnounceNewRecord(client, course, mode, recordType);
+	AnnounceNewRecord(client, course, mode, style, recordType);
 	DB_CacheRecords(mapID);
 }
 

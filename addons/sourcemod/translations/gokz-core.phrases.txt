@@ -3,35 +3,35 @@
 	// =====[ CHAT MESSAGES ]=====
 	"Beat Map (NUB)"
 	{
-		// Bill finished in NUB 01:23.45 [Mode]
-		"#format"	"{1:N},{2:s},{3:s}"
-		"en"		"{lime}{1} {grey}finished in {yellow}NUB {default}{2} {grey}[{purple}{3}{grey}]"
-		"chi"		"{lime}{1} {grey}以{yellow}读点{grey}方式完成地图,用时{default}{2}{grey} [{purple}{3}{grey}]"
-		"ru"		"{lime}{1} {grey}завершил на {yellow}NUB {default} {2} {grey}[{purple}{3}{grey}]"
+		// Bill finished in NUB 01:23.45 [Mode Style]
+		"#format"	"{1:N},{2:s},{3:s},{4:s}"
+		"en"		"{lime}{1} {grey}finished in {yellow}NUB {default}{2} {grey}[{purple}{3} {4}{grey}]"
+		"chi"		"{lime}{1} {grey}以{yellow}读点{grey}方式完成地图,用时{default}{2}{grey} [{purple}{3} {4}{grey}]"
+		"ru"		"{lime}{1} {grey}завершил на {yellow}NUB {default} {2} {grey}[{purple}{3} {4}{grey}]"
 	}
 	"Beat Map (PRO)"
 	{
-		// Bill finished in PRO 01:23.45 [Mode]
-		"#format"	"{1:N},{2:s},{3:s}"
-		"en"		"{lime}{1} {grey}finished in {blue}PRO {default}{2} {grey}[{purple}{3}{grey}]"
-		"chi"		"{lime}{1} {grey}以 {blue}裸跳{grey}方式完成地图,用时 {default}{2}{grey} [{purple}{3}{grey}]"
-		"ru"		"{lime}{1} {grey}завершил на {blue}PRO {default}{2} {grey}[{purple}{3}{grey}]"
+		// Bill finished in PRO 01:23.45 [Mode Style]
+		"#format"	"{1:N},{2:s},{3:s},{4:s}"
+		"en"		"{lime}{1} {grey}finished in {blue}PRO {default}{2} {grey}[{purple}{3} {4}{grey}]"
+		"chi"		"{lime}{1} {grey}以 {blue}裸跳{grey}方式完成地图,用时 {default}{2}{grey} [{purple}{3} {4}{grey}]"
+		"ru"		"{lime}{1} {grey}завершил на {blue}PRO {default}{2} {grey}[{purple}{3} {4}{grey}]"
 	}
 	"Beat Bonus (NUB)"
 	{
-		// Bill finished Bonus 1 in NUB 01:23.45 [Mode]
-		"#format"	"{1:N},{2:d},{3:s},{4:s}"
-		"en"		"{lime}{1} {grey}finished {bluegrey}Bonus {2} {grey}in {yellow}NUB {default}{3} {grey}[{purple}{4}{grey}]"
-		"chi"		"{lime}{1} {grey}在{bluegrey}加成{2}阶{grey}下以{yellow}读点{default}方式完成地图,用时{3}{grey} [{purple}{4}{grey}]"
-		"ru"		"{lime}{1} {grey}завершил {bluegrey}Bonus {2} {grey}на {yellow}NUB {default}{3} {grey}[{purple}{4}{grey}]"
+		// Bill finished Bonus 1 in NUB 01:23.45 [Mode Style]
+		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:s}"
+		"en"		"{lime}{1} {grey}finished {bluegrey}Bonus {2} {grey}in {yellow}NUB {default}{3} {grey}[{purple}{4} {5}{grey}]"
+		"chi"		"{lime}{1} {grey}在{bluegrey}加成{2}阶{grey}下以{yellow}读点{default}方式完成地图,用时{3}{grey} [{purple}{4} {5}{grey}]"
+		"ru"		"{lime}{1} {grey}завершил {bluegrey}Bonus {2} {grey}на {yellow}NUB {default}{3} {grey}[{purple}{4} {5}{grey}]"
 	}
 	"Beat Bonus (PRO)"
 	{
-		// Bill finished Bonus 1 in PRO 01:23.45 [Mode]
-		"#format"	"{1:N},{2:d},{3:s},{4:s}"
-		"en"		"{lime}{1} {grey}finished {bluegrey}Bonus {2} {grey}in {blue}PRO {default}{3} {grey}[{purple}{4}{grey}]"
-		"chi"		"{lime}{1} {grey}在{bluegrey}加成{2}阶{grey}下以{yellow}裸跳{default}方式完成地图,用时{3}{grey} [{purple}{4}{grey}]"
-		"ru"		"{lime}{1} {grey}завершил {bluegrey}Bonus {2} {grey}на {blue}PRO {default}{3} {grey}[{purple}{4}{grey}]"
+		// Bill finished Bonus 1 in PRO 01:23.45 [Mode Style]
+		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:s}"
+		"en"		"{lime}{1} {grey}finished {bluegrey}Bonus {2} {grey}in {blue}PRO {default}{3} {grey}[{purple}{4} {5}{grey}]"
+		"chi"		"{lime}{1} {grey}在{bluegrey}加成{2}阶{grey}下以{yellow}裸跳{default}方式完成地图,用时{3}{grey} [{purple}{4} {5}{grey}]"
+		"ru"		"{lime}{1} {grey}завершил {bluegrey}Bonus {2} {grey}на {blue}PRO {default}{3} {grey}[{purple}{4} {5}{grey}]"
 	}
 	"Timer Stopped (Noclipped)"
 	{
