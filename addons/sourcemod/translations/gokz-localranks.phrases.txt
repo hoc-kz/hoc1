@@ -211,6 +211,22 @@
 		"chi"		"{lime}{1}{grey} 在地图{default}{2} {bluegrey}上附带加成{3}阶下的表现{grey}[{purple}{4}{grey}]"
 		"ru"		"{lime}{1}{grey} на {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4}{grey}]"
 	}
+	"PB Header - Style"
+	{
+		// Bill on kz_map [Mode Style]
+		"#format"	"{1:s},{2:s},{3:s},{4:s}"
+		"en"		"{lime}{1}{grey} on {default}{2} {grey}[{purple}{3} {4}{grey}]"
+		"chi"		"{lime}{1}{grey} 在地图{default}{2} {grey}上的表现[{purple}{3} {4}{grey}]"
+		"ru"		"{lime}{1}{grey} на {default}{2} {grey}[{purple}{3} {4}{grey}]"
+	}
+	"PB Header (Bonus) - Style"
+	{
+		// Bill on kz_map Bonus 1 [Mode Style]
+		"#format"	"{1:s},{2:s},{3:d},{4:s},{5:s}"
+		"en"		"{lime}{1}{grey} on {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4} {5}{grey}]"
+		"chi"		"{lime}{1}{grey} 在地图{default}{2} {bluegrey}上附带加成{3}阶下的表现{grey}[{purple}{4} {5}{grey}]"
+		"ru"		"{lime}{1}{grey} на {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4} {5}{grey}]"
+	}
 	"PB Time - No Times"
 	{
 		"en"		"{grey}You haven't set a time... yet."

@@ -117,20 +117,20 @@ public Action CommandPB(int client, int args)
 
 	if (args == 0)
 	{  // Print their PBs for current map and their current mode
-		DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	else if (args == 1)
 	{  // Print their PBs for specified map and their current mode
 		char argMap[33];
 		GetCmdArg(1, argMap, sizeof(argMap));
-		DB_PrintPBs_FindMap(client, GetSteamAccountID(client), argMap, 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintPBs_FindMap(client, GetSteamAccountID(client), argMap, 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	else if (args >= 2)
 	{  // Print specified player's PBs for specified map and their current mode
 		char argMap[33], argPlayer[MAX_NAME_LENGTH];
 		GetCmdArg(1, argMap, sizeof(argMap));
 		GetCmdArg(2, argPlayer, sizeof(argPlayer));
-		DB_PrintPBs_FindPlayerAndMap(client, argPlayer, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintPBs_FindPlayerAndMap(client, argPlayer, argMap, 0, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	return Plugin_Handled;
 }
@@ -144,7 +144,7 @@ public Action CommandBPB(int client, int args)
 
 	if (args == 0)
 	{  // Print their Bonus 1 PBs for current map and their current mode
-		DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode));
+		DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), 1, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 	}
 	else if (args == 1)
 	{  // Print their specified Bonus # PBs for current map and their current mode
@@ -153,7 +153,7 @@ public Action CommandBPB(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintPBs(client, GetSteamAccountID(client), GOKZ_DB_GetCurrentMapID(), bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{
@@ -168,7 +168,7 @@ public Action CommandBPB(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintPBs_FindMap(client, GetSteamAccountID(client), argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintPBs_FindMap(client, GetSteamAccountID(client), argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{
@@ -184,7 +184,7 @@ public Action CommandBPB(int client, int args)
 		int bonus = StringToInt(argBonus);
 		if (GOKZ_IsValidCourse(bonus, true))
 		{
-			DB_PrintPBs_FindPlayerAndMap(client, argPlayer, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode));
+			DB_PrintPBs_FindPlayerAndMap(client, argPlayer, argMap, bonus, GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style));
 		}
 		else
 		{
