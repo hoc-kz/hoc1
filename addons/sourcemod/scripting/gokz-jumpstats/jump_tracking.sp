@@ -131,6 +131,13 @@ enum struct JumpTracker
 		// Notify everyone about the takeoff
 		Call_OnTakeoff(this.jumper, this.jump.type);
 		
+		// Invalidate jumps with styles we don't support
+		int style = GOKZ_GetCoreOption(this.jumper, Option_Style);
+		if (style != Style_Normal && style != Style_AutoBhop)
+		{
+			this.Invalidate();
+		}
+
 		// Measure first tick of jumpstat
 		this.Update();
 	}
