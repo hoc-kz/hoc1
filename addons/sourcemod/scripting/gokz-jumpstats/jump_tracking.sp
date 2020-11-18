@@ -1252,7 +1252,7 @@ static bool TraceHullPosition(const float traceStart[3], const float traceEnd[3]
 
 void OnOptionChanged_JumpTracking(int client, const char[] option)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]))
+	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) || StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
 		jumpTrackers[client].jump.type = JumpType_FullInvalid;
 	}
