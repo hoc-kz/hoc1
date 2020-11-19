@@ -39,6 +39,10 @@
 		"chi"		"{darkred}你启用了穿墙模式,计时已中止."
 		"ru"		"{darkred}Ваш таймер обнулен, потому что вы использовали noclip."
 	}
+	"Timer Stopped (Hooked)"
+	{
+		"en"		"{darkred}Your timer has stopped because you hooked."
+	}
 	"Timer Stopped (Changed Mode)"
 	{
 		"en"		"{darkred}Your timer has stopped because you switched mode."
