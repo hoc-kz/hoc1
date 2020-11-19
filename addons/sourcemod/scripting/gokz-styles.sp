@@ -152,6 +152,10 @@ int GetStyle(int client)
 void CreateConVars()
 {
 	gCV_AutoBunnyHopping = FindConVar("sv_autobunnyhopping");
+
+	// Styles replicate it manually
+	gCV_AutoBunnyHopping.Flags &= ~FCVAR_NOTIFY;
+	gCV_AutoBunnyHopping.Flags &= ~FCVAR_REPLICATED;
 }
 
 void ReplicateConVars(int client)
