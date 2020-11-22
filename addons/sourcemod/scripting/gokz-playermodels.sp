@@ -104,7 +104,7 @@ void CreateConVars()
 	AutoExecConfig_SetFile("gokz-playermodels", "sourcemod/gokz");
 	AutoExecConfig_SetCreateFile(true);
 	
-	gCV_gokz_player_models_alpha = AutoExecConfig_CreateConVar("gokz_player_models_alpha", "65", "Amount of alpha (transparency) to set player models to.", _, true, 0.0, true, 255.0);
+	gCV_gokz_player_models_alpha = AutoExecConfig_CreateConVar("gokz_player_models_alpha", "255", "Amount of alpha (transparency) to set player models to.", _, true, 0.0, true, 255.0);
 	gCV_gokz_player_models_alpha.AddChangeHook(OnConVarChanged);
 	
 	AutoExecConfig_ExecuteFile();
