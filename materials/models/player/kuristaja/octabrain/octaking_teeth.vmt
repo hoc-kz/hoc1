@@ -1,0 +1,7 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/player/kuristaja/octabrain/octaking"
+	"$bumpmap" "models/player/kuristaja/octabrain/octabrain_normal"
+	"$translucent" "1"
+	"$nocull" "1"
+}

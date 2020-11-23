@@ -1,0 +1,10 @@
+"VertexlitGeneric"
+{
+	"$basetexture" "models/player/kuristaja/slow_santa/slow_santa"
+	"$bumpmap"	"models/player/kuristaja/slow_santa/slow_santa_bump"
+
+ 	"$phong" "1"
+	"$phongexponent" "19"
+	"$phongboost"	"0.4"
+	"$phongfresnelranges"	"[1 1 1]"
+}

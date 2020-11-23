@@ -1,0 +1,18 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"models/player/kuristaja/octabrain/octaking"
+	"$bumpmap" "models/player/kuristaja/octabrain/octabrain_normal"
+
+	"$phong"			"1"
+	"$phongboost"		".6"
+	"$phongexponent"		"50"
+
+	"$phongfresnelranges"	"[.8 .8 .6]"
+
+	//"$halflambert" "1"
+ 	"$lightwarptexture" "models/player/kuristaja/octabrain/octabrain_lightwarp"
+
+	"$rimlight" "1"
+	"$rimlightexponent" "40"
+	"$rimlightboost" "1"
+}

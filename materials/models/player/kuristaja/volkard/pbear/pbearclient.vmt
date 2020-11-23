@@ -1,0 +1,5 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "models\player\kuristaja\volkard\pbear\bear"
+	"$bumpmap"     "models\player\kuristaja\volkard\pbear\bear_normal"
+}

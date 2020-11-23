@@ -1,0 +1,6 @@
+"VertexLitGeneric"
+{
+	// ALPHATEST
+	"$baseTexture" "models\player\kuristaja\volkard\shared\volkardb"
+	"$alphatest" "1"
+}
