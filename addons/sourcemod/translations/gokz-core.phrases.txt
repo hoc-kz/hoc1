@@ -209,6 +209,14 @@
 		"en"		"{grey}You have unlocked your virtual buttons."
 		"ru"		"{grey}Вы разблокировали свои виртуальные кнопки начала и окончания."
 	}
+	"Enabled God Mode"
+	{
+		"en"		"{grey}You are now immortal."
+	}
+	"Disabled God Mode"
+	{
+		"en"		"{grey}You are now mortal."
+	}
 
 
 	// =====[ MODE MENU ]=====

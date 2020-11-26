@@ -42,6 +42,9 @@ void RegisterCommands()
 	RegConsoleCmd("sm_ncnt", CommandToggleNoclipNotrigger, "[KZ] Toggle noclip-notrigger.");
 	RegConsoleCmd("+noclipnt", CommandEnableNoclipNotrigger, "[KZ] Noclip-notrigger on.");
 	RegConsoleCmd("-noclipnt", CommandDisableNoclipNotrigger, "[KZ] Noclip-notrigger off.");
+	RegConsoleCmd("sm_god", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_godmode", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_mortal", CommandToggleGodMode, "[KZ] Toggle god mode.");
 }
 
 void AddCommandsListeners()
@@ -291,6 +294,19 @@ public Action CommandEnableNoclipNotrigger(int client, int args)
 public Action CommandDisableNoclipNotrigger(int client, int args)
 {
 	DisableNoclipNotrigger(client);
+	return Plugin_Handled;
+}
+
+public Action CommandToggleGodMode(int client, int args)
+{
+	if (ToggleGodMode(client))
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Enabled God Mode");
+	}
+	else
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Disabled God Mode");
+	}
 	return Plugin_Handled;
 }
 
