@@ -166,7 +166,11 @@ public Action Timer_UpdatePlayerModel(Handle timer, int userid)
 	
 	char playerModel[256];
 	GetDesiredPlayerModel(client, playerModel, sizeof(playerModel));
-	SetEntityModel(client, playerModel);
+
+	if (IsModelPrecached(playerModel))
+	{
+		SetEntityModel(client, playerModel);
+	}
 	
 	UpdatePlayerModelAlpha(client);
 }
@@ -184,8 +188,7 @@ bool LoadPlayerModels()
 	KeyValues kv = new KeyValues("models");
 	if (!kv.ImportFromFile(CFG_CUSTOM_MODELS) || !kv.GotoFirstSubKey(true))
 	{
-		delete kv;
-		return false;
+		SetFailState("playermodels config missing");
 	}
 
 	delete gH_PlayerModels;
