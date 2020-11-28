@@ -174,7 +174,7 @@ stock int gI_HUDOptionDefaults[HUDOPTION_COUNT] =
 	TPMenu_Advanced, 
 	InfoPanel_Enabled, 
 	ShowKeys_Spectating, 
-	TimerText_InfoPanel, 
+	TimerText_TPMenu, 
 	TimerStyle_Standard, 
 	TimerType_Enabled,
 	SpeedText_InfoPanel, 
