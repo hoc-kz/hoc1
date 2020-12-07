@@ -175,38 +175,27 @@ void OnClientSayCommand_ChatProcessing(int client, const char[] command, const c
 		return;
 	}
 
-	// TODO: This is hella ugly after adding levels...
+	char chatLevelTag[32];
+	char consoleLevelTag[32];
+	if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
+	{
+		int level = GOKZ_LV_GetLevel(client);
+		int prestige = GOKZ_LV_GetPrestige(client);
+		GOKZ_LV_FormatLevelTag(chatLevelTag, sizeof(chatLevelTag), level, prestige, true);
+		GOKZ_LV_FormatLevelTag(consoleLevelTag, sizeof(consoleLevelTag), level, prestige, false);
+	}
+
 	if (IsSpectating(client))
 	{
-		if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
-		{
-			int level = GOKZ_LV_GetLevel(client);
-			GOKZ_PrintToChatAll(false, "{default}[{lightred}Lv%d{default}] *{lime}%s{default}: %s", level, sanitisedName, sanitisedMessage);
-			PrintToConsoleAll("[Lv%d] *%s: %s", level, sanitisedName, sanitisedMessage);
-			PrintToServer("[Lv%d] *%s: %s", level, sanitisedName, sanitisedMessage);
-		}
-		else
-		{
-			GOKZ_PrintToChatAll(false, "{default}*{lime}%s{default}: %s", sanitisedName, sanitisedMessage);
-			PrintToConsoleAll("*%s: %s", sanitisedName, sanitisedMessage);
-			PrintToServer("*%s: %s", sanitisedName, sanitisedMessage);
-		}
+		GOKZ_PrintToChatAll(false, "{default}%s *{lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		PrintToConsoleAll("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
+		PrintToServer("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}
 	else
 	{
-		if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
-		{
-			int level = GOKZ_LV_GetLevel(client);
-			GOKZ_PrintToChatAll(false, "{default}[{lightred}Lv%d{default}] {lime}%s{default}: %s", level, sanitisedName, sanitisedMessage);
-			PrintToConsoleAll("[Lv%d] %s: %s", level, sanitisedName, sanitisedMessage);
-			PrintToServer("[Lv%d] %s: %s", level, sanitisedName, sanitisedMessage);
-		}
-		else
-		{
-			GOKZ_PrintToChatAll(false, "{lime}%s{default}: %s", sanitisedName, sanitisedMessage);
-			PrintToConsoleAll("%s: %s", sanitisedName, sanitisedMessage);
-			PrintToServer("%s: %s", sanitisedName, sanitisedMessage);
-		}
+		GOKZ_PrintToChatAll(false, "{default}%s {lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		PrintToConsoleAll("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
+		PrintToServer("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}
 }
 

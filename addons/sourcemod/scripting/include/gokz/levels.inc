@@ -15,6 +15,17 @@
 
 #define GOKZ_LV_MAX_LEVEL 50
 
+stock int gI_LevelChatColorPrestige0[GOKZ_LV_MAX_LEVEL + 1] = 
+{
+	0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, //  0 -  9
+	0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, // 10 - 19
+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, // 20 - 29
+	0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, // 30 - 39
+	0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, // 40 - 49
+	0x10 // 50
+};
+#define LEVEL_CHAT_COLOR_PRESTIGE1 0x10
+
 
 
 // =====[ FORWARDS ]=====
@@ -82,6 +93,23 @@ stock int GOKZ_LV_LevelForExperience(int experience)
 		level = experience / 2160;
 	}
 	return IntMin(level, GOKZ_LV_MAX_LEVEL);
+}
+
+stock int GOKZ_LV_FormatLevelTag(char[] buffer, int maxlength, int level, int prestige, bool colors)
+{
+	if (!colors)
+	{
+		return Format(buffer, maxlength, "[Lv%d]", level);
+	}
+
+	if (prestige == 1)
+	{
+		int color = LEVEL_CHAT_COLOR_PRESTIGE1;
+		return Format(buffer, maxlength, "\8[%cLv%d\8]", color, level);
+	}
+
+	int color = gI_LevelChatColorPrestige0[level];
+	return Format(buffer, maxlength, "\8[%cLv%d\8]", color, level);
 }
 
 
