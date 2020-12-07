@@ -299,7 +299,6 @@ enum struct JumpTracker
 				{
 					case JumpType_LongJump:return JumpType_Bhop;
 					case JumpType_Bhop:return JumpType_MultiBhop;
-					case JumpType_LowpreBhop:return JumpType_MultiBhop;
 					case JumpType_MultiBhop:return JumpType_MultiBhop;
 					default:return JumpType_Other;
 				}
@@ -537,9 +536,7 @@ enum struct JumpTracker
 				this.lastType == JumpType_MultiBhop || 
 				this.lastType == JumpType_Ladderhop || 
 				this.lastType == JumpType_WeirdJump ||
-				this.lastType == JumpType_Jumpbug ||
-				this.lastType == JumpType_LowpreBhop ||
-				this.lastType == JumpType_LowpreWeirdJump)
+				this.lastType == JumpType_Jumpbug)
 			 && this.jump.distance >= JS_MIN_BLOCK_DISTANCE)
 		{
 			// Add the player model to the distance.
@@ -613,9 +610,7 @@ enum struct JumpTracker
 				this.jump.type == JumpType_MultiBhop || 
 				this.jump.type == JumpType_Ladderhop || 
 				this.jump.type == JumpType_WeirdJump ||
-				this.jump.type == JumpType_Jumpbug ||
-				this.jump.type == JumpType_LowpreBhop ||
-				this.jump.type == JumpType_LowpreWeirdJump)
+				this.jump.type == JumpType_Jumpbug)
 			 && this.jump.distance >= JS_MIN_BLOCK_DISTANCE)
 		{
 			this.CalcBlockStats(this.position);

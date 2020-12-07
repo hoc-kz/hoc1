@@ -23,8 +23,6 @@ enum
 	JumpType_LadderJump, 
 	JumpType_Ladderhop, 
 	JumpType_Jumpbug,
-	JumpType_LowpreBhop,
-	JumpType_LowpreWeirdJump,
 	JumpType_Fall, 
 	JumpType_Other, 
 	JumpType_Invalid, 
@@ -103,8 +101,6 @@ stock char gC_JumpTypes[JUMPTYPE_COUNT][] =
 	"Ladder Jump", 
 	"Ladderhop", 
 	"Jumpbug",
-	"Lowpre Bunnyhop",
-	"Lowpre Weird Jump",
 	"Fall", 
 	"Unknown Jump",
 	"Invalid Jump"
@@ -119,8 +115,6 @@ stock char gC_JumpTypesShort[JUMPTYPE_COUNT][] =
 	"LAJ", 
 	"LAH", 
 	"JB", 
-	"LBH",
-	"LWJ",
 	"FL", 
 	"UNK",
 	"INV"
@@ -135,8 +129,6 @@ stock char gC_JumpTypeKeys[JUMPTYPE_COUNT][] =
 	"ladderjump", 
 	"ladderhop",
 	"jumpbug",
-	"lowprebhop",
-	"lowpreweirdjump",
 	"fall",
 	"unknown",
 	"invalid"
