@@ -64,6 +64,7 @@ ConVar gCV_ModeCVar[MODECVAR_COUNT];
 int gI_OldButtons[MAXPLAYERS + 1];
 int gI_OldFlags[MAXPLAYERS + 1];
 bool gB_OldOnGround[MAXPLAYERS + 1];
+float gF_OldOrigin[MAXPLAYERS + 1][3];
 float gF_OldAngles[MAXPLAYERS + 1][3];
 float gF_OldVelocity[MAXPLAYERS + 1][3];
 bool gB_Jumpbugged[MAXPLAYERS + 1];
@@ -165,6 +166,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	gI_OldFlags[player.ID] = GetEntityFlags(client);
 	gB_OldOnGround[player.ID] = Movement_GetOnGround(client);
 	gF_OldAngles[player.ID] = angles;
+	player.GetOrigin(gF_OldOrigin[player.ID]);
 	Movement_GetVelocity(client, gF_OldVelocity[client]);
 	
 	return Plugin_Continue;
@@ -192,6 +194,10 @@ public void Movement_OnStopTouchGround(int client, bool jumped)
 	}
 	
 	KZPlayer player = KZPlayer(client);
+	if (jumped)
+	{
+		NerfRealPerf(player);
+	}
 	if (gB_GOKZCore)
 	{
 		player.GOKZHitPerf = player.HitPerf;
@@ -396,6 +402,63 @@ void TweakJumpbug(KZPlayer player)
 		player.GOKZHitPerf = true;
 		player.GOKZTakeoffSpeed = player.Speed;
 	}
+}
+
+void NerfRealPerf(KZPlayer player)
+{
+	int cmdsSinceLanding = player.TakeoffCmdNum - player.LandingCmdNum;
+	if (cmdsSinceLanding != 1)
+	{
+		return;
+	}
+
+	// Not worth worrying about if player is already falling
+	if (player.VerticalVelocity < EPSILON)
+	{
+		return;
+	}
+	
+	// Work out where the ground was when they bunnyhopped
+	float startPosition[3], endPosition[3], mins[3], maxs[3], groundOrigin[3];
+	
+	startPosition = gF_OldOrigin[player.ID];
+	
+	endPosition = startPosition;
+	endPosition[2] = endPosition[2] - 2.0; // Should be less than 2.0 units away
+	
+	GetEntPropVector(player.ID, Prop_Send, "m_vecMins", mins);
+	GetEntPropVector(player.ID, Prop_Send, "m_vecMaxs", maxs);
+	
+	Handle trace = TR_TraceHullFilterEx(
+		startPosition, 
+		endPosition, 
+		mins, 
+		maxs, 
+		MASK_PLAYERSOLID, 
+		TraceEntityFilterPlayers, 
+		player.ID);
+	
+	// This is expected to always hit
+	if (TR_DidHit(trace))
+	{
+		TR_GetEndPosition(groundOrigin, trace);
+		
+		// Teleport player downwards so it's like they jumped from the ground
+		float newOrigin[3];
+		player.GetOrigin(newOrigin);
+		newOrigin[2] -= gF_OldOrigin[player.ID][2] - groundOrigin[2];
+		
+		if (gB_GOKZCore)
+		{
+			GOKZ_SetValidJumpOrigin(player.ID, newOrigin);
+		}
+		else
+		{
+			SetEntPropVector(player.ID, Prop_Data, "m_vecAbsOrigin", newOrigin);
+		}
+	}
+	
+	delete trace;
 }
 
 
