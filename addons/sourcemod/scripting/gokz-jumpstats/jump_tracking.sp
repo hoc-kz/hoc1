@@ -133,7 +133,7 @@ enum struct JumpTracker
 		
 		// Invalidate jumps with styles we don't support
 		int style = GOKZ_GetCoreOption(this.jumper, Option_Style);
-		if (style != Style_Normal && style != Style_AutoBhop)
+		if (style != Style_Normal)
 		{
 			this.Invalidate();
 		}
