@@ -102,7 +102,7 @@ stock int GOKZ_LV_FormatLevelTag(char[] buffer, int maxlength, int level, int pr
 		return Format(buffer, maxlength, "[Lv%d]", level);
 	}
 
-	if (prestige == 1)
+	if (prestige >= 1)
 	{
 		int color = LEVEL_CHAT_COLOR_PRESTIGE1;
 		return Format(buffer, maxlength, "\8[%cLv%d\8]", color, level);
