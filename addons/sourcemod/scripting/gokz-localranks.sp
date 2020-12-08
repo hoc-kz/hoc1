@@ -69,6 +69,7 @@ float gF_RecordTimesCache_Pro[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
 #include "gokz-localranks/db/process_new_time.sp"
 #include "gokz-localranks/db/recent_records.sp"
 #include "gokz-localranks/db/update_ranked_map_pool.sp"
+#include "gokz-localranks/db/profile.sp"
 
 
 

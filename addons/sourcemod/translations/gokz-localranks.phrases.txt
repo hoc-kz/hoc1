@@ -619,4 +619,30 @@
 		"en"		"Block"
 		"ru"		"Блок"
 	}
+
+	// =====[ PROFILE ]=====
+	"Profile - Profile For"
+	{
+		"en"		"Profile for"
+	}
+	"Profile - From"
+	{
+		"en"		"From"
+	}
+	"Profile - First Seen"
+	{
+		"en"		"First seen"
+	}
+	"Profile - Last Seen"
+	{
+		"en"		"Last seen"
+	}
+	"Profile - NUB Completion"
+	{
+		"en"		"NUB completion"
+	}
+	"Profile - PRO Completion"
+	{
+		"en"		"PRO completion"
+	}
 }

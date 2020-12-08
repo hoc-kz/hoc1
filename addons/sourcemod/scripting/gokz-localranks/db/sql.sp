@@ -62,6 +62,11 @@ SELECT SteamID32, Alias \
     ORDER BY (LOWER(Alias)='%s') DESC, LastPlayed DESC \
     LIMIT 1";
 
+char sql_players_profile[] = "\
+SELECT Alias, Country, LastPlayed, Created \
+    FROM Players \
+    WHERE SteamID32=%d";
+
 
 
 // =====[ MAPCOURSES ]=====
@@ -214,6 +219,22 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
     AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0";
+
+char sql_getcount_maincoursescompletedany[] = "\
+SELECT COUNT(DISTINCT Times.MapCourseID) \
+    FROM Times \
+    INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+    INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+    WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
+    AND Times.SteamID32=%d";
+
+char sql_getcount_maincoursescompletedproany[] = "\
+SELECT COUNT(DISTINCT Times.MapCourseID) \
+    FROM Times \
+    INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+    INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+    WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
+    AND Times.SteamID32=%d AND Times.Teleports=0";
 
 char sql_getcount_bonuses[] = "\
 SELECT COUNT(*) \

@@ -29,6 +29,8 @@ void RegisterCommands()
 	RegConsoleCmd("sm_jstop", CommandJSTop, "[KZ] Open a menu showing the top jumpstats.");
 	RegConsoleCmd("sm_jumptop", CommandJSTop, "[KZ] Open a menu showing the top jumpstats.");
 
+	RegConsoleCmd("sm_profile", CommandProfile, "[KZ] Open a menu showing a profile. Usage: !profile <player>");
+
 	RegAdminCmd("sm_updatemappool", CommandUpdateMapPool, ADMFLAG_ROOT, "[KZ] Update the ranked map pool with the list of maps in cfg/sourcemod/gokz/gokz-localranks-mappool.cfg.");
 }
 
@@ -359,6 +361,26 @@ public Action CommandRecentRecords(int client, int args)
 
 	// Open recent records for the player's selected mode
 	DisplayRecentRecordsMenu(client, GOKZ_GetCoreOption(client, Option_Mode));
+	return Plugin_Handled;
+}
+
+public Action CommandProfile(int client, int args)
+{
+	if (IsSpammingCommands(client))
+	{
+		return Plugin_Handled;
+	}
+
+	if (args < 1)
+	{
+		DB_DisplayProfile(client, GetSteamAccountID(client));
+	}
+	else if (args >= 1)
+	{
+		char argPlayer[MAX_NAME_LENGTH];
+		GetCmdArg(1, argPlayer, sizeof(argPlayer));
+		DB_DisplayProfile_FindPlayer(client, argPlayer);
+	}
 	return Plugin_Handled;
 }
 
