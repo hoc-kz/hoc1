@@ -91,23 +91,23 @@ static void DisplayProfile(int client, char[] alias, char[] country, char[] last
 	char buffer[64];
 	Panel menu = new Panel();
 
-	FormatEx(buffer, sizeof(buffer), "%t: %s", "Profile - Profile For", alias);
+	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - Profile For", client, alias);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%t: %s", "Profile - From", country);
+	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - From", client, country);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 
-	FormatEx(buffer, sizeof(buffer), "%t: %s", "Profile - First Seen", createdDate);
+	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - First Seen", client, createdDate);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%t: %s", "Profile - Last Seen", lastPlayedDate);
+	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - Last Seen", client, lastPlayedDate);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 
 	float mapsCompletedNubPercent = 100.0 * (mapsCompletedNub / float(mapsTotal));
 	float mapsCompletedProPercent = 100.0 * (mapsCompletedPro / float(mapsTotal));
-	FormatEx(buffer, sizeof(buffer), "%t: %d/%d (%0.1f%%)", "Profile - NUB Completion", mapsCompletedNub, mapsTotal, mapsCompletedNubPercent);
+	FormatEx(buffer, sizeof(buffer), "%T: %d/%d (%0.1f%%)", "Profile - NUB Completion", client, mapsCompletedNub, mapsTotal, mapsCompletedNubPercent);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%t: %d/%d (%0.1f%%)", "Profile - PRO Completion", mapsCompletedPro, mapsTotal, mapsCompletedProPercent);
+	FormatEx(buffer, sizeof(buffer), "%T: %d/%d (%0.1f%%)", "Profile - PRO Completion", client, mapsCompletedPro, mapsTotal, mapsCompletedProPercent);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 

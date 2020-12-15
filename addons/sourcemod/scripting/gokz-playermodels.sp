@@ -292,7 +292,7 @@ void GetDesiredPlayerModel(int client, char[] path, int maxlength)
 void DisplayPlayerModelMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_PlayerModel);
-	menu.SetTitle("%t", "Player Model Menu - Title");
+	menu.SetTitle("%T", "Player Model Menu - Title", client);
 	PlayerModelMenuAddItems(client, menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
