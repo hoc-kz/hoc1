@@ -93,7 +93,7 @@ public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int exp
 
 public void Movement_OnPlayerJump(int client, bool jumpbug)
 {
-	AddExperience(client, 1000000);
+	AddExperience(client, GOKZ_LV_JUMP_XP);
 }
 
 
