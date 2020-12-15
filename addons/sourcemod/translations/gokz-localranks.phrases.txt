@@ -538,7 +538,13 @@
 
 
 	// =====[ RECENT RECORDS MENU ]=====
-	"Recent Records Menu - Title"
+	"Recent Records Mode Menu - Title"
+	{
+		// Recently Broken Records
+		//
+		"en"		"Recently Broken Records\n "
+	}
+	"Recent Records Style Menu - Title"
 	{
 		// Recently Broken Records
 		//
@@ -546,8 +552,16 @@
 		//
 		"#format"	"{1:s}"
 		"en"		"Recently Broken Records\n \nMode - {1}\n "
-		"chi"		"最近刷新记录玩家\n \n模式 - {1}\n "
-		"ru"		"Недавно побитые рекорды\n \nРежим - {1}\n "
+	}
+	"Recent Records Time Type Menu - Title"
+	{
+		// Recently Broken Records
+		//
+		// Mode - Vanilla
+		// Style - AutoBhop
+		//
+		"#format"	"{1:s},{2:s}"
+		"en"		"Recently Broken Records\n \nMode - {1}\nStyle - {2}\n "
 	}
 	"Recent Records Menu - Record Type"
 	{
@@ -562,11 +576,10 @@
 		// Recently Broken PRO Server Records
 		//
 		// Mode - Vanilla
+		// Style - AutoBhop
 		//
-		"#format"	"{1:s},{2:s}"
-		"en"		"Recently Broken {1} Server Records\n \nMode - {2}\n "
-		"chi"		"最近刷新记录玩家 {1} 服务器排行\n \n模式 - {2}\n "
-		"ru"		"Недавно побитые {1} серверные рекорды\n \nРежим - {2}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Recently Broken {1} Server Records\n \nMode - {2}\nStyle - {3}\n "
 	}
 
 

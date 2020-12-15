@@ -322,11 +322,11 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     INNER JOIN MapCourses ON a.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Maps ON MapCourses.MapID=Maps.MapID \
     INNER JOIN Players ON a.SteamID32=Players.SteamID32 \
-    WHERE Players.Cheater=0 AND a.Mode=%d \
+    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Style=%d \
     AND NOT EXISTS \
     (SELECT * \
     FROM Times AS b \
-    WHERE a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode \
+    WHERE a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
     ORDER BY a.Created DESC \
     LIMIT %d";
@@ -337,11 +337,11 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     INNER JOIN MapCourses ON a.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Maps ON MapCourses.MapID=Maps.MapID \
     INNER JOIN Players ON a.SteamID32=Players.SteamID32 \
-    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Teleports=0 \
+    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Style=%d AND a.Teleports=0 \
     AND NOT EXISTS \
     (SELECT * \
     FROM Times AS b \
-    WHERE b.Teleports=0 AND a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode \
+    WHERE b.Teleports=0 AND a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
     ORDER BY a.Created DESC \
     LIMIT %d";
