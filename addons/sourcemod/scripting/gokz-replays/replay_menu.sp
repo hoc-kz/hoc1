@@ -5,12 +5,13 @@
 
 
 static int selectedReplayMode[MAXPLAYERS + 1];
+static int selectedReplayStyle[MAXPLAYERS + 1];
 
 
 
 // =====[ PUBLIC ]=====
 
-void DisplayReplayModeMenu(int client)
+void StartReplayMenu(int client)
 {
 	if (g_ReplayInfoCache.Length == 0)
 	{
@@ -18,10 +19,23 @@ void DisplayReplayModeMenu(int client)
 		GOKZ_PlayErrorSound(client);
 		return;
 	}
-	
+
+	DisplayReplayModeMenu(client);
+}
+
+void DisplayReplayModeMenu(int client)
+{
 	Menu menu = new Menu(MenuHandler_ReplayMode);
 	menu.SetTitle("%T", "Replay Menu (Mode) - Title", client, gC_CurrentMap);
 	GOKZ_MenuAddModeItems(client, menu, false);
+	menu.Display(client, MENU_TIME_FOREVER);
+}
+
+void DisplayReplayStyleMenu(int client)
+{
+	Menu menu = new Menu(MenuHandler_ReplayStyle);
+	menu.SetTitle("%T", "Replay Menu (Style) - Title", client, gC_CurrentMap, gC_ModeNames[selectedReplayMode[client]]);
+	GOKZ_MenuAddStyleItems(client, menu, false);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
@@ -33,8 +47,43 @@ public int MenuHandler_ReplayMode(Menu menu, MenuAction action, int param1, int 
 {
 	if (action == MenuAction_Select)
 	{
-		selectedReplayMode[param1] = param2;
-		DisplayReplayMenu(param1);
+		if (GetNumReplaysWithMode(param2) > 0)
+		{
+			selectedReplayMode[param1] = param2;
+			DisplayReplayStyleMenu(param1);
+		}
+		else
+		{
+			GOKZ_PrintToChat(param1, true, "%t", "No Replays Found (Mode)", gC_ModeNames[param2]);
+			GOKZ_PlayErrorSound(param1);
+			DisplayReplayModeMenu(param1);
+		}
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+public int MenuHandler_ReplayStyle(Menu menu, MenuAction action, int param1, int param2)
+{
+	if (action == MenuAction_Select)
+	{
+		if (GetNumReplaysWithModeAndStyle(selectedReplayMode[param1], param2) > 0)
+		{
+			selectedReplayStyle[param1] = param2;
+			DisplayReplayMenu(param1);
+		}
+		else
+		{
+			GOKZ_PrintToChat(param1, true, "%t", "No Replays Found (Style)", gC_StyleNames[param2]);
+			GOKZ_PlayErrorSound(param1);
+			DisplayReplayStyleMenu(param1);
+		}
+	}
+	else if (action == MenuAction_Cancel)
+	{
+		DisplayReplayModeMenu(param1);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -77,7 +126,7 @@ public int MenuHandler_Replay(Menu menu, MenuAction action, int param1, int para
 	}
 	else if (action == MenuAction_Cancel)
 	{
-		DisplayReplayModeMenu(param1);
+		DisplayReplayStyleMenu(param1);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -114,20 +163,48 @@ public Action Timer_SpectateBot(Handle timer, DataPack data)
 
 // =====[ PRIVATE ]=====
 
+static int GetNumReplaysWithMode(int mode)
+{
+	int replayCount = g_ReplayInfoCache.Length;
+	int replayInfo[RP_CACHE_BLOCKSIZE];
+	int count = 0;
+
+	for (int i = 0; i < replayCount; i++)
+	{
+		g_ReplayInfoCache.GetArray(i, replayInfo);
+		if (replayInfo[1] == mode)
+		{
+			count++;
+		}
+	}
+
+	return count;
+}
+
+static int GetNumReplaysWithModeAndStyle(int mode, int style)
+{
+	int replayCount = g_ReplayInfoCache.Length;
+	int replayInfo[RP_CACHE_BLOCKSIZE];
+	int count = 0;
+
+	for (int i = 0; i < replayCount; i++)
+	{
+		g_ReplayInfoCache.GetArray(i, replayInfo);
+		if (replayInfo[1] == mode && replayInfo[2] == style)
+		{
+			count++;
+		}
+	}
+
+	return count;
+}
+
 static void DisplayReplayMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_Replay);
-	menu.SetTitle("%T", "Replay Menu - Title", client, gC_CurrentMap, gC_ModeNames[selectedReplayMode[client]]);
-	if (ReplayMenuAddItems(client, menu) > 0)
-	{
-		menu.Display(client, MENU_TIME_FOREVER);
-	}
-	else
-	{
-		GOKZ_PrintToChat(client, true, "%t", "No Replays Found (Mode)", gC_ModeNames[selectedReplayMode[client]]);
-		GOKZ_PlayErrorSound(client);
-		DisplayReplayModeMenu(client);
-	}
+	menu.SetTitle("%T", "Replay Menu - Title", client, gC_CurrentMap, gC_ModeNames[selectedReplayMode[client]], gC_StyleNames[selectedReplayStyle[client]]);
+	ReplayMenuAddItems(client, menu);
+	menu.Display(client, MENU_TIME_FOREVER);
 }
 
 // Returns the number of replay menu items added
@@ -145,6 +222,10 @@ static int ReplayMenuAddItems(int client, Menu menu)
 		IntToString(i, indexString, sizeof(indexString));
 		g_ReplayInfoCache.GetArray(i, replayInfo);
 		if (replayInfo[1] != selectedReplayMode[client]) // Wrong mode!
+		{
+			continue;
+		}
+		if (replayInfo[2] != selectedReplayStyle[client]) // Wrong style!
 		{
 			continue;
 		}
