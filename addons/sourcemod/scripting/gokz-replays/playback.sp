@@ -374,7 +374,7 @@ void OnPlayerRunCmd_Playback(int client, int &buttons)
 					
 					if (hitPerf[bot])
 					{
-						if (botMode[bot] == Mode_NoPre)
+						if (botMode[bot] == Mode_Classic)
 						{
 							botTakeoffSpeed[bot] = botLandingSpeed[bot];
 						}

@@ -29,10 +29,11 @@ void RegisterCommands()
 	RegConsoleCmd("sm_vb", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_mode", CommandMode, "[KZ] Open the movement mode selection menu.");
 	RegConsoleCmd("sm_style", CommandStyle, "[KZ] Open the movement style selection menu.");
+	RegConsoleCmd("sm_c", CommandClassic, "[KZ] Switch to the Classic mode.");
+	RegConsoleCmd("sm_classic", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_vnl", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_v", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
-	RegConsoleCmd("sm_nopre", CommandNoPre, "[KZ] Switch to the NoPre mode.");
 	RegConsoleCmd("sm_nc", CommandToggleNoclip, "[KZ] Toggle noclip.");
 	RegConsoleCmd("+noclip", CommandEnableNoclip, "[KZ] Noclip on.");
 	RegConsoleCmd("-noclip", CommandDisableNoclip, "[KZ] Noclip off.");
@@ -246,9 +247,9 @@ public Action CommandVanilla(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action CommandNoPre(int client, int args)
+public Action CommandClassic(int client, int args)
 {
-	SwitchToModeIfAvailable(client, Mode_NoPre);
+	SwitchToModeIfAvailable(client, Mode_Classic);
 	return Plugin_Handled;
 }
 

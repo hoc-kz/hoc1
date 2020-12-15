@@ -19,14 +19,14 @@
 
 public Plugin myinfo = 
 {
-	name = "GOKZ Mode - NoPre", 
+	name = "GOKZ Mode - Classic", 
 	author = "DanZay", 
-	description = "NoPre mode for GOKZ", 
+	description = "Classic mode for GOKZ", 
 	version = GOKZ_VERSION, 
 	url = "https://bitbucket.org/kztimerglobalteam/gokz"
 };
 
-#define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-mode-nopre.txt"
+#define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-mode-classic.txt"
 
 #define MODE_VERSION 1
 #define DUCK_SPEED_NORMAL 8.0
@@ -75,11 +75,6 @@ bool gB_Jumpbugged[MAXPLAYERS + 1];
 
 public void OnPluginStart()
 {
-	if (FloatAbs(1.0 / GetTickInterval() - 128.0) > EPSILON)
-	{
-		SetFailState("gokz-mode-nopre only supports 128 tickrate servers.");
-	}
-	
 	CreateConVars();
 }
 
@@ -92,7 +87,7 @@ public void OnAllPluginsLoaded()
 	if (LibraryExists("gokz-core"))
 	{
 		gB_GOKZCore = true;
-		GOKZ_SetModeLoaded(Mode_NoPre, true, MODE_VERSION);
+		GOKZ_SetModeLoaded(Mode_Classic, true, MODE_VERSION);
 	}
 	
 	for (int client = 1; client <= MaxClients; client++)
@@ -108,7 +103,7 @@ public void OnPluginEnd()
 {
 	if (gB_GOKZCore)
 	{
-		GOKZ_SetModeLoaded(Mode_NoPre, false);
+		GOKZ_SetModeLoaded(Mode_Classic, false);
 	}
 }
 
@@ -121,7 +116,7 @@ public void OnLibraryAdded(const char[] name)
 	else if (StrEqual(name, "gokz-core"))
 	{
 		gB_GOKZCore = true;
-		GOKZ_SetModeLoaded(Mode_NoPre, true, MODE_VERSION);
+		GOKZ_SetModeLoaded(Mode_Classic, true, MODE_VERSION);
 	}
 }
 
@@ -254,7 +249,7 @@ public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType
 
 public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) && newValue == Mode_NoPre)
+	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) && newValue == Mode_Classic)
 	{
 		ReplicateConVars(client);
 	}
@@ -267,7 +262,7 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 bool IsUsingMode(int client)
 {
 	// If GOKZ core isn't loaded, then apply mode at all times
-	return !gB_GOKZCore || GOKZ_GetCoreOption(client, Option_Mode) == Mode_NoPre;
+	return !gB_GOKZCore || GOKZ_GetCoreOption(client, Option_Mode) == Mode_Classic;
 }
 
 

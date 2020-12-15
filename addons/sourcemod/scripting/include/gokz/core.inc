@@ -75,8 +75,8 @@ enum Option:
 
 enum
 {
-	Mode_Vanilla = 0, 
-	Mode_NoPre, 
+	Mode_Classic = 0,
+	Mode_Vanilla, 
 	MODE_COUNT
 };
 
@@ -222,44 +222,44 @@ stock char gC_TimeTypeNames[TIMETYPE_COUNT][] =
 
 stock char gC_ModeNames[MODE_COUNT][] = 
 {
-	"Vanilla", 
-	"NoPre"
+	"Classic",
+	"Vanilla"
 };
 
 stock char gC_ModeNamesShort[MODE_COUNT][] = 
 {
-	"VNL", 
-	"NOPRE"
+	"CLASSIC",
+	"VANILLA"
 };
 
 stock char gC_ModeKeys[MODE_COUNT][] = 
 {
-	"vanilla", 
-	"nopre"
+	"classic",
+	"vanilla"
 };
 
 stock float gF_ModeVirtualButtonRanges[MODE_COUNT] = 
 {
-	0.0, 
-	32.0
+	32.0,
+	0.0
 };
 
 stock char gC_ModeStartSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/button3.wav"
+	"buttons/button3.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_ModeEndSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/button3.wav"
+	"buttons/button3.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_ModeFalseEndSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/button2.wav"
+	"buttons/button2.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_StyleNames[STYLE_COUNT][] = 
@@ -293,7 +293,7 @@ stock char gC_CoreOptionNames[OPTION_COUNT][] =
 
 stock char gC_CoreOptionDescriptions[OPTION_COUNT][] = 
 {
-	"Movement Mode - 0 = Vanilla, 1 = SimpleKZ, 2 = NoPre", 
+	"Movement Mode - 0 = Classic, 1 = Vanilla", 
 	"Movement Style - 0 = Normal, 1 = AutoBhop", 
 	"Automatic Restart Upon Teleport to Start - 0 = Disabled, 1 = Enabled", 
 	"Checkpoint Messages - 0 = Disabled, 1 = Enabled", 
@@ -339,7 +339,7 @@ stock int gI_CoreOptionCounts[OPTION_COUNT] =
 
 stock int gI_CoreOptionDefaults[OPTION_COUNT] = 
 {
-	Mode_NoPre, 
+	Mode_Classic, 
 	Style_Normal, 
 	AutoRestart_Disabled, 
 	CheckpointMessages_Disabled, 
