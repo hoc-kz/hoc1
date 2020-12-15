@@ -153,6 +153,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	
 	KZPlayer player = KZPlayer(client);
 	RemoveCrouchJumpBind(player, buttons);
+	TweakVelMod(player);
 	ReduceDuckSlowdown(player);
 	FixWaterBoost(player, buttons);
 	FixDisplacementStuck(player);
@@ -303,6 +304,31 @@ void ReplicateConVars(int client)
 	for (int i = 0; i < MODECVAR_COUNT; i++)
 	{
 		gCV_ModeCVar[i].ReplicateToClient(client, FloatToStringEx(gF_ModeCVarValues[i]));
+	}
+}
+
+
+
+// =====[ VELOCITY MODIFIER ]=====
+
+void TweakVelMod(KZPlayer player)
+{
+	int weapon = GetEntPropEnt(player.ID, Prop_Data, "m_hActiveWeapon");
+	if (IsValidEntity(weapon))
+	{
+		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+		if (defIndex == CS_WeaponIDToItemDefIndex(CSWeapon_USP_SILENCER))
+		{
+			player.VelocityModifier = SPEED_NORMAL / 240.0;
+		}
+		else
+		{
+			player.VelocityModifier = 1.0;
+		}
+	}
+	else
+	{
+		player.VelocityModifier = SPEED_NORMAL / 260.0;
 	}
 }
 
