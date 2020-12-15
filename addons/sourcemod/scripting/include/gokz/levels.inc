@@ -15,6 +15,8 @@
 
 #define GOKZ_LV_MAX_LEVEL 50
 #define GOKZ_LV_JUMP_XP 100
+#define GOKZ_LV_MAX_JUMPS_ON_ONE_INPUT 5
+#define GOKZ_LV_TIME_BETWEEN_JUMPS 0.45
 
 stock int gI_LevelChatColorPrestige0[GOKZ_LV_MAX_LEVEL + 1] = 
 {

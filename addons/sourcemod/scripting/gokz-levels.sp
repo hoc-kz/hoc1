@@ -28,6 +28,9 @@ public Plugin myinfo =
 
 ConVar gCV_gokz_level_xp_multiplier;
 
+int gI_JumpsSinceInput[MAXPLAYERS + 1];
+float gF_LastCountedJumpTime[MAXPLAYERS + 1];
+
 int gI_Prestige[MAXPLAYERS + 1];
 int gI_Experience[MAXPLAYERS + 1];
 
@@ -74,6 +77,12 @@ public void OnLibraryAdded(const char[] name)
 
 // =====[ CLIENT EVENTS ]=====
 
+public void OnClientPutInServer(int client)
+{
+	gI_JumpsSinceInput[client] = 0;
+	gF_LastCountedJumpTime[client] = 0.0;
+}
+
 public void OnClientDisconnect(int client)
 {
 	if (GOKZ_DB_IsClientSetUp(client))
@@ -91,8 +100,32 @@ public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int exp
 	Call_OnLevelChanged(client, level, prestige);
 }
 
+public void OnPlayerRunCmdPost(int client, int buttons, int impulse, const float vel[3], const float angles[3], int weapon, int subtype, int cmdnum, int tickcount, int seed, const int mouse[2])
+{
+	if (!(buttons & IN_JUMP))
+	{
+		gI_JumpsSinceInput[client] = 0;
+	}
+}
+
 public void Movement_OnPlayerJump(int client, bool jumpbug)
 {
+	float time = GetEngineTime();
+
+	gI_JumpsSinceInput[client]++;
+	
+	if (gF_LastCountedJumpTime[client] + GOKZ_LV_TIME_BETWEEN_JUMPS > time)
+	{
+		return;
+	}	
+	
+	if (gI_JumpsSinceInput[client] > GOKZ_LV_MAX_JUMPS_ON_ONE_INPUT)
+	{
+		return;
+	}
+
+	gF_LastCountedJumpTime[client] = time;
+
 	AddExperience(client, GOKZ_LV_JUMP_XP);
 }
 
