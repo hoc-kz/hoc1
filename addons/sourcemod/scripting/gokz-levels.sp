@@ -1,6 +1,7 @@
 #include <sourcemod>
 
 #include <autoexecconfig>
+#include <movementapi>
 
 #include <gokz/core>
 #include <gokz/localdb>
@@ -110,15 +111,23 @@ public void OnPlayerRunCmdPost(int client, int buttons, int impulse, const float
 
 public void Movement_OnPlayerJump(int client, bool jumpbug)
 {
-	float time = GetEngineTime();
-
 	gI_JumpsSinceInput[client]++;
 	
+	// Cancel low speed jumps, to stop exploiting jumping in place
+	if (Movement_GetSpeed(client) < GOKZ_LV_MIN_JUMP_SPEED)
+	{
+		return;
+	}
+
+	float time = GetEngineTime();
+
+	// Cancel jumps that occur too fast, to stop exploiting low ceilings
 	if (gF_LastCountedJumpTime[client] + GOKZ_LV_TIME_BETWEEN_JUMPS > time)
 	{
 		return;
 	}	
 	
+	// Limit jumps that happen without releasing jump, to stop exploiting auto-bhop 
 	if (gI_JumpsSinceInput[client] > GOKZ_LV_MAX_JUMPS_ON_ONE_INPUT)
 	{
 		return;
