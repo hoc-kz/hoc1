@@ -138,6 +138,47 @@ public void Movement_OnPlayerJump(int client, bool jumpbug)
 	AddExperience(client, GOKZ_LV_JUMP_XP);
 }
 
+public void GOKZ_LR_OnTimeProcessed(int client, int steamID, int mapID, int course, int mode, int style, 
+	float runTime, int teleportsUsed, bool firstTime, float pbDiff, int rank, int maxRank, 
+	bool firstTimePro, float pbDiffPro, int rankPro, int maxRankPro)
+{
+	if (!firstTime && !firstTimePro)
+	{
+		return;
+	}
+
+	int nubXP = GOKZ_LV_FIRST_NUB_XP;
+	int proXP = GOKZ_LV_FIRST_PRO_XP;
+
+	// Decrease XP given for anything that's not the main course, or the normal style.
+	// This comes down to:
+	//   - 166 XP for Main AutoBhop / Bonus Normal
+	//   - 55 XP for Bonus AutoBhop
+	if (style != Style_Normal)
+	{
+		nubXP /= 3;
+		proXP /= 3;
+	}
+	if (course != 0)
+	{
+		nubXP /= 3;
+		proXP /= 3;
+	}
+
+	if (firstTime && firstTimePro)
+	{
+		AddExperience(client, nubXP + proXP);
+	}
+	else if (firstTime)
+	{
+		AddExperience(client, nubXP);
+	}
+	else if (firstTimePro)
+	{
+		AddExperience(client, proXP);
+	}
+}
+
 
 
 // =====[ GENERAL ]=====
