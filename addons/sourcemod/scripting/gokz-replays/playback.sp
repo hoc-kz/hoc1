@@ -370,22 +370,11 @@ void OnPlayerRunCmd_Playback(int client, int &buttons)
 					botJumped[bot] = botButtons[bot] & IN_JUMP > 0;
 					hitBhop[bot] = (timeOnGround[bot] <= RP_MAX_BHOP_GROUND_TICKS) && botJumped[bot];
 					
-					if (botMode[bot] == Mode_SimpleKZ)
-					{
-						hitPerf[bot] = timeOnGround[bot] < 3 && botJumped[bot];
-					}
-					else
-					{
-						hitPerf[bot] = timeOnGround[bot] < 2 && botJumped[bot];
-					}
+					hitPerf[bot] = timeOnGround[bot] < 2 && botJumped[bot];
 					
 					if (hitPerf[bot])
 					{
-						if (botMode[bot] == Mode_SimpleKZ)
-						{
-							botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], (0.2 * botLandingSpeed[bot] + 200));
-						}
-						else if (botMode[bot] == Mode_NoPre)
+						if (botMode[bot] == Mode_NoPre)
 						{
 							botTakeoffSpeed[bot] = botLandingSpeed[bot];
 						}

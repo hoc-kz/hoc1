@@ -32,9 +32,6 @@ void RegisterCommands()
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_vnl", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_v", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
-	RegConsoleCmd("sm_simplekz", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
-	RegConsoleCmd("sm_skz", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
-	RegConsoleCmd("sm_s", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
 	RegConsoleCmd("sm_nopre", CommandNoPre, "[KZ] Switch to the NoPre mode.");
 	RegConsoleCmd("sm_nc", CommandToggleNoclip, "[KZ] Toggle noclip.");
 	RegConsoleCmd("+noclip", CommandEnableNoclip, "[KZ] Noclip on.");
@@ -246,12 +243,6 @@ public Action CommandStyle(int client, int args)
 public Action CommandVanilla(int client, int args)
 {
 	SwitchToModeIfAvailable(client, Mode_Vanilla);
-	return Plugin_Handled;
-}
-
-public Action CommandSimpleKZ(int client, int args)
-{
-	SwitchToModeIfAvailable(client, Mode_SimpleKZ);
 	return Plugin_Handled;
 }
 

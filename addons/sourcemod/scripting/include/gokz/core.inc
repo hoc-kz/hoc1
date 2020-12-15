@@ -76,7 +76,6 @@ enum Option:
 enum
 {
 	Mode_Vanilla = 0, 
-	Mode_SimpleKZ, 
 	Mode_NoPre, 
 	MODE_COUNT
 };
@@ -224,49 +223,42 @@ stock char gC_TimeTypeNames[TIMETYPE_COUNT][] =
 stock char gC_ModeNames[MODE_COUNT][] = 
 {
 	"Vanilla", 
-	"SimpleKZ", 
 	"NoPre"
 };
 
 stock char gC_ModeNamesShort[MODE_COUNT][] = 
 {
 	"VNL", 
-	"SKZ", 
 	"NOPRE"
 };
 
 stock char gC_ModeKeys[MODE_COUNT][] = 
 {
 	"vanilla", 
-	"simplekz", 
 	"nopre"
 };
 
 stock float gF_ModeVirtualButtonRanges[MODE_COUNT] = 
 {
 	0.0, 
-	32.0, 
 	32.0
 };
 
 stock char gC_ModeStartSounds[MODE_COUNT][] = 
 {
 	"common/wpn_select.wav", 
-	"buttons/button9.wav", 
 	"buttons/button3.wav"
 };
 
 stock char gC_ModeEndSounds[MODE_COUNT][] = 
 {
 	"common/wpn_select.wav", 
-	"buttons/bell1.wav", 
 	"buttons/button3.wav"
 };
 
 stock char gC_ModeFalseEndSounds[MODE_COUNT][] = 
 {
 	"common/wpn_select.wav", 
-	"buttons/button11.wav", 
 	"buttons/button2.wav"
 };
 
