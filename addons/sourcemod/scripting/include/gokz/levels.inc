@@ -14,6 +14,7 @@
 // =====[ CONSTANTS ]=====
 
 #define GOKZ_LV_MAX_LEVEL 50
+#define GOKZ_LV_JUMP_XP 100
 
 stock int gI_LevelChatColorPrestige0[GOKZ_LV_MAX_LEVEL + 1] = 
 {
@@ -76,21 +77,21 @@ stock int GOKZ_LV_LevelForExperience(int experience)
 	// Ported exactly from the original plugin config files.
 	// Yes there is a mistake here and I'm keeping it.
 	int level;
-	if (experience >= 691200)
+	if (experience >= 69120000)
 	{
-		level = 31 + ((experience - 691200) / 86400);
+		level = 31 + ((experience - 69120000) / 8640000);
 	}
-	else if (experience >= 259200) 
+	else if (experience >= 25920000) 
 	{
-        level = 21 + ((experience - 259200) / 43200);
+        level = 21 + ((experience - 25920000) / 4320000);
     }
-	else if (experience >= 21600)
+	else if (experience >= 2160000)
 	{
-		level = 10 + ((experience - 21600) / 21600);
+		level = 10 + ((experience - 2160000) / 2160000);
 	}
 	else
 	{
-		level = experience / 2160;
+		level = experience / 216000;
 	}
 	return IntMin(level, GOKZ_LV_MAX_LEVEL);
 }

@@ -1,5 +1,7 @@
 #include <sourcemod>
 
+#include <autoexecconfig>
+
 #include <gokz/core>
 #include <gokz/localdb>
 #include <gokz/levels>
@@ -24,6 +26,8 @@ public Plugin myinfo =
 
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-levels.txt"
 
+ConVar gCV_gokz_level_xp_multiplier;
+
 int gI_Prestige[MAXPLAYERS + 1];
 int gI_Experience[MAXPLAYERS + 1];
 
@@ -46,6 +50,7 @@ public void OnPluginStart()
 	LoadTranslations("gokz-levels.phrases");
 
 	CreateGlobalForwards();
+	CreateConVars();
 	RegisterCommands();
 }
 
@@ -88,7 +93,22 @@ public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int exp
 
 public void Movement_OnPlayerJump(int client, bool jumpbug)
 {
-	AddExperience(client, 10000);
+	AddExperience(client, 1000000);
+}
+
+
+
+// =====[ GENERAL ]=====
+
+void CreateConVars()
+{
+	AutoExecConfig_SetFile("gokz-levels", "sourcemod/gokz");
+	AutoExecConfig_SetCreateFile(true);
+	
+	gCV_gokz_level_xp_multiplier = AutoExecConfig_CreateConVar("gokz_level_xp_multiplier", "1.0", "Multiplier for gained XP", _, true, 0.2, true, 3.0);
+
+	AutoExecConfig_ExecuteFile();
+	AutoExecConfig_CleanFile();
 }
 
 
@@ -97,7 +117,10 @@ public void Movement_OnPlayerJump(int client, bool jumpbug)
 
 static void AddExperience(int client, int experience)
 {
-	if (experience <= 0)
+	float fExperience = float(experience) * gCV_gokz_level_xp_multiplier.FloatValue;
+	experience = RoundFloat(fExperience); 
+
+	if (experience <= 0 || experience > 0xFF0000 || gI_Experience[client] >= 0x7F000000)
 	{
 		return;
 	}
