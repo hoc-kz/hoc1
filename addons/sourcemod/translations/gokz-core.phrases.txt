@@ -67,6 +67,10 @@
 		"chi"		"{darkred}空中无法存点."
 		"ru"		"{darkred}Вы не можете поставить чекпойнт в воздухе."
 	}
+	"Can't Checkpoint (Ladder)"
+	{
+		"en"		"{darkred}You can't make a checkpoint on a ladder."
+	}
 	"Can't Checkpoint (Just Landed)"
 	{
 		"en"		"{darkred}You can't make a checkpoint because you just landed."

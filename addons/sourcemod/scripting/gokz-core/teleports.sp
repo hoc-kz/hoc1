@@ -111,6 +111,15 @@ bool CanMakeCheckpoint(int client, bool showError = false)
 		}
 		return false;
 	}
+	if (GetTimerRunning(client) && Movement_GetMovetype(client) == MOVETYPE_LADDER)
+	{
+		if (showError)
+		{
+			GOKZ_PrintToChat(client, true, "%t", "Can't Checkpoint (Ladder)");
+			GOKZ_PlayErrorSound(client);
+		}
+		return false;
+	}
 	if (BhopTriggersJustTouched(client))
 	{
 		if (showError)
