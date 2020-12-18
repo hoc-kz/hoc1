@@ -27,6 +27,8 @@ public Plugin myinfo =
 
 ConVar gCV_AutoBunnyHopping;
 
+bool gB_LadderJump[MAXPLAYERS + 1];
+
 
 
 // =====[ PLUGIN EVENTS ]=====
@@ -66,6 +68,8 @@ public void OnLibraryAdded(const char[] name)
 
 public void OnClientPutInServer(int client)
 {
+	gB_LadderJump[client] = false;
+
 	HookClientEvents(client);
 	ReplicateConVars(client);
 }
@@ -73,12 +77,15 @@ public void OnClientPutInServer(int client)
 public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 {
 	int client = GetClientOfUserId(event.GetInt("userid"));
-	if (IsValidClient(client))
+	if (!IsValidClient(client))
 	{
-		if (GetStyle(client) == Style_Negev) 
-		{
-			GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
-		}
+		return;
+	}
+
+	// Give a negev (negev style)
+	if (GetStyle(client) == Style_Negev) 
+	{
+		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
 	}
 }
 
@@ -91,15 +98,38 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 
 	ReplicateConVars(client);
 
-	float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
-	if (FloatAbs(laggedMovement) > EPSILON)
-	{
-		SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
-	}
+	// Reset lagged movement (undo slow-motion style)
+	SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
 
+	// Give a negev (negev style)
 	if (newValue == Style_Negev)
 	{
 		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
+}
+
+public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType newMovetype)
+{
+	// Keep track of when the player is performing a ladder jump.
+	if (newMovetype == MOVETYPE_LADDER)
+	{
+		gB_LadderJump[client] = true;
+	}
+}
+
+public void Movement_OnStartTouchGround(int client)
+{
+	// Touched the ground, so not perforing a ladder jump anymore.
+	gB_LadderJump[client] = false;
+}
+
+public void OnStartTouchPost(int client, int other)
+{
+	// Touched the world, so not performing a ladder jump anymore.
+	// This can be either a surf, or a wall. Ground is handled elsewhere.
+	if (other == 0)
+	{
+		gB_LadderJump[client] = false;
 	}
 }
 
@@ -141,7 +171,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		int flags = GetEntityFlags(client);
 
 		int badButtons = (buttons & IN_BACK) | (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
-		if (badButtons != 0)
+		if (badButtons != 0 && !gB_LadderJump[client])
 		{
 			flags |= FL_ATCONTROLS;
 			buttons &= ~badButtons;
@@ -272,6 +302,8 @@ static void HookEvents()
 static void HookClientEvents(int client)
 {
 	SDKHook(client, SDKHook_PreThinkPost, OnClientPreThink_Post);
+
+	SDKHook(client, SDKHook_StartTouchPost, OnStartTouchPost);
 
 	SDKHook(client, SDKHook_WeaponCanSwitchTo, OnClientWeaponCanSwitchTo);
 	SDKHook(client, SDKHook_WeaponDrop, OnClientWeaponDrop);
