@@ -34,6 +34,7 @@ ConVar gCV_AutoBunnyHopping;
 public void OnPluginStart()
 {
 	CreateConVars();
+	HookEvents();
 }
 
 public void OnAllPluginsLoaded()
@@ -65,25 +66,44 @@ public void OnLibraryAdded(const char[] name)
 
 public void OnClientPutInServer(int client)
 {
-	SDKHook(client, SDKHook_PreThinkPost, SDKHook_OnClientPreThink_Post);
+	HookClientEvents(client);
 	ReplicateConVars(client);
 }
 
-public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
+public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Style]))
+	int client = GetClientOfUserId(event.GetInt("userid"));
+	if (IsValidClient(client))
 	{
-		ReplicateConVars(client);
-
-		float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
-		if (FloatAbs(laggedMovement) > EPSILON)
+		if (GetStyle(client) == Style_Negev) 
 		{
-			SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
+			GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
 		}
 	}
 }
 
-public void SDKHook_OnClientPreThink_Post(int client)
+public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
+{
+	if (!StrEqual(option, gC_CoreOptionNames[Option_Style]))
+	{
+		return;
+	}
+
+	ReplicateConVars(client);
+
+	float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
+	if (FloatAbs(laggedMovement) > EPSILON)
+	{
+		SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
+	}
+
+	if (newValue == Style_Negev)
+	{
+		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
+}
+
+public void OnClientPreThink_Post(int client)
 {
 	if (!IsPlayerAlive(client))
 	{
@@ -136,6 +156,28 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	return Plugin_Continue;
 }
 
+public Action OnClientWeaponCanSwitchTo(int client, int weapon)
+{
+	if (GetStyle(client) == Style_Negev)
+	{
+		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+		if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_NEGEV))
+		{
+			return Plugin_Stop;
+		}
+	}
+	return Plugin_Continue;
+}
+
+public Action OnClientWeaponDrop(int client, int weapon)
+{
+	if (GetStyle(client) == Style_Negev)
+	{
+		return Plugin_Stop;
+	}
+	return Plugin_Continue;
+}
+
 
 
 // =====[ GENERAL ]=====
@@ -143,6 +185,45 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 int GetStyle(int client)
 {
 	return GOKZ_GetCoreOption(client, Option_Style);
+}
+
+int GiveWeapon(int client, const char[] classname, int weaponSlot, int weaponTeam = CS_TEAM_NONE)
+{
+	if (!IsValidClient(client) || !IsPlayerAlive(client) || GetClientTeam(client) == CS_TEAM_NONE)
+	{
+		return 0;
+	}        
+
+	// Switch team the weapon belongs to (glock for T etc), so player gets the skin
+	int playerTeam = GetClientTeam(client);
+	if (playerTeam != weaponTeam && weaponTeam != CS_TEAM_NONE)
+	{
+		SetEntProp(client, Prop_Data, "m_iTeamNum", weaponTeam);
+	}        
+
+	int currentWeapon = GetPlayerWeaponSlot(client, weaponSlot);
+	if (currentWeapon != -1)
+	{
+		AcceptEntityInput(currentWeapon, "kill");
+		RemovePlayerItem(client, currentWeapon);
+	}        
+
+	int weapon = GivePlayerItem(client, classname);
+	if (weapon == -1)
+	{
+		return 0;
+	}
+
+	// Switch back to original team
+	if (playerTeam != GetClientTeam(client))
+	{
+		SetEntProp(client, Prop_Data, "m_iTeamNum", playerTeam);
+	}        
+
+	// Switch to the weapon
+	FakeClientCommand(client, "use %s", classname);
+
+	return weapon;
 }
 
 
@@ -178,3 +259,20 @@ void ReplicateConVars(int client)
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "0");
 	}
 }
+
+
+
+// =====[ PRIVATE ]=====
+
+static void HookEvents()
+{
+	HookEvent("player_spawn", OnPlayerSpawn, EventHookMode_Post);
+}
+
+static void HookClientEvents(int client)
+{
+	SDKHook(client, SDKHook_PreThinkPost, OnClientPreThink_Post);
+
+	SDKHook(client, SDKHook_WeaponCanSwitchTo, OnClientWeaponCanSwitchTo);
+	SDKHook(client, SDKHook_WeaponDrop, OnClientWeaponDrop);
+} 

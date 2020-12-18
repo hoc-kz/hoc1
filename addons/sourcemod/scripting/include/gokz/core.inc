@@ -86,6 +86,7 @@ enum
 	Style_AutoBhop,
 	Style_WOnly,
 	Style_SlowMotion,
+	Style_Negev,
 	STYLE_COUNT
 };
 
@@ -265,9 +266,10 @@ stock char gC_ModeFalseEndSounds[MODE_COUNT][] =
 stock char gC_StyleNames[STYLE_COUNT][] = 
 {
 	"Normal",
-	"Auto-Bhop",
-	"W-Only",
-	"Slow-Motion"
+	"AutoBhop",
+	"WOnly",
+	"SlowMotion",
+	"Negev"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
@@ -275,7 +277,8 @@ stock char gC_StyleNamesShort[STYLE_COUNT][] =
 	"NRM",
 	"AUTOBHOP",
 	"WONLY",
-	"SLOWMO"
+	"SLOWMO",
+	"NEGEV"
 };
 
 stock char gC_CoreOptionNames[OPTION_COUNT][] = 
