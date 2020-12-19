@@ -165,15 +165,11 @@ public void GOKZ_LR_OnTimeProcessed(int client, int steamID, int mapID, int cour
 		proXP /= 3;
 	}
 
-	if (firstTime && firstTimePro)
-	{
-		AddExperience(client, nubXP + proXP);
-	}
-	else if (firstTime)
+	if (firstTime)
 	{
 		AddExperience(client, nubXP);
 	}
-	else if (firstTimePro)
+	if (firstTimePro)
 	{
 		AddExperience(client, proXP);
 	}
