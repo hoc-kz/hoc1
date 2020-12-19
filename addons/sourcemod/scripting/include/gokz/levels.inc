@@ -88,8 +88,8 @@ stock int GOKZ_LV_LevelForExperience(int experience)
 	}
 	else if (experience >= 25920000) 
 	{
-        level = 21 + ((experience - 25920000) / 4320000);
-    }
+		level = 21 + ((experience - 25920000) / 4320000);
+	}
 	else if (experience >= 2160000)
 	{
 		level = 10 + ((experience - 2160000) / 2160000);
@@ -99,6 +99,26 @@ stock int GOKZ_LV_LevelForExperience(int experience)
 		level = experience / 216000;
 	}
 	return IntMin(level, GOKZ_LV_MAX_LEVEL);
+}
+
+stock int GOKZ_LV_ExperienceForLevel(int level)
+{
+	level = IntMin(level, GOKZ_LV_MAX_LEVEL);
+
+	int experience;
+	if (level >= 31) 
+	{
+		experience = 69120000 + ((level - 31) * 8640000);
+	}
+	else if (level >= 21) 
+	{
+		experience = 25920000 + ((level - 21) * 4320000);
+	}
+	else if (level >= 10) 
+	{
+		experience = 2160000 + ((level - 10) * 2160000);
+	}
+	return experience;
 }
 
 stock int GOKZ_LV_FormatLevelTag(char[] buffer, int maxlength, int level, int prestige, bool colors)

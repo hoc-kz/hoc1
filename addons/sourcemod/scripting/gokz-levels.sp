@@ -198,16 +198,17 @@ void CreateConVars()
 
 static void AddExperience(int client, int experience)
 {
-	float fExperience = float(experience) * gCV_gokz_level_xp_multiplier.FloatValue;
-	experience = RoundFloat(fExperience); 
-
-	if (experience <= 0 || experience > 0xFF0000 || gI_Experience[client] >= 0x7F000000)
+	int maxXP = GOKZ_LV_ExperienceForLevel(GOKZ_LV_MAX_LEVEL);
+	if (gI_Experience[client] >= maxXP)
 	{
 		return;
 	}
 
+	float fExperience = float(experience) * gCV_gokz_level_xp_multiplier.FloatValue;
+	experience = RoundFloat(fExperience);
+
 	int levelBefore = GOKZ_LV_LevelForExperience(gI_Experience[client]);
-	gI_Experience[client] += experience;
+	gI_Experience[client] = IntMin(gI_Experience[client] + experience, maxXP);
 	int levelAfter = GOKZ_LV_LevelForExperience(gI_Experience[client]);
 
 	if (levelAfter != levelBefore)
