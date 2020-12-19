@@ -92,7 +92,7 @@ public void OnClientDisconnect(int client)
 	}
 }
 
-public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige)
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
 	gI_Experience[client] = experience;
 	gI_Prestige[client] = prestige;

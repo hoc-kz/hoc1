@@ -3,18 +3,26 @@
 	// =====[ CHAT MESSAGES ]=====
 	"Client Connection Message"
 	{
-		// Bill has joined the server.
+		// Bill has connected.
 		"#format"	"{1:N}"
-		"en"		"{lime}{1}{grey} has joined the server."
-		"chi"		"玩家 {lime}{1}{grey}进入服务器."
-		"ru"		"{lime}{1}{grey} присоединился к серверу."
+		"en"		"{lime}{1}{grey} has connected."
+	}
+	"Client Connection Message With Rank"
+	{
+		// Bill has connected with rank [4/91827]
+		"#format"	"{1:N},{2:d},{3:d}"
+		"en"		"{lime}{1}{grey} has connected with rank [{lime}{2}{grey}/{lime}{3}{grey}]"
 	}
 	"Client Disconnection Message"
 	{
-		// Bill has left the server (Disconnect).
+		// Bill has left the server.
+		"#format"	"{1:N}"
+		"en"		"{lime}{1}{grey} has left the server."
+	}
+	"Client Disconnection Message With Reason"
+	{
+		// Bill has left the server (Disconnect)
 		"#format"	"{1:N},{2:s}"
-		"en"		"{lime}{1}{grey} has left the server ({2})."
-		"chi"		"玩家 {lime}{1}{grey}离开了服务器 ({2})."
-		"ru"		"{lime}{1}{grey} вышел с сервера ({2})."
+		"en"		"{lime}{1}{grey} has left the server ({2})"
 	}
 }

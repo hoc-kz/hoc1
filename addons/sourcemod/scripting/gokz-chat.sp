@@ -99,7 +99,18 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
 
 public void OnClientPutInServer(int client)
 {
-	PrintConnectMessage(client);
+	if (!gB_GOKZLevels) // If GOKZLevels we also print rank in GOKZ_DB_OnClientSetup 
+	{
+		PrintConnectMessage(client);
+	}
+}
+
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
+{
+	if (gB_GOKZLevels) // If no GOKZLevels we print in OnClientPutInServer
+	{
+		PrintConnectMessageWithRank(client, rank, maxrank);
+	}
 }
 
 public Action OnPlayerDisconnect(Event event, const char[] name, bool dontBroadcast) // player_disconnect pre hook
@@ -241,6 +252,16 @@ void PrintConnectMessage(int client)
 	GOKZ_PrintToChatAll(false, "%t", "Client Connection Message", client);
 }
 
+void PrintConnectMessageWithRank(int client, int rank, int maxrank)
+{
+	if (!gCV_gokz_connection_messages.BoolValue || IsFakeClient(client))
+	{
+		return;
+	}
+	
+	GOKZ_PrintToChatAll(false, "%t", "Client Connection Message With Rank", client, rank, maxrank);
+}
+
 void PrintDisconnectMessage(int client, Event event) // Hooked to player_disconnect event
 {
 	if (!gCV_gokz_connection_messages.BoolValue || IsFakeClient(client))
@@ -250,7 +271,14 @@ void PrintDisconnectMessage(int client, Event event) // Hooked to player_disconn
 	
 	char reason[128];
 	event.GetString("reason", reason, sizeof(reason));
-	GOKZ_PrintToChatAll(false, "%t", "Client Disconnection Message", client, reason);
+	if (StrEqual(reason, "Disconnect"))
+	{
+		GOKZ_PrintToChatAll(false, "%t", "Client Disconnection Message", client);
+	}
+	else
+	{
+		GOKZ_PrintToChatAll(false, "%t", "Client Disconnection Message With Reason", client, reason);
+	}
 }
 
 

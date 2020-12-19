@@ -143,7 +143,7 @@ public void OnClientPostAdminCheck(int client)
 	}
 }
 
-public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater)
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
 	DB_CacheJSPBs(client, steamID);
 }

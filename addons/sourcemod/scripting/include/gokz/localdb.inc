@@ -160,8 +160,10 @@ forward void GOKZ_DB_OnDatabaseConnect(DatabaseType DBType);
  * @param cheater		Whether player is marked as a cheater in the database.
  * @param experience	Level experience.
  * @param prestige		How many times the player prestiged.
+ * @param rank			Player's level rank
+ * @param maxrank		Max level rank possible
  */
-forward void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige);
+forward void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank);
 
 /**
  * Called when the current map is ready for database interaction.

@@ -119,7 +119,8 @@ public void OnAllPluginsLoaded()
 		{
 			int experience = gokzLevels ? GOKZ_LV_GetExperience(i) : 0;
 			int prestige = gokzLevels ? GOKZ_LV_GetPrestige(i) : 0;
-			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), experience, prestige);
+			// todo: Rank and maxrank aren't passed here
+			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), experience, prestige, 0, 0);
 		}
 	}
 }
@@ -155,7 +156,7 @@ public void GOKZ_OnTimerStart_Post(int client, int course)
 	ResetPBMissed(client);
 }
 
-public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige)
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
 	if (GOKZ_DB_IsMapSetUp())
 	{

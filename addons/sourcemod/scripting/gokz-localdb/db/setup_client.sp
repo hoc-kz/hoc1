@@ -38,6 +38,19 @@ void DB_SetupClient(int client)
 	
 	Transaction txn = SQL_CreateTransaction();
 
+	// Select cheater
+	FormatEx(query, sizeof(query), sql_players_get_cheater, steamID);
+	txn.AddQuery(query);
+	// Select client level jumps/prestige
+	FormatEx(query, sizeof(query), sql_levels_get, steamID);
+	txn.AddQuery(query);
+	// Select client rank
+	FormatEx(query, sizeof(query), sql_levels_rank_get, steamID);
+	txn.AddQuery(query);
+	// Select max rank
+	FormatEx(query, sizeof(query), sql_levels_maxrank_get, steamID);
+	txn.AddQuery(query);
+
 	// Insert/Update player into Players table
 	switch (g_DBType)
 	{
@@ -57,13 +70,6 @@ void DB_SetupClient(int client)
 			txn.AddQuery(query);
 		}
 	}
-
-	FormatEx(query, sizeof(query), sql_players_get_cheater, steamID);
-	txn.AddQuery(query);
-
-	// Select client level jumps/prestige
-	FormatEx(query, sizeof(query), sql_levels_get, steamID);
-	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_SetupClient, DB_TxnFailure_Generic_DataPack, data, DBPrio_High);
 }
@@ -80,36 +86,24 @@ public void DB_TxnSuccess_SetupClient(Handle db, DataPack data, int numQueries, 
 		return;
 	}
 
+	gB_Cheater[client] = SQL_FetchRow(results[0]) && (SQL_FetchInt(results[0], 0) == 1);
+
 	int experience = 0;
 	int prestige = 0;
-	switch (g_DBType)
+	if (SQL_FetchRow(results[1]))
 	{
-		case DatabaseType_SQLite:
-		{
-			if (SQL_FetchRow(results[2]))
-			{
-				gB_Cheater[client] = SQL_FetchInt(results[2], 0) == 1;
-			}
-			if (SQL_FetchRow(results[3])) 
-			{
-				experience = SQL_FetchInt(results[3], 1);
-				prestige = SQL_FetchInt(results[3], 2);
-			}
-		}
-		case DatabaseType_MySQL:
-		{
-			if (SQL_FetchRow(results[1]))
-			{
-				gB_Cheater[client] = SQL_FetchInt(results[1], 0) == 1;
-			}
-			if (SQL_FetchRow(results[2])) 
-			{
-				experience = SQL_FetchInt(results[2], 1);
-				prestige = SQL_FetchInt(results[2], 2);
-			}
-		}
+		experience = SQL_FetchInt(results[1], 0);
+		prestige = SQL_FetchInt(results[1], 1);
+	}
+
+	int rank = 0;
+	int maxrank = 0;
+	if (SQL_FetchRow(results[2]) && SQL_FetchRow(results[3]))
+	{
+		rank = SQL_FetchInt(results[2], 0);
+		maxrank = SQL_FetchInt(results[3], 0);
 	}
 
 	gB_ClientSetUp[client] = true;
-	Call_OnClientSetup(client, steamID, gB_Cheater[client], experience, prestige);
+	Call_OnClientSetup(client, steamID, gB_Cheater[client], experience, prestige, rank, maxrank);
 } 
