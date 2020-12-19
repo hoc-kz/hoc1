@@ -94,6 +94,8 @@ public void OnClientDisconnect(int client)
 
 public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
+	LogMessage("%N (%d) logged in with %d experience, %d prestige", client, steamID, experience, prestige);
+
 	gI_Experience[client] = experience;
 	gI_Prestige[client] = prestige;
 
