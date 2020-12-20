@@ -62,7 +62,7 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, int userid, int numQueries, 
 		}
 
 		rank = SQL_FetchInt(results[1], 0);
-		maxrank = SQL_FetchInt(results[2], 0);
+		maxrank = IntMax(rank, SQL_FetchInt(results[2], 0));
 		level = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[3], 0));
 		prestige = SQL_FetchInt(results[3], 1);
 	}

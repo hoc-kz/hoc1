@@ -101,7 +101,7 @@ public void DB_TxnSuccess_SetupClient(Handle db, DataPack data, int numQueries, 
 	if (SQL_FetchRow(results[2]) && SQL_FetchRow(results[3]))
 	{
 		rank = SQL_FetchInt(results[2], 0);
-		maxrank = SQL_FetchInt(results[3], 0);
+		maxrank = IntMax(rank, SQL_FetchInt(results[3], 0));
 	}
 
 	gB_ClientSetUp[client] = true;
