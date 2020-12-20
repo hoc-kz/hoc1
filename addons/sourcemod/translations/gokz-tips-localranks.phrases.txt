@@ -30,12 +30,6 @@
 		"chi"		"{grey}聊天框中输入 {default}!bwr <bonus>{grey}, {default}!bmaptop <bonus>{grey}, 等指令查看相对应的加成阶级简介."
 		"ru"		"{grey}Для бонусов вы можете использовать {default}!bwr <бонус>{grey}, {default}!bmaptop <бонус>{grey}, и так далее вместо обычных команд."
 	}
-	"MVP Stars"
-	{
-		"en"		"{grey}Your MVP stars represent the percentage of maps and bonuses you've {blue}PRO{grey}'d on the server's default mode."
-		"chi"		"{grey}MVP星星数量是普通模式下以 {blue}裸跳{grey}完成地图的数量以及总地图数量的比例."
-		"ru"		"{grey}Ваши звезды MVP представляют собой процент карт и бонусов, которые вы прошли на {blue}PRO{grey} в обычном режиме сервера."
-	}
 	"!jumptop"
 	{
 		"en"		"{grey}Use the {default}!jumptop{grey} menu to see the server's longest recorded jumps."

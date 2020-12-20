@@ -1,0 +1,7 @@
+"Phrases"
+{
+	"Weapon Commands"
+	{
+		"en"		"{grey}You can switch weapons by using their name in a command, for example {default}!ak47 {grey}or {default}!awp{grey}."
+	}
+}

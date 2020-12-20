@@ -1,0 +1,7 @@
+"Phrases"
+{
+	"+hook"
+	{
+		"en"		"{grey}Bind a key to {default}+hook {grey}and hold it to use grappling hook."
+	}
+}
