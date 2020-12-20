@@ -642,6 +642,18 @@
 	{
 		"en"		"From"
 	}
+	"Profile - Rank"
+	{
+		"en"		"Rank"
+	}
+	"Profile - Level"
+	{
+		"en"		"Level"
+	}
+	"Profile - Prestige"
+	{
+		"en"		"Prestige"
+	}
 	"Profile - First Seen"
 	{
 		"en"		"First seen"

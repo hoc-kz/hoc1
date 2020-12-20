@@ -11,6 +11,12 @@ void DB_DisplayProfile(int client, int targetSteamID)
 	// Select generic profile information
 	FormatEx(query, sizeof(query), sql_players_profile, targetSteamID);
 	txn.AddQuery(query);
+	// Select level, rank information
+	FormatEx(query, sizeof(query), sql_levels_rank_get, targetSteamID);
+	txn.AddQuery(query);
+	txn.AddQuery(sql_levels_maxrank_get);
+	FormatEx(query, sizeof(query), sql_levels_get, targetSteamID);
+	txn.AddQuery(query);
 	// Select main course count
 	txn.AddQuery(sql_getcount_maincourses);
 	// Select NUB completed main courses 
@@ -32,7 +38,7 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, int userid, int numQueries, 
 		return;
 	}
 
-	if (!SQL_FetchRow(results[0]) || !SQL_FetchRow(results[1]) || !SQL_FetchRow(results[2]) || !SQL_FetchRow(results[3]))
+	if (!SQL_FetchRow(results[0]) || !SQL_FetchRow(results[4]) || !SQL_FetchRow(results[5]) || !SQL_FetchRow(results[6]))
 	{
 		return;
 	}
@@ -46,11 +52,26 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, int userid, int numQueries, 
 	SQL_FetchString(results[0], 2, lastPlayedDate, sizeof(lastPlayedDate));
 	SQL_FetchString(results[0], 3, createdDate, sizeof(createdDate));
 
-	int mapsTotal = SQL_FetchInt(results[1], 0);
-	int mapsCompletedNub = SQL_FetchInt(results[2], 0);
-	int mapsCompletedPro = SQL_FetchInt(results[3], 0);
+	int rank, maxrank;
+	int level, prestige; 
+	if (gB_GOKZLevels)
+	{
+		if (!SQL_FetchRow(results[1]) || !SQL_FetchRow(results[2]) || !SQL_FetchRow(results[3]))
+		{
+			return;
+		}
 
-	DisplayProfile(client, alias, country, lastPlayedDate, createdDate, mapsTotal, mapsCompletedNub, mapsCompletedPro);
+		rank = SQL_FetchInt(results[1], 0);
+		maxrank = SQL_FetchInt(results[2], 0);
+		level = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[3], 0));
+		prestige = SQL_FetchInt(results[3], 1);
+	}
+
+	int mapsTotal = SQL_FetchInt(results[4], 0);
+	int mapsCompletedNub = SQL_FetchInt(results[5], 0);
+	int mapsCompletedPro = SQL_FetchInt(results[6], 0);
+
+	DisplayProfile(client, alias, country, rank, maxrank, level, prestige, lastPlayedDate, createdDate, mapsTotal, mapsCompletedNub, mapsCompletedPro);
 }
 
 void DB_DisplayProfile_FindPlayer(int client, const char[] target)
@@ -86,7 +107,7 @@ public void DB_TxnSuccess_DisplayProfile_FindPlayer(Handle db, DataPack data, in
 	}
 }
 
-static void DisplayProfile(int client, char[] alias, char[] country, char[] lastPlayedDate, char[] createdDate, int mapsTotal, int mapsCompletedNub, int mapsCompletedPro)
+static void DisplayProfile(int client, char[] alias, char[] country, int rank, int maxrank, int level, int prestige, char[] lastPlayedDate, char[] createdDate, int mapsTotal, int mapsCompletedNub, int mapsCompletedPro)
 {
 	char buffer[64];
 	Panel menu = new Panel();
@@ -96,6 +117,17 @@ static void DisplayProfile(int client, char[] alias, char[] country, char[] last
 	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - From", client, country);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
+
+	if (gB_GOKZLevels)
+	{
+		FormatEx(buffer, sizeof(buffer), "%T: %d / %d", "Profile - Rank", client, rank, maxrank);
+		menu.DrawText(buffer);
+		FormatEx(buffer, sizeof(buffer), "%T: %d", "Profile - Level", client, level);
+		menu.DrawText(buffer);
+		FormatEx(buffer, sizeof(buffer), "%T: %d", "Profile - Prestige", client, prestige);
+		menu.DrawText(buffer);
+		menu.DrawText(" ");
+	}
 
 	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - First Seen", client, createdDate);
 	menu.DrawText(buffer);

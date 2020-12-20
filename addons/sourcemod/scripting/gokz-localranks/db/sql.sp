@@ -400,3 +400,32 @@ SELECT JumpID, Distance, Block \
         Mode = %d AND \
         IsBlockJump = %d \
     ORDER BY Block DESC, Distance DESC";
+
+
+
+// =====[ PROFILE ]=====
+
+char sql_levels_get[] = "\
+SELECT Experience, Prestige \
+	FROM \
+		Levels \
+	WHERE \
+		SteamID32 = %d";
+
+char sql_levels_rank_get[] = "\
+SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels, ( \
+		SELECT COUNT(DISTINCT Levels.SteamID32) AS Found, Experience, Prestige \
+		FROM Levels \
+		WHERE SteamID32=%d \
+		LIMIT 1 \
+	) AS p \
+	INNER JOIN Players ON Players.SteamID32=SteamID32 \
+	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+
+char sql_levels_maxrank_get[] = "\
+SELECT COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels \
+	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	WHERE Players.Cheater=0";
+

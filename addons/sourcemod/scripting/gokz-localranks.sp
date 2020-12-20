@@ -33,6 +33,7 @@ public Plugin myinfo =
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-localranks.txt"
 
 bool gB_GOKZGlobal;
+bool gB_GOKZLevels;
 Database gH_DB = null;
 DatabaseType g_DBType = DatabaseType_None;
 bool gB_RecordMissed[MAXPLAYERS + 1][TIMETYPE_COUNT];
@@ -98,6 +99,7 @@ public void OnAllPluginsLoaded()
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_GOKZGlobal = LibraryExists("gokz-global");
+	gB_GOKZLevels = LibraryExists("gokz-levels");
 	
 	gH_DB = GOKZ_DB_GetDatabase();
 	if (gH_DB != null)
@@ -132,11 +134,13 @@ public void OnLibraryAdded(const char[] name)
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_GOKZGlobal = gB_GOKZGlobal || StrEqual(name, "gokz-global");
+	gB_GOKZLevels = gB_GOKZLevels || StrEqual(name, "gokz-levels");
 }
 
 public void OnLibraryRemoved(const char[] name)
 {
 	gB_GOKZGlobal = gB_GOKZGlobal && !StrEqual(name, "gokz-global");
+	gB_GOKZLevels = gB_GOKZLevels && !StrEqual(name, "gokz-levels");
 }
 
 
