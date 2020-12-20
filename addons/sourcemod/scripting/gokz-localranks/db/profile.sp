@@ -120,7 +120,7 @@ static void DisplayProfile(int client, char[] alias, char[] country, int rank, i
 
 	if (gB_GOKZLevels)
 	{
-		FormatEx(buffer, sizeof(buffer), "%T: %d / %d", "Profile - Rank", client, rank, maxrank);
+		FormatEx(buffer, sizeof(buffer), "%T: %d/%d", "Profile - Rank", client, rank, maxrank);
 		menu.DrawText(buffer);
 		FormatEx(buffer, sizeof(buffer), "%T: %d", "Profile - Level", client, level);
 		menu.DrawText(buffer);
