@@ -1496,7 +1496,7 @@ stock char[] GOKZ_FormatModeStyle(int mode, int style)
 
 	if (style == Style_Normal)
 	{
-		FormatEx(buffer, sizeof(buffer), "%s", gC_ModeNames[mode]);
+		FormatEx(buffer, sizeof(buffer), "%s", gC_ModeNamesShort[mode]);
 	}
 	else
 	{
