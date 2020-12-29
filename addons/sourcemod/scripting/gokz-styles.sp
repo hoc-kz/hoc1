@@ -106,6 +106,9 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 	{
 		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
 	}
+
+	// Remove ATCONTROLS flag (w only)
+	SetEntityFlags(client, GetEntityFlags(client) & ~FL_ATCONTROLS);
 }
 
 public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType newMovetype)
