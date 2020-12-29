@@ -250,8 +250,10 @@ void DisplayMapTopModeMenu(int client)
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-void DisplayMapTopStyleMenu(int client)
+void DisplayMapTopStyleMenu(int client, int mode)
 {
+	mapTopMode[client] = mode;
+
 	Menu menu = new Menu(MenuHandler_MapTopStyle);
 	MapTopStyleMenuSetTitle(client, menu);
 	GOKZ_MenuAddStyleItems(client, menu, false);
@@ -334,8 +336,7 @@ public int MenuHandler_MapTopMode(Menu menu, MenuAction action, int param1, int 
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = mode
-		mapTopMode[param1] = param2;
-		DisplayMapTopStyleMenu(param1);
+		DisplayMapTopStyleMenu(param1, param2);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -348,7 +349,6 @@ public int MenuHandler_MapTopStyle(Menu menu, MenuAction action, int param1, int
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = style
-		mapTopStyle[param1] = param2;
 		DisplayMapTopMenu(param1, mapTopMode[param1], param2);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
@@ -384,7 +384,7 @@ public int MenuHandler_MapTop(Menu menu, MenuAction action, int param1, int para
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		DisplayMapTopStyleMenu(param1);
+		DisplayMapTopStyleMenu(param1, mapTopMode[param1]);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -397,7 +397,7 @@ public int MenuHandler_MapTopSubmenu(Menu menu, MenuAction action, int param1, i
 	// TODO Menu item info is player's SteamID32, but is currently not used
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		ReopenMapTopMenu(param1);
+		DisplayMapTopMenu(param1, mapTopMode[param1], mapTopStyle[param1]);
 	}
 	else if (action == MenuAction_End)
 	{
