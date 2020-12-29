@@ -266,18 +266,18 @@ stock char gC_ModeFalseEndSounds[MODE_COUNT][] =
 stock char gC_StyleNames[STYLE_COUNT][] = 
 {
 	"Normal",
-	"AutoBhop",
-	"WOnly",
-	"SlowMotion",
+	"Auto-Bhop",
+	"W-Only",
+	"Slow-Motion",
 	"Negev"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
 {
-	"NRM",
-	"AUTOBHOP",
-	"WONLY",
-	"SLOWMO",
+	"NORMAL",
+	"AUTO-BHOP",
+	"W-ONLY",
+	"SLOW-MOTION",
 	"NEGEV"
 };
 

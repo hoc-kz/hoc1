@@ -402,6 +402,10 @@ static void PrintOptionChangeMessage(int client, Option option, int newValue)
 		{
 			GOKZ_PrintToChat(client, true, "%t", "Switched Mode", gC_ModeNames[newValue]);
 		}
+		case Option_Style:
+		{
+			GOKZ_PrintToChat(client, true, "%t", "Switched Style", gC_StyleNames[newValue]);
+		}
 		case Option_AutoRestart:
 		{
 			switch (newValue)
