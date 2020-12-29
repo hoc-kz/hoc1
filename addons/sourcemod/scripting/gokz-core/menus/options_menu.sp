@@ -57,10 +57,6 @@ void OnOptionsMenuReady_OptionsMenu()
 {
 	for (int option = 0; option < view_as<int>(OPTION_COUNT); option++)
 	{
-		if (option == view_as<int>(Option_Style))
-		{
-			continue; // TODO Currently hard-coded to skip style
-		}
 		itemsGeneral[option] = optionsMenu.AddItem(gC_CoreOptionNames[option], TopMenuHandler_General, catGeneral);
 	}
 }
@@ -111,6 +107,12 @@ public void TopMenuHandler_General(TopMenu topmenu, TopMenuAction action, TopMen
 					gC_CoreOptionPhrases[option], param, 
 					gC_ModeNames[GOKZ_GetCoreOption(param, option)]);
 			}
+			case Option_Style:
+			{
+				FormatEx(buffer, maxlength, "%T - %s", 
+					gC_CoreOptionPhrases[option], param, 
+					gC_StyleNames[GOKZ_GetCoreOption(param, option)]);
+			}
 			case Option_TimerButtonZoneType:
 			{
 				FormatEx(buffer, maxlength, "%T - %T", 
@@ -128,6 +130,11 @@ public void TopMenuHandler_General(TopMenu topmenu, TopMenuAction action, TopMen
 			{
 				cameFromOptionsMenu[param] = true;
 				DisplayModeMenu(param);
+			}
+			case Option_Style:
+			{
+				cameFromOptionsMenu[param] = true;
+				DisplayStyleMenu(param);
 			}
 			default:
 			{
