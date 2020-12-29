@@ -268,7 +268,7 @@ SELECT Players.SteamID32, Players.Alias, COUNT(*) AS RecordCount \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.Mode=%d \
+    AND Times.Mode=%d AND Times.Style=%d \
     GROUP BY Times.MapCourseID) Records \
     ON Times.MapCourseID=Records.MapCourseID AND Times.RunTime=Records.RecordTime \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
@@ -286,7 +286,7 @@ SELECT Players.SteamID32, Players.Alias, COUNT(*) AS RecordCount \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.Mode=%d AND Times.Teleports=0 \
+    AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     GROUP BY Times.MapCourseID) Records \
     ON Times.MapCourseID=Records.MapCourseID AND Times.RunTime=Records.RecordTime \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \

@@ -505,16 +505,25 @@
 		"en"		"Top Record Holders\n \nSelect a Mode"
 		"ru"		"Топ лучших рекордсменов\n \nВыбрать режим"
 	}
-	"Player Top Menu - Title"
+	"Player Top Style Menu - Title"
 	{
 		// Top Record Holders
 		//
 		// Mode - Vanilla
 		//
+		// Select a Style
 		"#format"	"{1:s}"
-		"en"		"Top Record Holders\n \nMode - {1}\n "
-		"chi"		"头名记录保持者\n \n模式 - {1}\n "
-		"ru"		"Топ лучших рекордсменов\n \nРежим - {1}\n "
+		"en"		"Top Record Holders\n \nMode - {1}\n \nSelect a Style"
+	}
+	"Player Top Menu - Title"
+	{
+		// Top Record Holders
+		//
+		// Mode - Vanilla
+		// Style - AutoBhop
+		//
+		"#format"	"{1:s},{2:s}"
+		"en"		"Top Record Holders\n \nMode - {1}\nStyle - {2}\n "
 	}
 	"Player Top Menu - Top"
 	{
@@ -529,11 +538,10 @@
 		// Top 20 PRO Server Record Holders
 		//
 		// Mode - Vanilla
+		// Style - AutoBhop
 		//
-		"#format"	"{1:d},{2:s},{3:s}"
-		"en"		"Top {1} {2} Server Record Holders\n \nMode - {3}\n "
-		"chi"		"服务器记录保持者 {2} 前{1}\n \n模式 - {3}\n "
-		"ru"		"Топ {1} {2} времени лучших рекордсменов\n \nРежим - {3}\n "
+		"#format"	"{1:d},{2:s},{3:s},{4:s}"
+		"en"		"Top {1} {2} Server Record Holders\n \nMode - {3}\nStyle - {4}\n "
 	}
 
 
