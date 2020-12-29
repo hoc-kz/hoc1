@@ -242,7 +242,7 @@ stock char gC_ModeKeys[MODE_COUNT][] =
 stock float gF_ModeVirtualButtonRanges[MODE_COUNT] = 
 {
 	32.0,
-	0.0
+	16.0
 };
 
 stock char gC_ModeStartSounds[MODE_COUNT][] = 
