@@ -91,11 +91,11 @@ public void DB_TxnSuccess_PrintAverage(Handle db, DataPack data, int numQueries,
 	// Print average time header to chat
 	if (course == 0)
 	{
-		GOKZ_PrintToChat(client, true, "%t", "Average Time Header", mapName, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+		GOKZ_PrintToChat(client, true, "%t", "Average Time Header", mapName, GOKZ_FormatModeStyle(mode, style));
 	}
 	else
 	{
-		GOKZ_PrintToChat(client, true, "%t", "Average Time Header (Bonus)", mapName, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+		GOKZ_PrintToChat(client, true, "%t", "Average Time Header (Bonus)", mapName, course, GOKZ_FormatModeStyle(mode, style));
 	}
 	
 	if (mapCompletions == 0)

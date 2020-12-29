@@ -110,7 +110,7 @@ public void DB_TxnSuccess_GetCompletion(Handle db, DataPack data, int numQueries
 				playerName, 
 				completions, totalMainCourses, completionsPro, totalMainCourses, 
 				bonusCompletions, totalBonuses, bonusCompletionsPro, totalBonuses, 
-				gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_FormatModeStyle(mode, style));
 		}
 	}
 	

@@ -83,17 +83,17 @@ void AnnounceNewTime(
 			if (firstTimePro)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - First Time (PRO)", 
-					client, GOKZ_FormatTime(runTime), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 			else if (pbDiffPro < 0)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - Beat PB (PRO)", 
-					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiffPro)), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiffPro)), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 			else
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - Miss PB (PRO)", 
-					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiffPro), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiffPro), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 		// Main Course NUB Times
@@ -102,17 +102,17 @@ void AnnounceNewTime(
 			if (firstTime)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - First Time", 
-					client, GOKZ_FormatTime(runTime), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 			else if (pbDiff < 0)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - Beat PB", 
-					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiff)), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiff)), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 			else
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Time - Miss PB", 
-					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiff), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiff), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 	}
@@ -125,17 +125,17 @@ void AnnounceNewTime(
 			if (firstTimePro)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - First Time (PRO)", 
-					client, course, GOKZ_FormatTime(runTime), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 			else if (pbDiffPro < 0)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - Beat PB (PRO)", 
-					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiffPro)), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiffPro)), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 			else
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - Miss PB (PRO)", 
-					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiffPro), rankPro, maxRankPro, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiffPro), rankPro, maxRankPro, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 		// Bonus Course NUB Times
@@ -144,17 +144,17 @@ void AnnounceNewTime(
 			if (firstTime)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - First Time", 
-					client, course, GOKZ_FormatTime(runTime), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 			else if (pbDiff < 0)
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - Beat PB", 
-					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiff)), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(FloatAbs(pbDiff)), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 			else
 			{
 				GOKZ_PrintToChatAll(true, "%t", "New Bonus Time - Miss PB", 
-					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiff), rank, maxRank, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+					client, course, GOKZ_FormatTime(runTime), GOKZ_FormatTime(pbDiff), rank, maxRank, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 	}
@@ -168,15 +168,15 @@ void AnnounceNewRecord(int client, int course, int mode, int style, int recordTy
 		{
 			case RecordType_Nub:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Record (NUB)", client, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Record (NUB)", client, GOKZ_FormatModeStyle(mode, style));
 			}
 			case RecordType_Pro:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Record (PRO)", client, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Record (PRO)", client, GOKZ_FormatModeStyle(mode, style));
 			}
 			case RecordType_NubAndPro:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Record (NUB and PRO)", client, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Record (NUB and PRO)", client, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 	}
@@ -186,15 +186,15 @@ void AnnounceNewRecord(int client, int course, int mode, int style, int recordTy
 		{
 			case RecordType_Nub:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (NUB)", client, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (NUB)", client, course, GOKZ_FormatModeStyle(mode, style));
 			}
 			case RecordType_Pro:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (PRO)", client, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (PRO)", client, course, GOKZ_FormatModeStyle(mode, style));
 			}
 			case RecordType_NubAndPro:
 			{
-				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (NUB and PRO)", client, course, course, gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+				GOKZ_PrintToChatAll(true, "%t", "New Bonus Record (NUB and PRO)", client, course, course, GOKZ_FormatModeStyle(mode, style));
 			}
 		}
 	}

@@ -1490,6 +1490,22 @@ stock int GOKZ_MatchIntFromEntityName(int entity, Regex re, int substringID)
 	return num;
 }
 
+stock char[] GOKZ_FormatModeStyle(int mode, int style)
+{
+	char buffer[32];
+
+	if (style == Style_Normal)
+	{
+		FormatEx(buffer, sizeof(buffer), "%s", gC_ModeNames[mode]);
+	}
+	else
+	{
+		FormatEx(buffer, sizeof(buffer), "%s %s", gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+	}
+
+	return buffer;
+}
+
 
 
 // =====[ DEPENDENCY ]=====
