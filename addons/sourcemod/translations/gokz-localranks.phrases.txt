@@ -678,4 +678,34 @@
 	{
 		"en"		"PRO completion"
 	}
+	"Profile - Completed Maps"
+	{
+		"en"		"Completed Maps"
+	}
+	"Profile - Uncompleted Maps"
+	{
+		"en"		"Uncompleted Maps"
+	}
+	
+	// =====[ COMPLETED MAPS ]=====
+	"Completed Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Completed Maps\n \nPlayer - {2}\n "
+	}
+	"Uncompleted Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\n "
+	}
+	"Player No Maps Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map."
+	}
+	"Player All Maps Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps."
+	}
 }

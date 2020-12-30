@@ -220,7 +220,7 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
     AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0";
 
-char sql_getcount_maincoursescompletedany[] = "\
+char sql_getcount_maincoursescompletedoverall[] = "\
 SELECT COUNT(DISTINCT Times.MapCourseID) \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
@@ -228,7 +228,7 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
     AND Times.SteamID32=%d";
 
-char sql_getcount_maincoursescompletedproany[] = "\
+char sql_getcount_maincoursescompletedprooverall[] = "\
 SELECT COUNT(DISTINCT Times.MapCourseID) \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
@@ -345,6 +345,42 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
     ORDER BY a.Created DESC \
     LIMIT %d";
+
+char sql_getcompletedmainmapcoursesoverall[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND MapCourses.Course=0 \
+	ORDER BY Maps.Name";
+
+char sql_getcompletedmainmapcoursesoverall_pro[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND MapCourses.Course=0 AND Times.Teleports=0 \
+	ORDER BY Maps.Name";
+
+char sql_getuncompletedmainmapcoursesoverall[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
+char sql_getuncompletedmainmapcoursesoverall_pro[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Teleports=0) \
+	ORDER BY Maps.Name, MapCourses.Course";
 
 
 
