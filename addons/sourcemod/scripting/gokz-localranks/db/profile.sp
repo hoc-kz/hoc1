@@ -230,11 +230,11 @@ static bool IsSpammingProfileQueries(int client, bool printMessage = true)
 {
 	float currentTime = GetEngineTime();
 	float timeSinceLastCommand = currentTime - lastProfileQueryTime[client];
-	if (timeSinceLastCommand < LR_COMMAND_COOLDOWN)
+	if (timeSinceLastCommand < LR_PROFILE_QUERY_COOLDOWN)
 	{
 		if (printMessage)
 		{
-			GOKZ_PrintToChat(client, true, "%t", "Please Wait Before Using Command", LR_COMMAND_COOLDOWN - timeSinceLastCommand + 0.1);
+			GOKZ_PrintToChat(client, true, "%t", "Please Wait Before Using Command", LR_PROFILE_QUERY_COOLDOWN - timeSinceLastCommand + 0.1);
 		}
 		return true;
 	}

@@ -27,7 +27,8 @@ enum
 
 #define LR_CFG_MAP_POOL "cfg/sourcemod/gokz/gokz-localranks-mappool.cfg"
 #define LR_CFG_SOUNDS "cfg/sourcemod/gokz/gokz-localranks-sounds.cfg"
-#define LR_COMMAND_COOLDOWN 1.5
+#define LR_COMMAND_COOLDOWN 0.75
+#define LR_PROFILE_QUERY_COOLDOWN 0.75
 #define LR_MAP_TOP_CUTOFF 50
 #define LR_PLAYER_TOP_CUTOFF 50
 
