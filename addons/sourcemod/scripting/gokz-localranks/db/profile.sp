@@ -140,34 +140,34 @@ void ReopenProfile(int client)
 	char buffer[64];
 	Panel menu = new Panel();
 
-	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - Profile For", client, alias[client]);
+	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Player", client, alias[client]);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - From", client, country[client]);
+	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - From", client, country[client]);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 
 	if (gB_GOKZLevels)
 	{
-		FormatEx(buffer, sizeof(buffer), "%T: %d/%d", "Profile - Rank", client, rank[client], maxrank[client]);
+		FormatEx(buffer, sizeof(buffer), "%T - %d/%d", "Profile - Rank", client, rank[client], maxrank[client]);
 		menu.DrawText(buffer);
-		FormatEx(buffer, sizeof(buffer), "%T: %d", "Profile - Level", client, level[client]);
+		FormatEx(buffer, sizeof(buffer), "%T - %d", "Profile - Level", client, level[client]);
 		menu.DrawText(buffer);
-		FormatEx(buffer, sizeof(buffer), "%T: %d", "Profile - Prestige", client, prestige[client]);
+		FormatEx(buffer, sizeof(buffer), "%T - %d", "Profile - Prestige", client, prestige[client]);
 		menu.DrawText(buffer);
 		menu.DrawText(" ");
 	}
 
-	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - First Seen", client, createdDate[client]);
+	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - First Seen", client, createdDate[client]);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T: %s", "Profile - Last Seen", client, lastPlayedDate[client]);
+	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Last Seen", client, lastPlayedDate[client]);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 
 	float mapsCompletedNubPercent = 100.0 * (mapsCompletedNub[client] / float(mapsTotal[client]));
 	float mapsCompletedProPercent = 100.0 * (mapsCompletedPro[client] / float(mapsTotal[client]));
-	FormatEx(buffer, sizeof(buffer), "%T: %d/%d (%0.1f%%)", "Profile - NUB Completion", client, mapsCompletedNub[client], mapsTotal[client], mapsCompletedNubPercent);
+	FormatEx(buffer, sizeof(buffer), "%T - %d/%d (%0.1f%%)", "Profile - NUB Completion", client, mapsCompletedNub[client], mapsTotal[client], mapsCompletedNubPercent);
 	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T: %d/%d (%0.1f%%)", "Profile - PRO Completion", client, mapsCompletedPro[client], mapsTotal[client], mapsCompletedProPercent);
+	FormatEx(buffer, sizeof(buffer), "%T - %d/%d (%0.1f%%)", "Profile - PRO Completion", client, mapsCompletedPro[client], mapsTotal[client], mapsCompletedProPercent);
 	menu.DrawText(buffer);
 	menu.DrawText(" ");
 

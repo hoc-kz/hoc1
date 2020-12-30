@@ -642,9 +642,9 @@
 	}
 
 	// =====[ PROFILE ]=====
-	"Profile - Profile For"
+	"Profile - Player"
 	{
-		"en"		"Profile for"
+		"en"		"Player"
 	}
 	"Profile - From"
 	{
@@ -664,19 +664,19 @@
 	}
 	"Profile - First Seen"
 	{
-		"en"		"First seen"
+		"en"		"First Seen"
 	}
 	"Profile - Last Seen"
 	{
-		"en"		"Last seen"
+		"en"		"Last Seen"
 	}
 	"Profile - NUB Completion"
 	{
-		"en"		"NUB completion"
+		"en"		"NUB Completion"
 	}
 	"Profile - PRO Completion"
 	{
-		"en"		"PRO completion"
+		"en"		"PRO Completion"
 	}
 	"Profile - Completed Maps"
 	{
