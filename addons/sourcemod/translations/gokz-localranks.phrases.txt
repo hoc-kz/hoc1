@@ -688,12 +688,12 @@
 	}
 	
 	// =====[ COMPLETED MAPS ]=====
-	"Completed Maps Menu - Title"
+	"Overall Completed Maps Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
 		"en"		"{1} Completed Maps\n \nPlayer - {2}\n "
 	}
-	"Uncompleted Maps Menu - Title"
+	"Overall Uncompleted Maps Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
 		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\n "

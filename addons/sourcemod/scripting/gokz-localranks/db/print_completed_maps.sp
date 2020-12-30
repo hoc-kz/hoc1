@@ -24,7 +24,7 @@ void DB_PrintOverallCompletedMaps(int client, int targetSteamID, int timeType)
 	datapack.WriteCell(GetClientUserId(client));
 	datapack.WriteCell(timeType);
 
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintCompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallCompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
 }
 
 void DB_PrintOverallUncompletedMaps(int client, int targetSteamID, int timeType)
@@ -49,10 +49,10 @@ void DB_PrintOverallUncompletedMaps(int client, int targetSteamID, int timeType)
 	datapack.WriteCell(GetClientUserId(client));
 	datapack.WriteCell(timeType);
 
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintUncompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallUncompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
 }
 
-public void DB_TxnSuccess_PrintCompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+public void DB_TxnSuccess_PrintOverallCompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
 {
 	datapack.Reset();
 	int client = GetClientOfUserId(datapack.ReadCell());
@@ -80,7 +80,7 @@ public void DB_TxnSuccess_PrintCompletedMaps(Handle db, DataPack datapack, int n
 	}
 
 	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
-	menu.SetTitle("%T", "Completed Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias);
+	menu.SetTitle("%T", "Overall Completed Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias);
 
 	char buffer[128];
 	while (SQL_FetchRow(results[1]))
@@ -92,7 +92,7 @@ public void DB_TxnSuccess_PrintCompletedMaps(Handle db, DataPack datapack, int n
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public void DB_TxnSuccess_PrintUncompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+public void DB_TxnSuccess_PrintOverallUncompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
 {
 	datapack.Reset();
 	int client = GetClientOfUserId(datapack.ReadCell());
@@ -120,7 +120,7 @@ public void DB_TxnSuccess_PrintUncompletedMaps(Handle db, DataPack datapack, int
 	}
 
 	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
-	menu.SetTitle("%T", "Uncompleted Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias);
+	menu.SetTitle("%T", "Overall Uncompleted Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias);
 
 	char buffer[128];
 	while (SQL_FetchRow(results[1]))
