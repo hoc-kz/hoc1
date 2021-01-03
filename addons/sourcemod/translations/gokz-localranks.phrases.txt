@@ -686,6 +686,12 @@
 	{
 		"en"		"Uncompleted Maps"
 	}
+	
+	"Profile Menu - Title"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d},{5:d},{6:d},{7:s},{8:s},{9:d},{10:d},{11:0.1f},{12:d},{13:d},{14:0.1f}"
+		"en"		"Player - {1}\nFrom - {2}\n \nRank - {3}/{4}\nLevel - {5}\nPrestige - {6}\n \nFirst Seen - {7}\nLast Seen - {8}\n \nNUB Completion - {9}/{10} ({11}%%)\nPRO Completion - {12}/{13} ({14}%%)\n "
+	}
 	"Profile Map Completion - None Completed"
 	{
 		"#format"	"{1:s}"

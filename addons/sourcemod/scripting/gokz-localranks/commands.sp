@@ -373,13 +373,13 @@ public Action CommandProfile(int client, int args)
 
 	if (args < 1)
 	{
-		DB_DisplayProfile(client, GetSteamAccountID(client));
+		DB_OpenProfile(client, GetSteamAccountID(client));
 	}
 	else if (args >= 1)
 	{
 		char argPlayer[MAX_NAME_LENGTH];
 		GetCmdArg(1, argPlayer, sizeof(argPlayer));
-		DB_DisplayProfile_FindPlayer(client, argPlayer);
+		DB_OpenProfile_FindPlayer(client, argPlayer);
 	}
 	return Plugin_Handled;
 }

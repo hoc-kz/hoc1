@@ -4,22 +4,22 @@
 
 
 
-static int steamID[MAXPLAYERS + 1];
+static int profileSteamID[MAXPLAYERS + 1];
 static char profileAlias[MAXPLAYERS + 1][MAX_NAME_LENGTH];
-static char country[MAXPLAYERS + 1][64];
-static char lastPlayedDate[MAXPLAYERS + 1][32];
-static char createdDate[MAXPLAYERS + 1][32];
-static int rank[MAXPLAYERS + 1];
-static int maxrank[MAXPLAYERS + 1];
-static int level[MAXPLAYERS + 1];
-static int prestige[MAXPLAYERS + 1];
-static int mapsTotal[MAXPLAYERS + 1];
-static int mapsCompletedNub[MAXPLAYERS + 1];
-static int mapsCompletedPro[MAXPLAYERS + 1];
+static char profileCountry[MAXPLAYERS + 1][64];
+static char profileLastPlayedDate[MAXPLAYERS + 1][32];
+static char profileCreatedDate[MAXPLAYERS + 1][32];
+static int profileRank[MAXPLAYERS + 1];
+static int profileMaxRank[MAXPLAYERS + 1];
+static int profileLevel[MAXPLAYERS + 1];
+static int profilePrestige[MAXPLAYERS + 1];
+static int profileMapsTotal[MAXPLAYERS + 1];
+static int profileMapsCompletedNub[MAXPLAYERS + 1];
+static int profileMapsCompletedPro[MAXPLAYERS + 1];
 
 
 
-void DB_DisplayProfile(int client, int targetSteamID)
+void DB_OpenProfile(int client, int targetSteamID)
 {
 	char query[1024];
 
@@ -47,10 +47,10 @@ void DB_DisplayProfile(int client, int targetSteamID)
 	datapack.WriteCell(GetClientUserId(client));
 	datapack.WriteCell(targetSteamID);
 
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_DisplayProfile, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_OpenProfile, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
 }
 
-public void DB_TxnSuccess_DisplayProfile(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+public void DB_TxnSuccess_OpenProfile(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
 {
 	datapack.Reset();
 	int client = GetClientOfUserId(datapack.ReadCell());
@@ -62,7 +62,7 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, DataPack datapack, int numQu
 		return;
 	}
 
-	steamID[client] = targetSteamID;
+	profileSteamID[client] = targetSteamID;
 
 	if (!SQL_FetchRow(results[0]) || !SQL_FetchRow(results[4]) || !SQL_FetchRow(results[5]) || !SQL_FetchRow(results[6]))
 	{
@@ -70,9 +70,9 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, DataPack datapack, int numQu
 	}
 
 	SQL_FetchString(results[0], 0, profileAlias[client], sizeof(profileAlias[]));
-	SQL_FetchString(results[0], 1, country[client], sizeof(country[]));
-	SQL_FetchString(results[0], 2, lastPlayedDate[client], sizeof(lastPlayedDate[]));
-	SQL_FetchString(results[0], 3, createdDate[client], sizeof(createdDate[]));
+	SQL_FetchString(results[0], 1, profileCountry[client], sizeof(profileCountry[]));
+	SQL_FetchString(results[0], 2, profileLastPlayedDate[client], sizeof(profileLastPlayedDate[]));
+	SQL_FetchString(results[0], 3, profileCreatedDate[client], sizeof(profileCreatedDate[]));
 
 	if (gB_GOKZLevels)
 	{
@@ -81,29 +81,29 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, DataPack datapack, int numQu
 			return;
 		}
 
-		rank[client] = SQL_FetchInt(results[1], 0);
-		maxrank[client] = IntMax(rank[client], SQL_FetchInt(results[2], 0));
-		level[client] = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[3], 0));
-		prestige[client] = SQL_FetchInt(results[3], 1);
+		profileRank[client] = SQL_FetchInt(results[1], 0);
+		profileMaxRank[client] = IntMax(profileRank[client], SQL_FetchInt(results[2], 0));
+		profileLevel[client] = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[3], 0));
+		profilePrestige[client] = SQL_FetchInt(results[3], 1);
 	}
 
-	mapsTotal[client] = SQL_FetchInt(results[4], 0);
-	mapsCompletedNub[client] = SQL_FetchInt(results[5], 0);
-	mapsCompletedPro[client] = SQL_FetchInt(results[6], 0);
+	profileMapsTotal[client] = SQL_FetchInt(results[4], 0);
+	profileMapsCompletedNub[client] = SQL_FetchInt(results[5], 0);
+	profileMapsCompletedPro[client] = SQL_FetchInt(results[6], 0);
 
-	ReopenProfile(client);
+	ReopenProfileMenu(client);
 }
 
-void DB_DisplayProfile_FindPlayer(int client, const char[] target)
+void DB_OpenProfile_FindPlayer(int client, const char[] target)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
 	data.WriteString(target);
 
-	DB_FindPlayer(target, DB_TxnSuccess_DisplayProfile_FindPlayer, data, DBPrio_Low);
+	DB_FindPlayer(target, DB_TxnSuccess_OpenProfile_FindPlayer, data, DBPrio_Low);
 }
 
-public void DB_TxnSuccess_DisplayProfile_FindPlayer(Handle db, DataPack data, int numQueries, Handle[] results, any[] queryData)
+public void DB_TxnSuccess_OpenProfile_FindPlayer(Handle db, DataPack data, int numQueries, Handle[] results, any[] queryData)
 {
 	data.Reset();
 	int client = GetClientOfUserId(data.ReadCell());
@@ -123,97 +123,54 @@ public void DB_TxnSuccess_DisplayProfile_FindPlayer(Handle db, DataPack data, in
 	}
 	else if (SQL_FetchRow(results[0]))
 	{
-		DB_DisplayProfile(client, SQL_FetchInt(results[0], 0));
+		DB_OpenProfile(client, SQL_FetchInt(results[0], 0));
 	}
 }
 
-void ReopenProfile(int client)
+static void ReopenProfileMenu(int client)
+{
+	Menu menu = new Menu(MenuHandler_Profile);
+	ProfileMenuSetTitle(client, menu);
+	ProfileMenuAddItems(client, menu);
+	menu.Display(client, MENU_TIME_FOREVER);
+}
+
+static void ProfileMenuSetTitle(int client, Menu menu)
+{
+	float mapsCompletedNubPercent = 100.0 * (profileMapsCompletedNub[client] / float(profileMapsTotal[client]));
+	float mapsCompletedProPercent = 100.0 * (profileMapsCompletedPro[client] / float(profileMapsTotal[client]));
+
+	menu.SetTitle("%T", "Profile Menu - Title", client, 
+		profileAlias[client],
+		profileCountry[client],
+		profileRank[client], profileMaxRank[client],
+		profileLevel[client],
+		profilePrestige[client],
+		profileCreatedDate[client],
+		profileLastPlayedDate[client],
+		profileMapsCompletedNub[client], profileMapsTotal[client], mapsCompletedNubPercent,
+		profileMapsCompletedPro[client], profileMapsTotal[client], mapsCompletedProPercent);
+}
+
+static void ProfileMenuAddItems(int client, Menu menu)
 {
 	char buffer[64];
-	Panel menu = new Panel();
-
-	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Player", client, profileAlias[client]);
-	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - From", client, country[client]);
-	menu.DrawText(buffer);
-	menu.DrawText(" ");
-
-	if (gB_GOKZLevels)
-	{
-		FormatEx(buffer, sizeof(buffer), "%T - %d/%d", "Profile - Rank", client, rank[client], maxrank[client]);
-		menu.DrawText(buffer);
-		FormatEx(buffer, sizeof(buffer), "%T - %d", "Profile - Level", client, level[client]);
-		menu.DrawText(buffer);
-		FormatEx(buffer, sizeof(buffer), "%T - %d", "Profile - Prestige", client, prestige[client]);
-		menu.DrawText(buffer);
-		menu.DrawText(" ");
-	}
-
-	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - First Seen", client, createdDate[client]);
-	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Last Seen", client, lastPlayedDate[client]);
-	menu.DrawText(buffer);
-	menu.DrawText(" ");
-
-	float mapsCompletedNubPercent = 100.0 * (mapsCompletedNub[client] / float(mapsTotal[client]));
-	float mapsCompletedProPercent = 100.0 * (mapsCompletedPro[client] / float(mapsTotal[client]));
-	FormatEx(buffer, sizeof(buffer), "%T - %d/%d (%0.1f%%)", "Profile - NUB Completion", client, mapsCompletedNub[client], mapsTotal[client], mapsCompletedNubPercent);
-	menu.DrawText(buffer);
-	FormatEx(buffer, sizeof(buffer), "%T - %d/%d (%0.1f%%)", "Profile - PRO Completion", client, mapsCompletedPro[client], mapsTotal[client], mapsCompletedProPercent);
-	menu.DrawText(buffer);
-	menu.DrawText(" ");
 
 	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Nub], "Profile - Completed Maps", client);
-	menu.DrawItem(buffer);
+	menu.AddItem("", buffer);
 	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Pro], "Profile - Completed Maps", client);
-	menu.DrawItem(buffer);
+	menu.AddItem("", buffer);
 	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Nub], "Profile - Uncompleted Maps", client);
-	menu.DrawItem(buffer);
+	menu.AddItem("", buffer);
 	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Pro], "Profile - Uncompleted Maps", client);
-	menu.DrawItem(buffer);
-
-	menu.CurrentKey = 9;
-	menu.DrawText(" ");
-
-	FormatEx(buffer, sizeof(buffer), "%T", "Exit", client);
-	menu.DrawItem(buffer);
-
-	menu.Send(client, MenuHandler_Profile, MENU_TIME_FOREVER);
-}
-
-public int MenuHandler_Profile(Menu menu, MenuAction action, int param1, int param2)
-{
-	if (action == MenuAction_Select)
-	{
-		// Play menu sounds since we're actually using a panel.
-		if (param2 == 9)
-		{
-			EmitSoundToClient(param1, "buttons/combine_button7.wav");
-		}
-		else
-		{
-			EmitSoundToClient(param1, "buttons/button14.wav");
-
-			switch (param2)
-			{
-				case 1: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Nub, true);
-				case 2: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Pro, true);
-				case 3: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Nub, false);
-				case 4: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Pro, false);
-			}
-		}
-	}
-	else if (action == MenuAction_End)
-	{
-		delete menu;
-	}
+	menu.AddItem("", buffer);
 }
 
 
 
 // =====[ OVERALL MAP COMPLETION ]=====
 
-void DB_OpenProfileMapCompletion(int client, int targetSteamID, int timeType, bool completed)
+static void DB_OpenProfileMapCompletion(int client, int targetSteamID, int timeType, bool completed)
 {
 	char query[1024];
 	Transaction txn = SQL_CreateTransaction();
@@ -299,7 +256,7 @@ public void DB_TxnSuccess_OpenProfileMapCompletion(Handle db, DataPack datapack,
 				GOKZ_PrintToChat(client, true, "%T", "Profile Map Completion - All Completed (PRO)", client, alias);
 			}
 		}
-		ReopenProfile(client);
+		ReopenProfileMenu(client);
 		return;
 	}
 
@@ -327,11 +284,29 @@ public void DB_TxnSuccess_OpenProfileMapCompletion(Handle db, DataPack datapack,
 
 // =====[ MENU HANDLERS ]=====
 
+public int MenuHandler_Profile(Menu menu, MenuAction action, int param1, int param2)
+{
+	if (action == MenuAction_Select)
+	{
+		switch (param2)
+		{
+			case 0: DB_OpenProfileMapCompletion(param1, profileSteamID[param1], TimeType_Nub, true);
+			case 1: DB_OpenProfileMapCompletion(param1, profileSteamID[param1], TimeType_Pro, true);
+			case 2: DB_OpenProfileMapCompletion(param1, profileSteamID[param1], TimeType_Nub, false);
+			case 3: DB_OpenProfileMapCompletion(param1, profileSteamID[param1], TimeType_Pro, false);
+		}
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
 public int MenuHandler_ProfileMapCompletionSubmenu(Menu menu, MenuAction action, int param1, int param2)
 {
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		ReopenProfile(param1);
+		ReopenProfileMenu(param1);
 	}
 	else if (action == MenuAction_End)
 	{
