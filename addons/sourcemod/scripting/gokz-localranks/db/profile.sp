@@ -173,13 +173,13 @@ static void ProfileMenuAddItems(int client, Menu menu)
 {
 	char buffer[64];
 
-	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Nub]);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps", client);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Pro]);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps (PRO)", client);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Nub]);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps", client);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Pro]);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps (PRO)", client);
 	menu.AddItem("", buffer);
 }
 
@@ -280,11 +280,25 @@ public void DB_TxnSuccess_OpenProfileMapCompletion(Handle db, DataPack datapack,
 	Menu menu = new Menu(MenuHandler_ProfileMapCompletionSubmenu);
 	if (completed)
 	{
-		menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Completed)", client, gC_TimeTypeNames[timeType], alias);
+		if (timeType != TimeType_Pro)
+		{
+			menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Completed)", client, alias);
+		}
+		else
+		{
+			menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Completed PRO)", client, alias);
+		}
 	}
 	else
 	{
-		menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Uncompleted)", client, gC_TimeTypeNames[timeType], alias);
+		if (timeType != TimeType_Pro)
+		{
+			menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Uncompleted)", client, alias);
+		}
+		else
+		{
+			menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Uncompleted PRO)", client, alias);
+		}
 	}
 
 	char buffer[128];

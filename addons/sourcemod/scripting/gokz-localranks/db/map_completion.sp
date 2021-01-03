@@ -124,14 +124,14 @@ static void MapCompletionMenuAddItems(int client, Menu menu)
 {
 	char display[64];
 	
-	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Nub]);
+	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Completed Maps", client);
 	menu.AddItem("", display);
-	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Pro]);
+	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Completed Maps (PRO)", client);
 	menu.AddItem("", display);
 
-	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Nub]);
+	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Uncompleted Maps", client);
 	menu.AddItem("", display);
-	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Pro]);
+	FormatEx(display, sizeof(display), "%T", "Map Completion Menu - Uncompleted Maps (PRO)", client);
 	menu.AddItem("", display);
 }
 
@@ -236,11 +236,25 @@ public void DB_TxnSuccess_OpenMapCompletion(Handle db, DataPack datapack, int nu
 	Menu menu = new Menu(MenuHandler_MapCompletionSubmenu);
 	if (completed)
 	{
-		menu.SetTitle("%T", "Map Completion Submenu - Title (Completed)", client, gC_TimeTypeNames[timeType], alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		if (timeType != TimeType_Pro)
+		{
+			menu.SetTitle("%T", "Map Completion Submenu - Title (Completed)", client, alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		}
+		else
+		{
+			menu.SetTitle("%T", "Map Completion Submenu - Title (Completed PRO)", client, alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		}
 	}
 	else
 	{
-		menu.SetTitle("%T", "Map Completion Submenu - Title (Uncompleted)", client, gC_TimeTypeNames[timeType], alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		if (timeType != TimeType_Pro)
+		{
+			menu.SetTitle("%T", "Map Completion Submenu - Title (Uncompleted)", client, alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		}
+		else
+		{
+			menu.SetTitle("%T", "Map Completion Submenu - Title (Uncompleted PRO)", client, alias, gC_ModeNames[mode], gC_StyleNames[style]);
+		}
 	}
 
 	char buffer[128];

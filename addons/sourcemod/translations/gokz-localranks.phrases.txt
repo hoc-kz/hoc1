@@ -645,22 +645,28 @@
 	"Profile Menu - Title"
 	{
 		"#format"	"{1:s},{2:s},{3:d},{4:d},{5:d},{6:d},{7:s},{8:s},{9:d},{10:d},{11:0.1f},{12:d},{13:d},{14:0.1f}"
-		"en"		"Player - {1}\nFrom - {2}\n \nRank - {3}/{4}\nLevel - {5}\nPrestige - {6}\n \nFirst Seen - {7}\nLast Seen - {8}\n \nNUB Completion - {9}/{10} ({11}%%)\nPRO Completion - {12}/{13} ({14}%%)\n "
+		"en"		"Player - {1}\nFrom - {2}\n \nRank - {3}/{4}\nLevel - {5}\nPrestige - {6}\n \nFirst Seen - {7}\nLast Seen - {8}\n \nCompletion - {9}/{10} ({11}%%)\nPRO Completion - {12}/{13} ({14}%%)\n "
 	}
 	"Profile Menu - Title (No Levels)"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:d},{6:d},{7:0.1f},{8:d},{9:d},{10:0.1f}"
-		"en"		"Player - {1}\nFrom - {2}\n \nFirst Seen - {3}\nLast Seen - {4}\n \nNUB Completion - {5}/{6} ({7}%%)\nPRO Completion - {8}/{9} ({10}%%)\n "
+		"en"		"Player - {1}\nFrom - {2}\n \nFirst Seen - {3}\nLast Seen - {4}\n \nCompletion - {5}/{6} ({7}%%)\nPRO Completion - {8}/{9} ({10}%%)\n "
 	}
 	"Profile Menu - Completed Maps"
 	{
-		"#format"	"{1:s}"
-		"en"		"{1} Completed Maps"
+		"en"		"Completed Maps"
+	}
+	"Profile Menu - Completed Maps (PRO)"
+	{
+		"en"		"Completed Maps (PRO)"
 	}
 	"Profile Menu - Uncompleted Maps"
 	{
-		"#format"	"{1:s}"
-		"en"		"{1} Uncompleted Maps"
+		"en"		"Uncompleted Maps"
+	}
+	"Profile Menu - Uncompleted Maps (PRO)"
+	{
+		"en"		"Uncompleted Maps (PRO)"
 	}
 	"Profile Map Completion - None Completed"
 	{
@@ -684,25 +690,43 @@
 	}
 	"Profile Map Completion Submenu - Title (Completed)"
 	{
-		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
+		"#format"	"{1:s}"
+		"en"		"Completed Maps\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	"Profile Map Completion Submenu - Title (Completed PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Completed Maps (PRO)\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
 	}
 	"Profile Map Completion Submenu - Title (Uncompleted)"
 	{
-		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
+		"#format"	"{1:s}"
+		"en"		"Uncompleted Maps\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
 	}
+	"Profile Map Completion Submenu - Title (Uncompleted PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Uncompleted Maps (PRO)\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	
+	
 	
 	// =====[ MAP COMPLETION ]=====
 	"Map Completion Menu - Completed Maps"
 	{
-		"#format"	"{1:s}"
-		"en"		"{1} Completed Maps"
+		"en"		"Completed Maps"
+	}
+	"Map Completion Menu - Completed Maps (PRO)"
+	{
+		"en"		"Completed Maps (PRO)"
 	}
 	"Map Completion Menu - Uncompleted Maps"
 	{
-		"#format"	"{1:s}"
-		"en"		"{1} Uncompleted Maps"
+		"en"		"Uncompleted Maps"
+	}
+	"Map Completion Menu - Uncompleted Maps (PRO)"
+	{
+		"en"		"Uncompleted Maps (PRO)"
 	}
 	"Map Completion Mode Menu - Title"
 	{
@@ -721,13 +745,23 @@
 	}
 	"Map Completion Submenu - Title (Completed)"
 	{
-		"#format"	"{1:s},{2:s},{3:s},{4:s}"
-		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Completed Maps\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Completed PRO)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Completed Maps (PRO)\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
 	}
 	"Map Completion Submenu - Title (Uncompleted)"
 	{
-		"#format"	"{1:s},{2:s},{3:s},{4:s}"
-		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Uncompleted Maps\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Uncompleted PRO)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Uncompleted Maps (PRO)\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
 	}
 	"Map Completion - None Completed"
 	{
