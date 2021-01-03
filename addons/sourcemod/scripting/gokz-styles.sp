@@ -24,10 +24,12 @@ public Plugin myinfo =
 };
 
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-styles.txt"
+#define WONLY_MAX_LADDERJUMP_TIME 2.0
 
 ConVar gCV_AutoBunnyHopping;
 
 bool gB_LadderJump[MAXPLAYERS + 1];
+float gF_LadderJumpTime[MAXPLAYERS + 1];
 
 
 
@@ -69,6 +71,7 @@ public void OnLibraryAdded(const char[] name)
 public void OnClientPutInServer(int client)
 {
 	gB_LadderJump[client] = false;
+	gF_LadderJumpTime[client] = -999999.0;
 
 	HookClientEvents(client);
 	ReplicateConVars(client);
@@ -114,9 +117,10 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType newMovetype)
 {
 	// Keep track of when the player is performing a ladder jump.
-	if (newMovetype == MOVETYPE_LADDER)
+	if (oldMovetype == MOVETYPE_LADDER)
 	{
 		gB_LadderJump[client] = true;
+		gF_LadderJumpTime[client] = GetEngineTime();
 	}
 }
 
@@ -124,16 +128,6 @@ public void Movement_OnStartTouchGround(int client)
 {
 	// Touched the ground, so not perforing a ladder jump anymore.
 	gB_LadderJump[client] = false;
-}
-
-public void OnStartTouchPost(int client, int other)
-{
-	// Touched the world, so not performing a ladder jump anymore.
-	// This can be either a surf, or a wall. Ground is handled elsewhere.
-	if (other == 0)
-	{
-		gB_LadderJump[client] = false;
-	}
 }
 
 public void OnClientPreThink_Post(int client)
@@ -172,9 +166,13 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	if (GetStyle(client) == Style_WOnly)
 	{
 		int flags = GetEntityFlags(client);
-
+		MoveType moveType = GetEntityMoveType(client);
+		
 		int badButtons = (buttons & IN_BACK) | (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
-		if (badButtons != 0 && !gB_LadderJump[client])
+		bool noclip = (moveType == MOVETYPE_NOCLIP);
+		bool ladder = (moveType == MOVETYPE_LADDER);
+		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + WONLY_MAX_LADDERJUMP_TIME));
+		if (badButtons != 0 && !noclip && !(ladder || ladderJump))
 		{
 			flags |= FL_ATCONTROLS;
 			buttons &= ~badButtons;
@@ -305,8 +303,6 @@ static void HookEvents()
 static void HookClientEvents(int client)
 {
 	SDKHook(client, SDKHook_PreThinkPost, OnClientPreThink_Post);
-
-	SDKHook(client, SDKHook_StartTouchPost, OnStartTouchPost);
 
 	SDKHook(client, SDKHook_WeaponCanSwitchTo, OnClientWeaponCanSwitchTo);
 	SDKHook(client, SDKHook_WeaponDrop, OnClientWeaponDrop);
