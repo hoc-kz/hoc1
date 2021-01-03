@@ -469,7 +469,7 @@ public int Native_GetValidJump(Handle plugin, int numParams)
 
 public int Native_JoinTeam(Handle plugin, int numParams)
 {
-	JoinTeam(GetNativeCell(1), GetNativeCell(2), GetNativeCell(3));
+	return view_as<int>(JoinTeam(GetNativeCell(1), GetNativeCell(2), GetNativeCell(3), GetNativeCell(4)));
 }
 
 

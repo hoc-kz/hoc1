@@ -1187,7 +1187,7 @@ native bool GOKZ_GetValidJump(int client);
  * @param team			Which team to switch to.
  * @param restorePos	Whether to restore saved position if leaving spectators.
  */
-native void GOKZ_JoinTeam(int client, int team, bool restorePos = true);
+native bool GOKZ_JoinTeam(int client, int team, bool restorePos = true, bool force = true);
 
 
 

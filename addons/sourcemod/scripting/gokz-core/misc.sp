@@ -239,7 +239,7 @@ void OnTimerStart_JoinTeam(int client)
 	hasSavedPosition[client] = false;
 }
 
-void JoinTeam(int client, int newTeam, bool restorePos)
+bool JoinTeam(int client, int newTeam, bool restorePos, bool force)
 {
 	KZPlayer player = KZPlayer(client);
 	int currentTeam = GetClientTeam(client);
@@ -284,6 +284,8 @@ void JoinTeam(int client, int newTeam, bool restorePos)
 		hasSavedPosition[client] = false;
 		Call_GOKZ_OnJoinTeam(client, newTeam);
 	}
+
+	return true;
 }
 
 
