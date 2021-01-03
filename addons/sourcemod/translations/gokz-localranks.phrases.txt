@@ -687,17 +687,64 @@
 		"en"		"Uncompleted Maps"
 	}
 	
-	// =====[ COMPLETED MAPS ]=====
-	"Completed Maps Menu - Title"
+	// =====[ MAP COMPLETION ]=====
+	"Map Completion Menu - Completed Maps"
+	{
+		"#format"	"{1:s}"
+		"en"		"{1} Completed Maps"
+	}
+	"Map Completion Menu - Uncompleted Maps"
+	{
+		"#format"	"{1:s}"
+		"en"		"{1} Uncompleted Maps"
+	}
+	"Map Completion Mode Menu - Title"
+	{
+		"#format"	"{1:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\n "
+	}
+	"Map Completion Style Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\n "
+	}
+	"Map Completion Menu - Title"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Completed)"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s}"
 		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
 	}
-	"Uncompleted Maps Menu - Title"
+	"Map Completion Submenu - Title (Uncompleted)"
 	{
 		"#format"	"{1:s},{2:s},{3:s},{4:s}"
 		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
 	}
+	"Map Completion - None Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map."
+	}
+	"Map Completion - None Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map {blue}PRO{grey}."
+	}
+	"Map Completion - All Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps."
+	}
+	"Map Completion - All Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps {blue}PRO{grey}."
+	}
+	
+	
 	"Overall Completed Maps Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
