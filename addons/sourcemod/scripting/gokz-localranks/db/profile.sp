@@ -156,13 +156,13 @@ static void ProfileMenuAddItems(int client, Menu menu)
 {
 	char buffer[64];
 
-	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Nub], "Profile - Completed Maps", client);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Nub]);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Pro], "Profile - Completed Maps", client);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Completed Maps", client, gC_TimeTypeNames[TimeType_Pro]);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Nub], "Profile - Uncompleted Maps", client);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Nub]);
 	menu.AddItem("", buffer);
-	FormatEx(buffer, sizeof(buffer), "%s %T", gC_TimeTypeNames[TimeType_Pro], "Profile - Uncompleted Maps", client);
+	FormatEx(buffer, sizeof(buffer), "%T", "Profile Menu - Uncompleted Maps", client, gC_TimeTypeNames[TimeType_Pro]);
 	menu.AddItem("", buffer);
 }
 
