@@ -165,6 +165,11 @@ public void RequestFrame_UpdatePlayerModel(int userid)
 public void RequestFrame_UpdatePlayerModel2(int userid)
 {
 	int client = GetClientOfUserId(userid);
+	UpdatePlayerModel(client);
+}
+
+void UpdatePlayerModel(int client)
+{
 	if (!IsValidClient(client) || !IsPlayerAlive(client))
 	{
 		return;
