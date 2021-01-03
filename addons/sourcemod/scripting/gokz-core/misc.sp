@@ -252,14 +252,21 @@ bool JoinTeam(int client, int newTeam, bool restorePos, bool force)
 	
 	if (newTeam == CS_TEAM_SPECTATOR && currentTeam != CS_TEAM_SPECTATOR)
 	{
+		if (!force && !player.Paused && !player.CanPause)
+		{
+			return false;
+		}
+
 		player.GetOrigin(savedOrigin[client]);
 		player.GetEyeAngles(savedAngles[client]);
 		savedOnLadder[client] = player.Movetype == MOVETYPE_LADDER;
 		hasSavedPosition[client] = true;
-		if (!player.Paused && !player.CanPause)
+
+		if (force && !player.Paused && !player.CanPause)
 		{
 			player.StopTimer();
 		}
+		
 		ChangeClientTeam(client, CS_TEAM_SPECTATOR);
 		Call_GOKZ_OnJoinTeam(client, newTeam);
 	}
