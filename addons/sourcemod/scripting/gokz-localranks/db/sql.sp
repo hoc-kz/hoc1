@@ -346,6 +346,42 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     ORDER BY a.Created DESC \
     LIMIT %d";
 
+char sql_getcompletedmainmapcourses[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND MapCourses.Course=0 \
+	ORDER BY Maps.Name";
+
+char sql_getcompletedmainmapcourses_pro[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND MapCourses.Course=0 AND Times.Teleports=0 \
+	ORDER BY Maps.Name";
+
+char sql_getuncompletedmainmapcourses[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
+char sql_getuncompletedmainmapcourses_pro[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
 char sql_getcompletedmainmapcoursesoverall[] = "\
 SELECT DISTINCT Maps.Name \
 	FROM Times \
