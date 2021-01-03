@@ -14,6 +14,23 @@
 // =====[ CONSTANTS ]=====
 
 #define GOKZ_LV_MAX_LEVEL 50
+#define GOKZ_LV_JUMP_XP 100
+#define GOKZ_LV_MIN_JUMP_SPEED 5.0
+#define GOKZ_LV_MAX_JUMPS_ON_ONE_INPUT 5
+#define GOKZ_LV_TIME_BETWEEN_JUMPS 0.45
+#define GOKZ_LV_FIRST_NUB_XP 15000
+#define GOKZ_LV_FIRST_PRO_XP 35000
+
+stock int gI_LevelChatColorPrestige0[GOKZ_LV_MAX_LEVEL + 1] = 
+{
+	0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, 0x5, //  0 -  9
+	0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, 0xB, // 10 - 19
+	0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, 0x7, // 20 - 29
+	0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, // 30 - 39
+	0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, 0xE, // 40 - 49
+	0x10 // 50
+};
+#define LEVEL_CHAT_COLOR_PRESTIGE1 0x10
 
 
 
@@ -65,23 +82,60 @@ stock int GOKZ_LV_LevelForExperience(int experience)
 	// Ported exactly from the original plugin config files.
 	// Yes there is a mistake here and I'm keeping it.
 	int level;
-	if (experience >= 691200)
+	if (experience >= 69120000)
 	{
-		level = 31 + ((experience - 691200) / 86400);
+		level = 31 + ((experience - 69120000) / 8640000);
 	}
-	else if (experience >= 259200) 
+	else if (experience >= 25920000) 
 	{
-        level = 21 + ((experience - 259200) / 43200);
-    }
-	else if (experience >= 21600)
+		level = 21 + ((experience - 25920000) / 4320000);
+	}
+	else if (experience >= 2160000)
 	{
-		level = 10 + ((experience - 21600) / 21600);
+		level = 10 + ((experience - 2160000) / 2160000);
 	}
 	else
 	{
-		level = experience / 2160;
+		level = experience / 216000;
 	}
 	return IntMin(level, GOKZ_LV_MAX_LEVEL);
+}
+
+stock int GOKZ_LV_ExperienceForLevel(int level)
+{
+	level = IntMin(level, GOKZ_LV_MAX_LEVEL);
+
+	int experience;
+	if (level >= 31) 
+	{
+		experience = 69120000 + ((level - 31) * 8640000);
+	}
+	else if (level >= 21) 
+	{
+		experience = 25920000 + ((level - 21) * 4320000);
+	}
+	else if (level >= 10) 
+	{
+		experience = 2160000 + ((level - 10) * 2160000);
+	}
+	return experience;
+}
+
+stock int GOKZ_LV_FormatLevelTag(char[] buffer, int maxlength, int level, int prestige, bool colors)
+{
+	if (!colors)
+	{
+		return Format(buffer, maxlength, "[Lv%d]", level);
+	}
+
+	if (prestige >= 1)
+	{
+		int color = LEVEL_CHAT_COLOR_PRESTIGE1;
+		return Format(buffer, maxlength, "\8[%cLv%d\8]", color, level);
+	}
+
+	int color = gI_LevelChatColorPrestige0[level];
+	return Format(buffer, maxlength, "\8[%cLv%d\8]", color, level);
 }
 
 

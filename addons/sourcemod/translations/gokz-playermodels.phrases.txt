@@ -1,0 +1,8 @@
+﻿"Phrases"
+{
+	//=====[ MENU ]=====
+	"Player Model Menu - Title"
+	{
+		"en"		"Player Model"
+	}
+}

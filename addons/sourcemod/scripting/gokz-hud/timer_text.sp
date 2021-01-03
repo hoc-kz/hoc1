@@ -19,14 +19,14 @@ char[] FormatTimerTextForMenu(KZPlayer player, HUDInfo info)
 	if (player.GetHUDOption(HUDOption_TimerType) == TimerType_Enabled)
 	{
 		FormatEx(timerTextString, sizeof(timerTextString), 
-			"%s %s", 
-			gC_TimeTypeNames[info.TimeType], 
-			GOKZ_HUD_FormatTime(player.ID, info.Time));
+			"Time: %s (%s)", 
+			GOKZ_HUD_FormatTime(player.ID, info.Time),
+			gC_TimeTypeNames[info.TimeType]);
 	}
 	else
 	{
 		FormatEx(timerTextString, sizeof(timerTextString), 
-			"%s", 
+			"Time: %s", 
 			GOKZ_HUD_FormatTime(player.ID, info.Time));
 	}
 	return timerTextString;

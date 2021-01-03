@@ -33,6 +33,7 @@ public Plugin myinfo =
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-localranks.txt"
 
 bool gB_GOKZGlobal;
+bool gB_GOKZLevels;
 Database gH_DB = null;
 DatabaseType g_DBType = DatabaseType_None;
 bool gB_RecordMissed[MAXPLAYERS + 1][TIMETYPE_COUNT];
@@ -66,9 +67,11 @@ float gF_RecordTimesCache_Pro[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
 #include "gokz-localranks/db/print_js.sp"
 #include "gokz-localranks/db/print_pbs.sp"
 #include "gokz-localranks/db/print_records.sp"
+#include "gokz-localranks/db/print_completed_maps.sp"
 #include "gokz-localranks/db/process_new_time.sp"
 #include "gokz-localranks/db/recent_records.sp"
 #include "gokz-localranks/db/update_ranked_map_pool.sp"
+#include "gokz-localranks/db/profile.sp"
 
 
 
@@ -97,6 +100,7 @@ public void OnAllPluginsLoaded()
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_GOKZGlobal = LibraryExists("gokz-global");
+	gB_GOKZLevels = LibraryExists("gokz-levels");
 	
 	gH_DB = GOKZ_DB_GetDatabase();
 	if (gH_DB != null)
@@ -118,7 +122,8 @@ public void OnAllPluginsLoaded()
 		{
 			int experience = gokzLevels ? GOKZ_LV_GetExperience(i) : 0;
 			int prestige = gokzLevels ? GOKZ_LV_GetPrestige(i) : 0;
-			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), experience, prestige);
+			// todo: Rank and maxrank aren't passed here
+			GOKZ_DB_OnClientSetup(i, GetSteamAccountID(i), GOKZ_DB_IsCheater(i), experience, prestige, 0, 0);
 		}
 	}
 }
@@ -130,11 +135,13 @@ public void OnLibraryAdded(const char[] name)
 		Updater_AddPlugin(UPDATER_URL);
 	}
 	gB_GOKZGlobal = gB_GOKZGlobal || StrEqual(name, "gokz-global");
+	gB_GOKZLevels = gB_GOKZLevels || StrEqual(name, "gokz-levels");
 }
 
 public void OnLibraryRemoved(const char[] name)
 {
 	gB_GOKZGlobal = gB_GOKZGlobal && !StrEqual(name, "gokz-global");
+	gB_GOKZLevels = gB_GOKZLevels && !StrEqual(name, "gokz-levels");
 }
 
 
@@ -154,7 +161,7 @@ public void GOKZ_OnTimerStart_Post(int client, int course)
 	ResetPBMissed(client);
 }
 
-public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige)
+public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
 	if (GOKZ_DB_IsMapSetUp())
 	{
@@ -198,7 +205,7 @@ public void GOKZ_LR_OnTimeProcessed(
 		return;
 	}
 	
-	AnnounceNewTime(client, course, mode, runTime, teleportsUsed, firstTime, pbDiff, rank, maxRank, firstTimePro, pbDiffPro, rankPro, maxRankPro);
+	AnnounceNewTime(client, course, mode, style, runTime, teleportsUsed, firstTime, pbDiff, rank, maxRank, firstTimePro, pbDiffPro, rankPro, maxRankPro);
 	
 	if (mode == GOKZ_GetDefaultMode() && firstTimePro)
 	{
@@ -219,7 +226,7 @@ public void GOKZ_LR_OnNewRecord(int client, int steamID, int mapID, int course, 
 		return;
 	}
 	
-	AnnounceNewRecord(client, course, mode, recordType);
+	AnnounceNewRecord(client, course, mode, style, recordType);
 	DB_CacheRecords(mapID);
 }
 

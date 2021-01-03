@@ -53,7 +53,7 @@
 	}
 	"New Record (NUB)"
 	{
-		// Bill set a new NUB RECORD [Mode]
+		// Bill set a new NUB RECORD [Mode Style]
 		"#format"	"{1:N},{2:s}"
 		"en"		"{lime}{1}{grey} set a new {yellow}NUB RECORD {grey}[{purple}{2}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {yellow}存点记录 {grey}:[{purple}{2}{grey}]"
@@ -61,7 +61,7 @@
 	}
 	"New Record (PRO)"
 	{
-		// Bill set a new PRO RECORD [Mode]
+		// Bill set a new PRO RECORD [Mode Style]
 		"#format"	"{1:N},{2:s}"
 		"en"		"{lime}{1}{grey} set a new {blue}PRO RECORD {grey}[{purple}{2}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {blue}裸跳纪录 {grey}:[{purple}{2}{grey}]"
@@ -69,7 +69,7 @@
 	}
 	"New Record (NUB and PRO)"
 	{
-		// Bill set a new NUB/PRO RECORD [Mode]
+		// Bill set a new NUB/PRO RECORD [Mode Style]
 		"#format"	"{1:N},{2:s}"
 		"en"		"{lime}{1}{grey} set a new {yellow}NUB{grey}/{blue}PRO RECORD{grey} [{purple}{2}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {yellow}存点{grey}/{blue}裸跳纪录{grey}: [{purple}{2}{grey}]"
@@ -77,7 +77,7 @@
 	}
 	"New Bonus Record (NUB)"
 	{
-		// Bill set a new Bonus 1 NUB RECORD [Mode]
+		// Bill set a new Bonus 1 NUB RECORD [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s}"
 		"en"		"{lime}{1}{grey} set a new {bluegrey}Bonus {2} {yellow}NUB RECORD{grey} [{purple}{3}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {bluegrey}加成{2}阶下的 {yellow}存点纪录{grey}: [{purple}{3}{grey}]"
@@ -85,7 +85,7 @@
 	}
 	"New Bonus Record (PRO)"
 	{
-		// Bill set a new Bonus 1 PRO RECORD [Mode]
+		// Bill set a new Bonus 1 PRO RECORD [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s}"
 		"en"		"{lime}{1}{grey} set a new {bluegrey}Bonus {2} {blue}PRO RECORD{grey} [{purple}{3}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {bluegrey}加成{2}阶下的 {blue}裸跳纪录{grey}: [{purple}{3}{grey}]"
@@ -93,7 +93,7 @@
 	}
 	"New Bonus Record (NUB and PRO)"
 	{
-		// Bill set a new Bonus 1 NUB/PRO RECORD [Mode]
+		// Bill set a new Bonus 1 NUB/PRO RECORD [Mode Style]
 		"#format"	"{1:N},{2:d},{3:d},{4:s}"
 		"en"		"{lime}{1}{grey} set a new {bluegrey}Bonus {2} {yellow}NUB{grey}/{blue}PRO RECORD{grey} [{purple}{4}{grey}]"
 		"chi"		"{lime}{1}{grey} 刷新了 {bluegrey}加成{2}阶下的{yellow}存点{grey}/{blue}裸跳纪录{grey}: [{purple}{4}{grey}]"
@@ -101,7 +101,7 @@
 	}
 	"New Time - First Time"
 	{
-		// Bill finished in NUB 01:23.45 [#2/5] [Mode]
+		// Bill finished in NUB 01:23.45 [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:d},{4:d},{5:s}"
 		"en"		"{lime}{1}{grey} finished in {yellow}NUB {default}{2} {grey}[#{default}{3}{grey}/{default}{4}{grey}] [{purple}{5}{grey}]"
 		"chi"		"{lime}{1}{grey} 以 {yellow}存点{grey}方式完成地图,完成时长 {default}{2} {grey} [第{default}{3}{grey}名/共{default}{4}{grey}人完成地图] [{purple}{5}{grey}]"
@@ -109,7 +109,7 @@
 	}
 	"New Time - Beat PB"
 	{
-		// Bill finished in NUB 01:23.45 (-00:12.34) [#2/5] [Mode]
+		// Bill finished in NUB 01:23.45 (-00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished in {yellow}NUB {default}{2} {grey}({green}-{3}{grey}) {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 以 {yellow}存点{grey}方式完成地图,完成时长 {default}{2} {grey}(比个人记录{green}快了{3}{grey}) {grey}[第{default}{4}{grey}名/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -117,7 +117,7 @@
 	}
 	"New Time - Miss PB"
 	{
-		// Bill finished in NUB 01:23.45 (+00:12.34) [#2/5] [Mode]
+		// Bill finished in NUB 01:23.45 (+00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished in {yellow}NUB {default}{2} {grey}({lightred}+{3}{grey}) {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 以 {yellow}存点{grey}方式完成地图,完成时长 {default}{2} {grey}(比个人记录{lightred}慢了{3}{grey}) {grey}[第{default}{4}{grey}名/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -125,7 +125,7 @@
 	}
 	"New Time - First Time (PRO)"
 	{
-		// Bill finished in PRO 01:23.45 [#2/5] [Mode]
+		// Bill finished in PRO 01:23.45 [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:d},{4:d},{5:s}"
 		"en"		"{lime}{1}{grey} finished in {blue}PRO {default}{2} {grey}[#{default}{3}{grey}/{default}{4}{grey}] [{purple}{5}{grey}]"
 		"chi"		"{lime}{1}{grey} 以 {blue}裸跳{grey}方式完成地图,完成时长 {default}{2} {grey}[第{default}{3}{grey}名/共{default}{4}{grey}人完成地图] [{purple}{5}{grey}]"
@@ -133,7 +133,7 @@
 	}
 	"New Time - Beat PB (PRO)"
 	{
-		// Bill finished in PRO 01:23.45 (-00:12.34) [#2/5] [Mode]
+		// Bill finished in PRO 01:23.45 (-00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished in {blue}PRO {default}{2} {grey}({green}-{3}{grey}) {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 以 {blue}裸跳{grey}方式完成地图,完成时长 {default}{2} {grey}(比个人记录{green}快了{3}{grey}) {grey}[第{default}{4}{grey}/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -141,7 +141,7 @@
 	}
 	"New Time - Miss PB (PRO)"
 	{
-		// Bill finished in PRO 01:23.45 (+00:12.34) [#2/5] [Mode]
+		// Bill finished in PRO 01:23.45 (+00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:s},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished in {blue}PRO {default}{2} {grey}({lightred}+{3}{grey}) {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 以{blue}裸跳{grey}方式完成地图,完成时长 {default}{2} {grey}(比个人记录{lightred}慢了{3}{grey}) {grey}[第{default}{4}{grey}名/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -149,7 +149,7 @@
 	}
 	"New Bonus Time - First Time"
 	{
-		// Bill finished Bonus 1 in NUB 01:23.45 [#2/5] [Mode]
+		// Bill finished Bonus 1 in NUB 01:23.45 [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {yellow}NUB {default}{3} {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶 {grey}下以{yellow}存点{grey}方式完成地图,完成时长 {default}{3} {grey}[第{default}{4}{grey}名/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -157,7 +157,7 @@
 	}
 	"New Bonus Time - Beat PB"
 	{
-		// Bill finished Bonus 1 in NUB 01:23.45 (-00:12.34) [#2/5] [Mode]
+		// Bill finished Bonus 1 in NUB 01:23.45 (-00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:d},{6:d},{7:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {yellow}NUB {default}{3} {grey}({green}-{4}{grey}) {grey}[#{default}{5}{grey}/{default}{6}{grey}] [{purple}{7}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶{grey}下以{yellow}存点{grey}方式完成地图,完成时长{default}{3} {grey}(比个人记录{green}快了{4}{grey}) {grey}[第{default}{5}{grey}名/共{default}{6}{grey}人完成地图] [{purple}{7}{grey}]"
@@ -165,7 +165,7 @@
 	}
 	"New Bonus Time - Miss PB"
 	{
-		// Bill finished Bonus 1 in NUB 01:23.45 (+00:12.34) [#2/5] [Mode]
+		// Bill finished Bonus 1 in NUB 01:23.45 (+00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:d},{6:d},{7:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {yellow}NUB {default}{3} {grey}({lightred}+{4}{grey}) {grey}[#{default}{5}{grey}/{default}{6}{grey}] [{purple}{7}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶{grey}下以{yellow}存点{grey}方式完成地图,完成时长{default}{3} {grey}(比个人记录{green}慢了{4}{grey}) {grey}[第{default}{5}{grey}名/共{default}{6}{grey}人完成地图] [{purple}{7}{grey}]"
@@ -173,7 +173,7 @@
 	}
 	"New Bonus Time - First Time (PRO)"
 	{
-		// Bill finished Bonus 1 in PRO 01:23.45 [#2/5] [Mode]
+		// Bill finished Bonus 1 in PRO 01:23.45 [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:d},{5:d},{6:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {blue}PRO {default}{3} {grey}[#{default}{4}{grey}/{default}{5}{grey}] [{purple}{6}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶 {grey}下以{blue}裸跳{grey}方式完成地图,完成时长{default}{3} {grey}[第{default}{4}{grey}名/共{default}{5}{grey}人完成地图] [{purple}{6}{grey}]"
@@ -181,7 +181,7 @@
 	}
 	"New Bonus Time - Beat PB (PRO)"
 	{
-		// Bill finished Bonus 1 in PRO 01:23.45 (-00:12.34) [#2/5] [Mode]
+		// Bill finished Bonus 1 in PRO 01:23.45 (-00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:d},{6:d},{7:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {blue}PRO {default}{3} {grey}({green}-{4}{grey}) {grey}[#{default}{5}{grey}/{default}{6}{grey}] [{purple}{7}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶 {grey}下以{blue}裸跳{grey}方式完成地图,完成时长{default}{3} {grey}(比个人记录{green}快了{4}{grey}) {grey}[第{default}{5}{grey}名/共{default}{6}{grey}人完成地图] [{purple}{7}{grey}]"
@@ -189,7 +189,7 @@
 	}
 	"New Bonus Time - Miss PB (PRO)"
 	{
-		// Bill finished Bonus 1 in PRO 01:23.45 (+00:12.34) [#2/5] [Mode]
+		// Bill finished Bonus 1 in PRO 01:23.45 (+00:12.34) [#2/5] [Mode Style]
 		"#format"	"{1:N},{2:d},{3:s},{4:s},{5:d},{6:d},{7:s}"
 		"en"		"{lime}{1}{grey} finished {bluegrey}Bonus {2} {grey}in {blue}PRO {default}{3} {grey}({lightred}+{4}{grey}) {grey}[#{default}{5}{grey}/{default}{6}{grey}] [{purple}{7}{grey}]"
 		"chi"		"{lime}{1}{grey} 在 {bluegrey}加成{2}阶 {grey}下以{blue}裸跳{grey}方式完成地图,完成时长{default}{3} {grey}(比个人记录{green}慢了{4}{grey}) {grey}[第{default}{5}{grey}名/共{default}{6}{grey}人完成地图] [{purple}{7}{grey}]"
@@ -197,7 +197,7 @@
 	}
 	"PB Header"
 	{
-		// Bill on kz_map [Mode]
+		// Bill on kz_map [Mode Style]
 		"#format"	"{1:s},{2:s},{3:s}"
 		"en"		"{lime}{1}{grey} on {default}{2} {grey}[{purple}{3}{grey}]"
 		"chi"		"{lime}{1}{grey} 在地图{default}{2} {grey}上的表现[{purple}{3}{grey}]"
@@ -205,7 +205,7 @@
 	}
 	"PB Header (Bonus)"
 	{
-		// Bill on kz_map Bonus 1 [Mode]
+		// Bill on kz_map Bonus 1 [Mode Style]
 		"#format"	"{1:s},{2:s},{3:d},{4:s}"
 		"en"		"{lime}{1}{grey} on {default}{2} {bluegrey}Bonus {3} {grey}[{purple}{4}{grey}]"
 		"chi"		"{lime}{1}{grey} 在地图{default}{2} {bluegrey}上附带加成{3}阶下的表现{grey}[{purple}{4}{grey}]"
@@ -249,7 +249,7 @@
 	}
 	"WR Header"
 	{
-		// Server Records on kz_map [Mode]
+		// Server Records on kz_map [Mode Style]
 		"#format"	"{1:s},{2:s}"
 		"en"		"{grey}Server Records on {default}{1} {grey}[{purple}{2}{grey}]"
 		"chi"		"{grey}地图{default}{1}{grey}的本服最快纪录[{purple}{2}{grey}]"
@@ -257,7 +257,7 @@
 	}
 	"WR Header (Bonus)"
 	{
-		// Server Records on kz_map Bonus 1 [Mode]
+		// Server Records on kz_map Bonus 1 [Mode Style]
 		"#format"	"{1:s},{2:d},{3:s}"
 		"en"		"{grey}Server Records on {default}{1} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
 		"chi"		"{grey}地图{default}{1}在{bluegrey}加成{2}阶下{grey}的本服最快纪录[{purple}{3}{grey}]"
@@ -307,7 +307,7 @@
 	}
 	"Average Time Header"
 	{
-		// Server Average Times on kz_map [Mode]
+		// Server Average Times on kz_map [Mode Style]
 		"#format"	"{1:s},{2:s}"
 		"en"		"{grey}Server Average Times on {default}{1}{grey} {grey}[{purple}{2}{grey}]"
 		"chi"		"{grey}本服平均完成时间: {default}{1}{grey} {grey}[{purple}{2}{grey}]"
@@ -315,7 +315,7 @@
 	}
 	"Average Time Header (Bonus)"
 	{
-		// Server Average Times on kz_map Bonus 1 [Mode]
+		// Server Average Times on kz_map Bonus 1 [Mode Style]
 		"#format"	"{1:s},{2:d},{3:s}"
 		"en"		"{grey}Server Average Times on {default}{1}{grey} {bluegrey}Bonus {2} {grey}[{purple}{3}{grey}]"
 		"chi"		"{grey}本服在{bluegrey}加成{2}阶{grey}下的平均完成时间: {default}{1}{grey}[{purple}{3}{grey}]"
@@ -345,7 +345,7 @@
 	}
 	"Map Completion"
 	{
-		// Bill has beaten 12/234 and PRO'd 6/234 maps, and has beaten 3/21 and PRO'd 1/21 bonuses [Mode].
+		// Bill has beaten 12/234 and PRO'd 6/234 maps, and has beaten 3/21 and PRO'd 1/21 bonuses [Mode Style].
 		"#format"	"{1:s},{2:d},{3:d},{4:d},{5:d},{6:d},{7:d},{8:d},{9:d},{10:s}"
 		"en"		"{lime}{1}{grey} has beaten {default}{2}{grey}/{default}{3}{grey} and {blue}PRO{grey}'d {default}{4}{grey}/{default}{5}{grey} maps, and has beaten {default}{6}{grey}/{default}{7}{grey} and {blue}PRO{grey}'d {default}{8}{grey}/{default}{9}{grey} bonuses [{purple}{10}{grey}]."
 		"chi"		"{lime}{1}{grey} 完成地图进度: 存点完成{default}{2}{grey}/{default}{3}{grey}张,{blue}裸跳{grey}完成{default}{4}{grey}/{default}{5}{grey}张地图, 在含加成阶级的地图上读点完成{default}{6}{grey}/{default}{7}{grey}张,{blue}裸跳{grey}完成{default}{8}{grey}/{default}{9}{grey}张地图. [{purple}{10}{grey}]"
@@ -505,16 +505,25 @@
 		"en"		"Top Record Holders\n \nSelect a Mode"
 		"ru"		"Топ лучших рекордсменов\n \nВыбрать режим"
 	}
-	"Player Top Menu - Title"
+	"Player Top Style Menu - Title"
 	{
 		// Top Record Holders
 		//
 		// Mode - Vanilla
 		//
+		// Select a Style
 		"#format"	"{1:s}"
-		"en"		"Top Record Holders\n \nMode - {1}\n "
-		"chi"		"头名记录保持者\n \n模式 - {1}\n "
-		"ru"		"Топ лучших рекордсменов\n \nРежим - {1}\n "
+		"en"		"Top Record Holders\n \nMode - {1}\n \nSelect a Style"
+	}
+	"Player Top Menu - Title"
+	{
+		// Top Record Holders
+		//
+		// Mode - Vanilla
+		// Style - AutoBhop
+		//
+		"#format"	"{1:s},{2:s}"
+		"en"		"Top Record Holders\n \nMode - {1}\nStyle - {2}\n "
 	}
 	"Player Top Menu - Top"
 	{
@@ -529,16 +538,21 @@
 		// Top 20 PRO Server Record Holders
 		//
 		// Mode - Vanilla
+		// Style - AutoBhop
 		//
-		"#format"	"{1:d},{2:s},{3:s}"
-		"en"		"Top {1} {2} Server Record Holders\n \nMode - {3}\n "
-		"chi"		"服务器记录保持者 {2} 前{1}\n \n模式 - {3}\n "
-		"ru"		"Топ {1} {2} времени лучших рекордсменов\n \nРежим - {3}\n "
+		"#format"	"{1:d},{2:s},{3:s},{4:s}"
+		"en"		"Top {1} {2} Server Record Holders\n \nMode - {3}\nStyle - {4}\n "
 	}
 
 
 	// =====[ RECENT RECORDS MENU ]=====
-	"Recent Records Menu - Title"
+	"Recent Records Mode Menu - Title"
+	{
+		// Recently Broken Records
+		//
+		"en"		"Recently Broken Records\n "
+	}
+	"Recent Records Style Menu - Title"
 	{
 		// Recently Broken Records
 		//
@@ -546,8 +560,16 @@
 		//
 		"#format"	"{1:s}"
 		"en"		"Recently Broken Records\n \nMode - {1}\n "
-		"chi"		"最近刷新记录玩家\n \n模式 - {1}\n "
-		"ru"		"Недавно побитые рекорды\n \nРежим - {1}\n "
+	}
+	"Recent Records Time Type Menu - Title"
+	{
+		// Recently Broken Records
+		//
+		// Mode - Vanilla
+		// Style - AutoBhop
+		//
+		"#format"	"{1:s},{2:s}"
+		"en"		"Recently Broken Records\n \nMode - {1}\nStyle - {2}\n "
 	}
 	"Recent Records Menu - Record Type"
 	{
@@ -562,11 +584,10 @@
 		// Recently Broken PRO Server Records
 		//
 		// Mode - Vanilla
+		// Style - AutoBhop
 		//
-		"#format"	"{1:s},{2:s}"
-		"en"		"Recently Broken {1} Server Records\n \nMode - {2}\n "
-		"chi"		"最近刷新记录玩家 {1} 服务器排行\n \n模式 - {2}\n "
-		"ru"		"Недавно побитые {1} серверные рекорды\n \nРежим - {2}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Recently Broken {1} Server Records\n \nMode - {2}\nStyle - {3}\n "
 	}
 
 
@@ -618,5 +639,73 @@
 	{
 		"en"		"Block"
 		"ru"		"Блок"
+	}
+
+	// =====[ PROFILE ]=====
+	"Profile - Player"
+	{
+		"en"		"Player"
+	}
+	"Profile - From"
+	{
+		"en"		"From"
+	}
+	"Profile - Rank"
+	{
+		"en"		"Rank"
+	}
+	"Profile - Level"
+	{
+		"en"		"Level"
+	}
+	"Profile - Prestige"
+	{
+		"en"		"Prestige"
+	}
+	"Profile - First Seen"
+	{
+		"en"		"First Seen"
+	}
+	"Profile - Last Seen"
+	{
+		"en"		"Last Seen"
+	}
+	"Profile - NUB Completion"
+	{
+		"en"		"NUB Completion"
+	}
+	"Profile - PRO Completion"
+	{
+		"en"		"PRO Completion"
+	}
+	"Profile - Completed Maps"
+	{
+		"en"		"Completed Maps"
+	}
+	"Profile - Uncompleted Maps"
+	{
+		"en"		"Uncompleted Maps"
+	}
+	
+	// =====[ COMPLETED MAPS ]=====
+	"Overall Completed Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Completed Maps\n \nPlayer - {2}\n "
+	}
+	"Overall Uncompleted Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\n "
+	}
+	"Player No Maps Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map."
+	}
+	"Player All Maps Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps."
 	}
 }

@@ -29,19 +29,20 @@ void RegisterCommands()
 	RegConsoleCmd("sm_vb", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_mode", CommandMode, "[KZ] Open the movement mode selection menu.");
 	RegConsoleCmd("sm_style", CommandStyle, "[KZ] Open the movement style selection menu.");
+	RegConsoleCmd("sm_c", CommandClassic, "[KZ] Switch to the Classic mode.");
+	RegConsoleCmd("sm_classic", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_vnl", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
 	RegConsoleCmd("sm_v", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
-	RegConsoleCmd("sm_simplekz", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
-	RegConsoleCmd("sm_skz", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
-	RegConsoleCmd("sm_s", CommandSimpleKZ, "[KZ] Switch to the SimpleKZ mode.");
-	RegConsoleCmd("sm_nopre", CommandNoPre, "[KZ] Switch to the NoPre mode.");
 	RegConsoleCmd("sm_nc", CommandToggleNoclip, "[KZ] Toggle noclip.");
 	RegConsoleCmd("+noclip", CommandEnableNoclip, "[KZ] Noclip on.");
 	RegConsoleCmd("-noclip", CommandDisableNoclip, "[KZ] Noclip off.");
 	RegConsoleCmd("sm_ncnt", CommandToggleNoclipNotrigger, "[KZ] Toggle noclip-notrigger.");
 	RegConsoleCmd("+noclipnt", CommandEnableNoclipNotrigger, "[KZ] Noclip-notrigger on.");
 	RegConsoleCmd("-noclipnt", CommandDisableNoclipNotrigger, "[KZ] Noclip-notrigger off.");
+	RegConsoleCmd("sm_god", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_godmode", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_mortal", CommandToggleGodMode, "[KZ] Toggle god mode.");
 }
 
 void AddCommandsListeners()
@@ -246,15 +247,9 @@ public Action CommandVanilla(int client, int args)
 	return Plugin_Handled;
 }
 
-public Action CommandSimpleKZ(int client, int args)
+public Action CommandClassic(int client, int args)
 {
-	SwitchToModeIfAvailable(client, Mode_SimpleKZ);
-	return Plugin_Handled;
-}
-
-public Action CommandNoPre(int client, int args)
-{
-	SwitchToModeIfAvailable(client, Mode_NoPre);
+	SwitchToModeIfAvailable(client, Mode_Classic);
 	return Plugin_Handled;
 }
 
@@ -291,6 +286,19 @@ public Action CommandEnableNoclipNotrigger(int client, int args)
 public Action CommandDisableNoclipNotrigger(int client, int args)
 {
 	DisableNoclipNotrigger(client);
+	return Plugin_Handled;
+}
+
+public Action CommandToggleGodMode(int client, int args)
+{
+	if (ToggleGodMode(client))
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Enabled God Mode");
+	}
+	else
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Disabled God Mode");
+	}
 	return Plugin_Handled;
 }
 

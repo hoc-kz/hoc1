@@ -12,17 +12,15 @@
 		"chi"		"{grey}聊天框中输入 {default}!mode {grey}切换模式."
 		"ru"		"{grey}Меню {default}!mode {grey}позволяет легко переключаться между различными режимами игры."
 	}
+	"!style"
+	{
+		"en"		"{grey}The {default}!style {grey}menu is where you can easily switch between the different movement styles, for example AutoBhop {grey}or W-Only{grey}."
+	}
 	"!nc"
 	{
 		"en"		"{grey}Use {default}!nc {grey}as a toggle or bind a key to {default}+noclip {grey}and hold it to be able to fly around the map."
 		"chi"		"{grey}聊天框中输入 {default}!nc {grey}或再控制台中为某个按键绑定{default}+noclip {grey}以使用穿墙模式."
 		"ru"		"{grey}Используйте команду {default}!nc {grey}для использования или поставьте бинд на клавишу {default}+noclip {grey} и удерживайте его, чтобы летать по карте."
-	}
-	"Quick Switch Mode"
-	{
-		"en"		"{grey}You can switch to a mode by typing its abbreviation. For example, type {default}!s{grey}/{default}!skz{grey} to switch to {purple}SimpleKZ{grey}."
-		"chi"		"{grey}可通过输入!+首字母或者缩写快速开启某些功能.例如:{default}!s{grey}/{default}!skz{grey}来打开{purple}SimpleKZ{grey}."
-		"ru"		"{grey}Вы можете переключиться на режим, введя его аббревиатуру. Например, введите {default}!s{grey}/{default}!skz{grey} для переключения режима на {purple}SimpleKZ{grey}."
 	}
 	"Custom Start Position"
 	{
@@ -45,10 +43,5 @@
 	{
 		"en"		"{grey}Have you set up your virtual buttons perfectly? Use {default}!vb{grey} to lock them in place."
 		"ru"		"{grey}Ты настроил под себя виртуальные кнопки? Используй {default}!vb{grey} для их фиксации."
-	}
-	"Stretch"
-	{
-		"en"		"{grey}Look after yourself. Take regular breaks to stretch and stay hydrated."
-		"ru"		"{grey}Следите за собою. Делайте регулярные перерывы во время игры!"
 	}
 }

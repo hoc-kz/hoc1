@@ -12,8 +12,12 @@
 		// No Vanilla replays for this map were found.
 		"#format"	"{1:s}"
 		"en"		"{darkred}No {1} replays on this map were found."
-		"chi"		"{darkred}当前地图没有录像({1})."
-		"ru"		"{darkred}На этой карте нет повторов {1} режима."
+	}
+	"No Replays Found (Style)"
+	{
+		// No AutoBhop replays for this mode were found.
+		"#format"	"{1:s}"
+		"en"		"{darkred}No {1} replays for this mode were found."
 	}
 	"No Bots Available"
 	{
@@ -30,11 +34,10 @@
 		//
 		// Map - kz_map
 		// Mode - Vanilla
+		// Style - Normal
 		//
-		"#format"	"{1:s},{2:s}"
-		"en"		"Load a Replay\n \nMap - {1}\nMode - {2}\n "
-		"chi"		"加载录像\n \nMap - {1}\n模式 - {2}\n "
-		"ru"		"Загрузить повтор\n \nКарта - {1}\nРежим - {2}\n "
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Load a Replay\n \nMap - {1}\nMode - {2}\nStyle - {3}\n "
 	}
 	"Replay Menu (Mode) - Title"
 	{
@@ -47,6 +50,17 @@
 		"en"		"Load a Replay\n \nMap - {1}\n \nSelect a Mode"
 		"chi"		"加载录像\n \nMap - {1}\n \n选择模式"
 		"ru"		"Загрузить повтор\n \nКарта - {1}\n \nВыбрать режим"
+	}
+	"Replay Menu (Style) - Title"
+	{
+		// Load a Replay
+		//
+		// Map - kz_map
+		// Mode - Vanilla
+		//
+		// Select a Style
+		"#format"	"{1:s},{2:s}"
+		"en"		"Load a Replay\n \nMap - {1}\nMode - {2}\n \nSelect a Style"
 	}
 
 

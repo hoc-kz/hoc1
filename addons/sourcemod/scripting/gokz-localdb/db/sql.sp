@@ -8,51 +8,51 @@
 
 char sqlite_players_create[] = "\
 CREATE TABLE IF NOT EXISTS Players ( \
-    SteamID32 INTEGER NOT NULL, \
-    Alias TEXT, \
-    Country TEXT, \
-    IP TEXT, \
-    Cheater INTEGER NOT NULL DEFAULT '0', \
-    LastPlayed TIMESTAMP NULL DEFAULT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Player PRIMARY KEY (SteamID32))";
+	SteamID32 INTEGER NOT NULL, \
+	Alias TEXT, \
+	Country TEXT, \
+	IP TEXT, \
+	Cheater INTEGER NOT NULL DEFAULT '0', \
+	LastPlayed TIMESTAMP NULL DEFAULT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Player PRIMARY KEY (SteamID32))";
 
 char mysql_players_create[] = "\
 CREATE TABLE IF NOT EXISTS Players ( \
-    SteamID32 INTEGER UNSIGNED NOT NULL, \
-    Alias VARCHAR(32), \
-    Country VARCHAR(45), \
-    IP VARCHAR(15), \
-    Cheater TINYINT UNSIGNED NOT NULL DEFAULT '0', \
-    LastPlayed TIMESTAMP NULL DEFAULT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Player PRIMARY KEY (SteamID32))";
+	SteamID32 INTEGER UNSIGNED NOT NULL, \
+	Alias VARCHAR(32), \
+	Country VARCHAR(45), \
+	IP VARCHAR(15), \
+	Cheater TINYINT UNSIGNED NOT NULL DEFAULT '0', \
+	LastPlayed TIMESTAMP NULL DEFAULT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Player PRIMARY KEY (SteamID32))";
 
 char sqlite_players_insert[] = "\
 INSERT OR IGNORE INTO Players (Alias, Country, IP, SteamID32, LastPlayed) \
-    VALUES ('%s', '%s', '%s', %d, CURRENT_TIMESTAMP)";
+	VALUES ('%s', '%s', '%s', %d, CURRENT_TIMESTAMP)";
 
 char sqlite_players_update[] = "\
 UPDATE OR IGNORE Players \
-    SET Alias='%s', Country='%s', IP='%s', LastPlayed=CURRENT_TIMESTAMP \
-    WHERE SteamID32=%d";
+	SET Alias='%s', Country='%s', IP='%s', LastPlayed=CURRENT_TIMESTAMP \
+	WHERE SteamID32=%d";
 
 char mysql_players_upsert[] = "\
 INSERT INTO Players (Alias, Country, IP, SteamID32, LastPlayed) \
-    VALUES ('%s', '%s', '%s', %d, CURRENT_TIMESTAMP) \
-    ON DUPLICATE KEY UPDATE \
-    SteamID32=VALUES(SteamID32), Alias=VALUES(Alias), Country=VALUES(Country), \
-    IP=VALUES(IP), LastPlayed=VALUES(LastPlayed)";
+	VALUES ('%s', '%s', '%s', %d, CURRENT_TIMESTAMP) \
+	ON DUPLICATE KEY UPDATE \
+	SteamID32=VALUES(SteamID32), Alias=VALUES(Alias), Country=VALUES(Country), \
+	IP=VALUES(IP), LastPlayed=VALUES(LastPlayed)";
 
 char sql_players_get_cheater[] = "\
 SELECT Cheater \
-    FROM Players \
-    WHERE SteamID32=%d";
+	FROM Players \
+	WHERE SteamID32=%d";
 
 char sql_players_set_cheater[] = "\
 UPDATE Players \
-    SET Cheater=%d \
-    WHERE SteamID32=%d";
+	SET Cheater=%d \
+	WHERE SteamID32=%d";
 
 
 
@@ -60,41 +60,41 @@ UPDATE Players \
 
 char sqlite_maps_create[] = "\
 CREATE TABLE IF NOT EXISTS Maps ( \
-    MapID INTEGER NOT NULL, \
-    Name VARCHAR(32) NOT NULL UNIQUE, \
-    LastPlayed TIMESTAMP NULL DEFAULT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Maps PRIMARY KEY (MapID))";
+	MapID INTEGER NOT NULL, \
+	Name VARCHAR(32) NOT NULL UNIQUE, \
+	LastPlayed TIMESTAMP NULL DEFAULT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Maps PRIMARY KEY (MapID))";
 
 char mysql_maps_create[] = "\
 CREATE TABLE IF NOT EXISTS Maps ( \
-    MapID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
-    Name VARCHAR(32) NOT NULL UNIQUE, \
-    LastPlayed TIMESTAMP NULL DEFAULT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Maps PRIMARY KEY (MapID))";
+	MapID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
+	Name VARCHAR(32) NOT NULL UNIQUE, \
+	LastPlayed TIMESTAMP NULL DEFAULT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Maps PRIMARY KEY (MapID))";
 
 char sqlite_maps_insert[] = "\
 INSERT OR IGNORE INTO Maps (Name, LastPlayed) \
-    VALUES ('%s', CURRENT_TIMESTAMP)";
+	VALUES ('%s', CURRENT_TIMESTAMP)";
 
 char sqlite_maps_update[] = "\
 UPDATE OR IGNORE Maps \
-    SET LastPlayed=CURRENT_TIMESTAMP \
-    WHERE Name='%s'";
+	SET LastPlayed=CURRENT_TIMESTAMP \
+	WHERE Name='%s'";
 
 char mysql_maps_upsert[] = "\
 INSERT INTO Maps (Name, LastPlayed) \
-    VALUES ('%s', CURRENT_TIMESTAMP) \
-    ON DUPLICATE KEY UPDATE \
-    LastPlayed=CURRENT_TIMESTAMP";
+	VALUES ('%s', CURRENT_TIMESTAMP) \
+	ON DUPLICATE KEY UPDATE \
+	LastPlayed=CURRENT_TIMESTAMP";
 
 char sql_maps_findid[] = "\
 SELECT MapID, Name \
-    FROM Maps \
-    WHERE Name LIKE '%%%s%%' \
-    ORDER BY (Name='%s') DESC, LENGTH(Name) \
-    LIMIT 1";
+	FROM Maps \
+	WHERE Name LIKE '%%%s%%' \
+	ORDER BY (Name='%s') DESC, LENGTH(Name) \
+	LIMIT 1";
 
 
 
@@ -102,33 +102,33 @@ SELECT MapID, Name \
 
 char sqlite_mapcourses_create[] = "\
 CREATE TABLE IF NOT EXISTS MapCourses ( \
-    MapCourseID INTEGER NOT NULL, \
-    MapID INTEGER NOT NULL, \
-    Course INTEGER NOT NULL, \
-    Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_MapCourses PRIMARY KEY (MapCourseID), \
-    CONSTRAINT UQ_MapCourses_MapIDCourse UNIQUE (MapID, Course), \
-    CONSTRAINT FK_MapCourses_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	MapCourseID INTEGER NOT NULL, \
+	MapID INTEGER NOT NULL, \
+	Course INTEGER NOT NULL, \
+	Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_MapCourses PRIMARY KEY (MapCourseID), \
+	CONSTRAINT UQ_MapCourses_MapIDCourse UNIQUE (MapID, Course), \
+	CONSTRAINT FK_MapCourses_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_mapcourses_create[] = "\
 CREATE TABLE IF NOT EXISTS MapCourses ( \
-    MapCourseID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
-    MapID INTEGER UNSIGNED NOT NULL, \
-    Course INTEGER UNSIGNED NOT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_MapCourses PRIMARY KEY (MapCourseID), \
-    CONSTRAINT UQ_MapCourses_MapIDCourse UNIQUE (MapID, Course), \
-    CONSTRAINT FK_MapCourses_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	MapCourseID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
+	MapID INTEGER UNSIGNED NOT NULL, \
+	Course INTEGER UNSIGNED NOT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_MapCourses PRIMARY KEY (MapCourseID), \
+	CONSTRAINT UQ_MapCourses_MapIDCourse UNIQUE (MapID, Course), \
+	CONSTRAINT FK_MapCourses_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sqlite_mapcourses_insert[] = "\
 INSERT OR IGNORE INTO MapCourses (MapID, Course) \
-    VALUES (%d, %d)";
+	VALUES (%d, %d)";
 
 char mysql_mapcourses_insert[] = "\
 INSERT IGNORE INTO MapCourses (MapID, Course) \
-    VALUES (%d, %d)";
+	VALUES (%d, %d)";
 
 
 
@@ -136,41 +136,41 @@ INSERT IGNORE INTO MapCourses (MapID, Course) \
 
 char sqlite_times_create[] = "\
 CREATE TABLE IF NOT EXISTS Times ( \
-    TimeID INTEGER NOT NULL, \
-    SteamID32 INTEGER NOT NULL, \
-    MapCourseID INTEGER NOT NULL, \
-    Mode INTEGER NOT NULL, \
-    Style INTEGER NOT NULL, \
-    RunTime INTEGER NOT NULL, \
-    Teleports INTEGER NOT NULL, \
-    Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Times PRIMARY KEY (TimeID), \
-    CONSTRAINT FK_Times_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE, CONSTRAINT FK_Times_MapCourseID \
-    FOREIGN KEY (MapCourseID) REFERENCES MapCourses(MapCourseID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	TimeID INTEGER NOT NULL, \
+	SteamID32 INTEGER NOT NULL, \
+	MapCourseID INTEGER NOT NULL, \
+	Mode INTEGER NOT NULL, \
+	Style INTEGER NOT NULL, \
+	RunTime INTEGER NOT NULL, \
+	Teleports INTEGER NOT NULL, \
+	Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Times PRIMARY KEY (TimeID), \
+	CONSTRAINT FK_Times_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE, CONSTRAINT FK_Times_MapCourseID \
+	FOREIGN KEY (MapCourseID) REFERENCES MapCourses(MapCourseID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_times_create[] = "\
 CREATE TABLE IF NOT EXISTS Times ( \
-    TimeID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
-    SteamID32 INTEGER UNSIGNED NOT NULL, \
-    MapCourseID INTEGER UNSIGNED NOT NULL, \
-    Mode TINYINT UNSIGNED NOT NULL, \
-    Style TINYINT UNSIGNED NOT NULL, \
-    RunTime INTEGER UNSIGNED NOT NULL, \
-    Teleports SMALLINT UNSIGNED NOT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Times PRIMARY KEY (TimeID), \
-    CONSTRAINT FK_Times_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE, \
-    CONSTRAINT FK_Times_MapCourseID FOREIGN KEY (MapCourseID) REFERENCES MapCourses(MapCourseID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	TimeID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
+	SteamID32 INTEGER UNSIGNED NOT NULL, \
+	MapCourseID INTEGER UNSIGNED NOT NULL, \
+	Mode TINYINT UNSIGNED NOT NULL, \
+	Style TINYINT UNSIGNED NOT NULL, \
+	RunTime INTEGER UNSIGNED NOT NULL, \
+	Teleports SMALLINT UNSIGNED NOT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Times PRIMARY KEY (TimeID), \
+	CONSTRAINT FK_Times_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE, \
+	CONSTRAINT FK_Times_MapCourseID FOREIGN KEY (MapCourseID) REFERENCES MapCourses(MapCourseID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_times_insert[] = "\
 INSERT INTO Times (SteamID32, MapCourseID, Mode, Style, RunTime, Teleports) \
-    SELECT %d, MapCourseID, %d, %d, %d, %d \
-    FROM MapCourses \
-    WHERE MapID=%d AND Course=%d";
+	SELECT %d, MapCourseID, %d, %d, %d, %d \
+	FROM MapCourses \
+	WHERE MapID=%d AND Course=%d";
 
 
 
@@ -178,102 +178,102 @@ INSERT INTO Times (SteamID32, MapCourseID, Mode, Style, RunTime, Teleports) \
 
 char sqlite_jumpstats_create[] = "\
 CREATE TABLE IF NOT EXISTS Jumpstats ( \
-    JumpID INTEGER NOT NULL, \
-    SteamID32 INTEGER NOT NULL, \
-    JumpType INTEGER NOT NULL, \
-    Mode INTEGER NOT NULL, \
-    Distance INTEGER NOT NULL, \
-    IsBlockJump INTEGER NOT NULL, \
-    Block INTEGER NOT NULL, \
-    Strafes INTEGER NOT NULL, \
-    Sync INTEGER NOT NULL, \
-    Pre INTEGER NOT NULL, \
-    Max INTEGER NOT NULL, \
-    Airtime INTEGER NOT NULL, \
-    Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
-    CONSTRAINT FK_Jumpstats_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	JumpID INTEGER NOT NULL, \
+	SteamID32 INTEGER NOT NULL, \
+	JumpType INTEGER NOT NULL, \
+	Mode INTEGER NOT NULL, \
+	Distance INTEGER NOT NULL, \
+	IsBlockJump INTEGER NOT NULL, \
+	Block INTEGER NOT NULL, \
+	Strafes INTEGER NOT NULL, \
+	Sync INTEGER NOT NULL, \
+	Pre INTEGER NOT NULL, \
+	Max INTEGER NOT NULL, \
+	Airtime INTEGER NOT NULL, \
+	Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
+	CONSTRAINT FK_Jumpstats_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_jumpstats_create[] = "\
 CREATE TABLE IF NOT EXISTS Jumpstats ( \
-    JumpID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
-    SteamID32 INTEGER UNSIGNED NOT NULL, \
-    JumpType TINYINT UNSIGNED NOT NULL, \
-    Mode TINYINT UNSIGNED NOT NULL, \
-    Distance INTEGER UNSIGNED NOT NULL, \
-    IsBlockJump TINYINT UNSIGNED NOT NULL, \
-    Block SMALLINT UNSIGNED NOT NULL, \
-    Strafes INTEGER UNSIGNED NOT NULL, \
-    Sync INTEGER UNSIGNED NOT NULL, \
-    Pre INTEGER UNSIGNED NOT NULL, \
-    Max INTEGER UNSIGNED NOT NULL, \
-    Airtime INTEGER UNSIGNED NOT NULL, \
-    Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-    CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
-    CONSTRAINT FK_Jumpstats_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	JumpID INTEGER UNSIGNED NOT NULL AUTO_INCREMENT, \
+	SteamID32 INTEGER UNSIGNED NOT NULL, \
+	JumpType TINYINT UNSIGNED NOT NULL, \
+	Mode TINYINT UNSIGNED NOT NULL, \
+	Distance INTEGER UNSIGNED NOT NULL, \
+	IsBlockJump TINYINT UNSIGNED NOT NULL, \
+	Block SMALLINT UNSIGNED NOT NULL, \
+	Strafes INTEGER UNSIGNED NOT NULL, \
+	Sync INTEGER UNSIGNED NOT NULL, \
+	Pre INTEGER UNSIGNED NOT NULL, \
+	Max INTEGER UNSIGNED NOT NULL, \
+	Airtime INTEGER UNSIGNED NOT NULL, \
+	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
+	CONSTRAINT FK_Jumpstats_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_jumpstats_insert[] = "\
 INSERT INTO Jumpstats (SteamID32, JumpType, Mode, Distance, IsBlockJump, Block, Strafes, Sync, Pre, Max, Airtime) \
-    VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
+	VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
 
 char sql_jumpstats_update[] = "\
 UPDATE Jumpstats \
-    SET \
-        SteamID32=%d, \
-        JumpType=%d, \
-        Mode=%d, \
-        Distance=%d, \
-        IsBlockJump=%d, \
-        Block=%d, \
-        Strafes=%d, \
-        Sync=%d, \
-        Pre=%d, \
-        Max=%d, \
-        Airtime=%d \
-    WHERE \
-        JumpID=%d";
+	SET \
+		SteamID32=%d, \
+		JumpType=%d, \
+		Mode=%d, \
+		Distance=%d, \
+		IsBlockJump=%d, \
+		Block=%d, \
+		Strafes=%d, \
+		Sync=%d, \
+		Pre=%d, \
+		Max=%d, \
+		Airtime=%d \
+	WHERE \
+		JumpID=%d";
 
 char sql_jumpstats_getrecord[] = "\
 SELECT JumpID, Distance, Block \
-    FROM \
-        Jumpstats \
-    WHERE \
-        SteamID32=%d AND \
-        JumpType=%d AND \
-        Mode=%d AND \
-        IsBlockJump=%d \
-    ORDER BY Block DESC, Distance DESC";
+	FROM \
+		Jumpstats \
+	WHERE \
+		SteamID32=%d AND \
+		JumpType=%d AND \
+		Mode=%d AND \
+		IsBlockJump=%d \
+	ORDER BY Block DESC, Distance DESC";
 
 char sql_jumpstats_deleterecord[] = "\
 DELETE \
-    FROM \
-        Jumpstats \
-    WHERE \
-        JumpID = \
-        ( SELECT * FROM ( \
-            SELECT JumpID \
-                FROM \
-                    Jumpstats \
-                WHERE \
-                    SteamID32=%d AND \
-                    JumpType=%d AND \
-                    Mode=%d AND \
-                    IsBlockJump=%d \
-                ORDER BY Block DESC, Distance DESC \
-                LIMIT 1 \
+	FROM \
+		Jumpstats \
+	WHERE \
+		JumpID = \
+		( SELECT * FROM ( \
+			SELECT JumpID \
+				FROM \
+					Jumpstats \
+				WHERE \
+					SteamID32=%d AND \
+					JumpType=%d AND \
+					Mode=%d AND \
+					IsBlockJump=%d \
+				ORDER BY Block DESC, Distance DESC \
+				LIMIT 1 \
 			) AS tmp \
-        )";
+		)";
 
 char sql_jumpstats_getpbs[] = "\
 SELECT MAX(Distance), Mode, JumpType \
-    FROM \
-        Jumpstats \
-    WHERE \
-        SteamID32=%d \
-    GROUP BY \
-    	Mode, JumpType";
+	FROM \
+		Jumpstats \
+	WHERE \
+		SteamID32=%d \
+	GROUP BY \
+		Mode, JumpType";
 
 char sql_jumpstats_getblockpbs[] = "\
 SELECT MAX(js.Distance), js.Mode, js.JumpType, js.Block \
@@ -313,9 +313,9 @@ CREATE TABLE IF NOT EXISTS VBPosition ( \
 	Course INTEGER NOT NULL, \
 	IsStart INTEGER NOT NULL, \
 	CONSTRAINT PK_VBPosition PRIMARY KEY (SteamID32, MapID, IsStart), \
-    CONSTRAINT FK_VBPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
-    CONSTRAINT FK_VBPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_VBPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
+	CONSTRAINT FK_VBPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_vbpos_create[] = "\
 CREATE TABLE IF NOT EXISTS VBPosition ( \
@@ -327,9 +327,9 @@ CREATE TABLE IF NOT EXISTS VBPosition ( \
 	Course INTEGER NOT NULL, \
 	IsStart INTEGER NOT NULL, \
 	CONSTRAINT PK_VBPosition PRIMARY KEY (SteamID32, MapID, IsStart), \
-    CONSTRAINT FK_VBPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
-    CONSTRAINT FK_VBPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_VBPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
+	CONSTRAINT FK_VBPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_vbpos_upsert[] = "\
 REPLACE INTO VBPosition (SteamID32, MapID, X, Y, Z, Course, IsStart) \
@@ -357,9 +357,9 @@ CREATE TABLE IF NOT EXISTS StartPosition ( \
 	Angle0 REAL NOT NULL, \
 	Angle1 REAL NOT NULL, \
 	CONSTRAINT PK_StartPosition PRIMARY KEY (SteamID32, MapID), \
-    CONSTRAINT FK_StartPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    CONSTRAINT FK_StartPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_StartPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	CONSTRAINT FK_StartPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_startpos_create[] = "\
 CREATE TABLE IF NOT EXISTS StartPosition ( \
@@ -371,9 +371,9 @@ CREATE TABLE IF NOT EXISTS StartPosition ( \
 	Angle0 REAL NOT NULL, \
 	Angle1 REAL NOT NULL, \
 	CONSTRAINT PK_StartPosition PRIMARY KEY (SteamID32, MapID), \
-    CONSTRAINT FK_StartPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
-    CONSTRAINT FK_StartPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_StartPosition_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32), \
+	CONSTRAINT FK_StartPosition_MapID FOREIGN KEY (MapID) REFERENCES Maps(MapID) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_startpos_upsert[] = "\
 REPLACE INTO StartPosition (SteamID32, MapID, X, Y, Z, Angle0, Angle1) \
@@ -395,27 +395,44 @@ char sqlite_levels_create[] = "\
 CREATE TABLE IF NOT EXISTS Levels ( \
 	SteamID32 INTEGER NOT NULL, \
 	Experience INTEGER NOT NULL DEFAULT '0', \
-    Prestige INTEGER NOT NULL DEFAULT '0', \
+	Prestige INTEGER NOT NULL DEFAULT '0', \
 	CONSTRAINT PK_Levels PRIMARY KEY (SteamID32), \
-    CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char mysql_levels_create[] = "\
 CREATE TABLE IF NOT EXISTS Levels ( \
 	SteamID32 INTEGER UNSIGNED NOT NULL, \
 	Experience INTEGER UNSIGNED NOT NULL DEFAULT '0', \
-    Prestige INTEGER UNSIGNED NOT NULL DEFAULT '0', \
+	Prestige INTEGER UNSIGNED NOT NULL DEFAULT '0', \
 	CONSTRAINT PK_Levels PRIMARY KEY (SteamID32), \
-    CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
-    ON UPDATE CASCADE ON DELETE CASCADE)";
+	CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
+	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_levels_upsert[] = "\
 REPLACE INTO Levels (SteamID32, Experience, Prestige) \
-    VALUES (%d, %d, %d)";
+	VALUES (%d, %d, %d)";
 
 char sql_levels_get[] = "\
-SELECT SteamID32, Experience, Prestige \
-    FROM \
-        Levels \
-    WHERE \
-        SteamID32 = %d";
+SELECT Experience, Prestige \
+	FROM \
+		Levels \
+	WHERE \
+		SteamID32 = %d";
+
+char sql_levels_rank_get[] = "\
+SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels, ( \
+		SELECT COUNT(DISTINCT Levels.SteamID32) AS Found, Experience, Prestige \
+		FROM Levels \
+		WHERE SteamID32=%d \
+		LIMIT 1 \
+	) AS p \
+	INNER JOIN Players ON Players.SteamID32=SteamID32 \
+	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+
+char sql_levels_maxrank_get[] = "\
+SELECT COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels \
+	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	WHERE Players.Cheater=0";

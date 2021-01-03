@@ -62,6 +62,11 @@ SELECT SteamID32, Alias \
     ORDER BY (LOWER(Alias)='%s') DESC, LastPlayed DESC \
     LIMIT 1";
 
+char sql_players_profile[] = "\
+SELECT Alias, Country, LastPlayed, Created \
+    FROM Players \
+    WHERE SteamID32=%d";
+
 
 
 // =====[ MAPCOURSES ]=====
@@ -80,7 +85,7 @@ SELECT Times.RunTime, Times.Teleports \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     WHERE Times.SteamID32=%d AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d \
     ORDER BY Times.RunTime \
     LIMIT %d";
 
@@ -89,7 +94,7 @@ SELECT Times.RunTime \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     WHERE Times.SteamID32=%d AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Teleports=0 \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     ORDER BY Times.RunTime \
     LIMIT %d";
 
@@ -152,13 +157,13 @@ SELECT COUNT(DISTINCT Times.SteamID32) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d AND MapCourses.Course=%d \
-    AND Times.Mode=%d AND Times.RunTime < \
+    AND Times.Mode=%d AND Times.Style=%d AND Times.RunTime < \
     (SELECT MIN(Times.RunTime) \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Times.SteamID32=%d AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d) \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d) \
     + 1";
 
 char sql_getmaprankpro[] = "\
@@ -167,14 +172,14 @@ SELECT COUNT(DISTINCT Times.SteamID32) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d AND MapCourses.Course=%d \
-    AND Times.Mode=%d AND Times.Teleports=0 \
+    AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     AND Times.RunTime < \
     (SELECT MIN(Times.RunTime) \
     FROM Times \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Times.SteamID32=%d AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Teleports=0) \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0) \
     + 1";
 
 char sql_getlowestmaprank[] = "\
@@ -183,7 +188,7 @@ SELECT COUNT(DISTINCT Times.SteamID32) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d";
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d";
 
 char sql_getlowestmaprankpro[] = "\
 SELECT COUNT(DISTINCT Times.SteamID32) \
@@ -191,7 +196,7 @@ SELECT COUNT(DISTINCT Times.SteamID32) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Teleports=0";
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0";
 
 char sql_getcount_maincourses[] = "\
 SELECT COUNT(*) \
@@ -205,7 +210,7 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.SteamID32=%d AND Times.Mode=%d";
+    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d";
 
 char sql_getcount_maincoursescompletedpro[] = "\
 SELECT COUNT(DISTINCT Times.MapCourseID) \
@@ -213,7 +218,23 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Teleports=0";
+    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0";
+
+char sql_getcount_maincoursescompletedoverall[] = "\
+SELECT COUNT(DISTINCT Times.MapCourseID) \
+    FROM Times \
+    INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+    INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+    WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
+    AND Times.SteamID32=%d";
+
+char sql_getcount_maincoursescompletedprooverall[] = "\
+SELECT COUNT(DISTINCT Times.MapCourseID) \
+    FROM Times \
+    INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+    INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+    WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 \
+    AND Times.SteamID32=%d AND Times.Teleports=0";
 
 char sql_getcount_bonuses[] = "\
 SELECT COUNT(*) \
@@ -227,7 +248,7 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course>0 \
-    AND Times.SteamID32=%d AND Times.Mode=%d";
+    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d";
 
 char sql_getcount_bonusescompletedpro[] = "\
 SELECT COUNT(DISTINCT Times.MapCourseID) \
@@ -235,7 +256,7 @@ SELECT COUNT(DISTINCT Times.MapCourseID) \
     INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     WHERE Maps.InRankedPool=1 AND MapCourses.Course>0 \
-    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Teleports=0";
+    AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0";
 
 char sql_gettopplayers[] = "\
 SELECT Players.SteamID32, Players.Alias, COUNT(*) AS RecordCount \
@@ -247,7 +268,7 @@ SELECT Players.SteamID32, Players.Alias, COUNT(*) AS RecordCount \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.Mode=%d \
+    AND Times.Mode=%d AND Times.Style=%d \
     GROUP BY Times.MapCourseID) Records \
     ON Times.MapCourseID=Records.MapCourseID AND Times.RunTime=Records.RecordTime \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
@@ -265,7 +286,7 @@ SELECT Players.SteamID32, Players.Alias, COUNT(*) AS RecordCount \
     INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
     WHERE Players.Cheater=0 AND Maps.InRankedPool=1 AND MapCourses.Course=0 \
-    AND Times.Mode=%d AND Times.Teleports=0 \
+    AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     GROUP BY Times.MapCourseID) Records \
     ON Times.MapCourseID=Records.MapCourseID AND Times.RunTime=Records.RecordTime \
     INNER JOIN Players ON Players.SteamID32=Times.SteamID32 \
@@ -281,7 +302,7 @@ SELECT AVG(PBTime), COUNT(*) \
     INNER JOIN MapCourses ON Times.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Players ON Times.SteamID32=Players.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d \
     GROUP BY Times.SteamID32) AS PBTimes";
 
 char sql_getaverage_pro[] = "\
@@ -292,7 +313,7 @@ SELECT AVG(PBTime), COUNT(*) \
     INNER JOIN MapCourses ON Times.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Players ON Times.SteamID32=Players.SteamID32 \
     WHERE Players.Cheater=0 AND MapCourses.MapID=%d \
-    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Teleports=0 \
+    AND MapCourses.Course=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0 \
     GROUP BY Times.SteamID32) AS PBTimes";
 
 char sql_getrecentrecords[] = "\
@@ -301,11 +322,11 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     INNER JOIN MapCourses ON a.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Maps ON MapCourses.MapID=Maps.MapID \
     INNER JOIN Players ON a.SteamID32=Players.SteamID32 \
-    WHERE Players.Cheater=0 AND a.Mode=%d \
+    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Style=%d \
     AND NOT EXISTS \
     (SELECT * \
     FROM Times AS b \
-    WHERE a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode \
+    WHERE a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
     ORDER BY a.Created DESC \
     LIMIT %d";
@@ -316,14 +337,50 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     INNER JOIN MapCourses ON a.MapCourseID=MapCourses.MapCourseID \
     INNER JOIN Maps ON MapCourses.MapID=Maps.MapID \
     INNER JOIN Players ON a.SteamID32=Players.SteamID32 \
-    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Teleports=0 \
+    WHERE Players.Cheater=0 AND a.Mode=%d AND a.Style=%d AND a.Teleports=0 \
     AND NOT EXISTS \
     (SELECT * \
     FROM Times AS b \
-    WHERE b.Teleports=0 AND a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode \
+    WHERE b.Teleports=0 AND a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
     ORDER BY a.Created DESC \
     LIMIT %d";
+
+char sql_getcompletedmainmapcoursesoverall[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND MapCourses.Course=0 \
+	ORDER BY Maps.Name";
+
+char sql_getcompletedmainmapcoursesoverall_pro[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND MapCourses.Course=0 AND Times.Teleports=0 \
+	ORDER BY Maps.Name";
+
+char sql_getuncompletedmainmapcoursesoverall[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
+char sql_getuncompletedmainmapcoursesoverall_pro[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Teleports=0) \
+	ORDER BY Maps.Name, MapCourses.Course";
 
 
 
@@ -379,3 +436,32 @@ SELECT JumpID, Distance, Block \
         Mode = %d AND \
         IsBlockJump = %d \
     ORDER BY Block DESC, Distance DESC";
+
+
+
+// =====[ PROFILE ]=====
+
+char sql_levels_get[] = "\
+SELECT Experience, Prestige \
+	FROM \
+		Levels \
+	WHERE \
+		SteamID32 = %d";
+
+char sql_levels_rank_get[] = "\
+SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels, ( \
+		SELECT COUNT(DISTINCT Levels.SteamID32) AS Found, Experience, Prestige \
+		FROM Levels \
+		WHERE SteamID32=%d \
+		LIMIT 1 \
+	) AS p \
+	INNER JOIN Players ON Players.SteamID32=SteamID32 \
+	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+
+char sql_levels_maxrank_get[] = "\
+SELECT COUNT(DISTINCT Levels.SteamID32) \
+	FROM Levels \
+	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	WHERE Players.Cheater=0";
+

@@ -27,6 +27,8 @@ public Plugin myinfo =
 
 ConVar gCV_AutoBunnyHopping;
 
+bool gB_LadderJump[MAXPLAYERS + 1];
+
 
 
 // =====[ PLUGIN EVENTS ]=====
@@ -34,6 +36,7 @@ ConVar gCV_AutoBunnyHopping;
 public void OnPluginStart()
 {
 	CreateConVars();
+	HookEvents();
 }
 
 public void OnAllPluginsLoaded()
@@ -65,25 +68,75 @@ public void OnLibraryAdded(const char[] name)
 
 public void OnClientPutInServer(int client)
 {
-	SDKHook(client, SDKHook_PreThinkPost, SDKHook_OnClientPreThink_Post);
+	gB_LadderJump[client] = false;
+
+	HookClientEvents(client);
 	ReplicateConVars(client);
+}
+
+public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
+{
+	int client = GetClientOfUserId(event.GetInt("userid"));
+	if (!IsValidClient(client))
+	{
+		return;
+	}
+
+	// Give a negev (negev style)
+	if (GetStyle(client) == Style_Negev) 
+	{
+		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
 }
 
 public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Style]))
+	if (!StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
-		ReplicateConVars(client);
+		return;
+	}
 
-		float laggedMovement = GetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue");
-		if (FloatAbs(laggedMovement) > EPSILON)
-		{
-			SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
-		}
+	ReplicateConVars(client);
+
+	// Reset lagged movement (undo slow-motion style)
+	SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
+
+	// Give a negev (negev style)
+	if (newValue == Style_Negev)
+	{
+		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
+
+	// Remove ATCONTROLS flag (w only)
+	SetEntityFlags(client, GetEntityFlags(client) & ~FL_ATCONTROLS);
+}
+
+public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType newMovetype)
+{
+	// Keep track of when the player is performing a ladder jump.
+	if (newMovetype == MOVETYPE_LADDER)
+	{
+		gB_LadderJump[client] = true;
 	}
 }
 
-public void SDKHook_OnClientPreThink_Post(int client)
+public void Movement_OnStartTouchGround(int client)
+{
+	// Touched the ground, so not perforing a ladder jump anymore.
+	gB_LadderJump[client] = false;
+}
+
+public void OnStartTouchPost(int client, int other)
+{
+	// Touched the world, so not performing a ladder jump anymore.
+	// This can be either a surf, or a wall. Ground is handled elsewhere.
+	if (other == 0)
+	{
+		gB_LadderJump[client] = false;
+	}
+}
+
+public void OnClientPreThink_Post(int client)
 {
 	if (!IsPlayerAlive(client))
 	{
@@ -121,7 +174,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		int flags = GetEntityFlags(client);
 
 		int badButtons = (buttons & IN_BACK) | (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
-		if (badButtons != 0)
+		if (badButtons != 0 && !gB_LadderJump[client])
 		{
 			flags |= FL_ATCONTROLS;
 			buttons &= ~badButtons;
@@ -136,6 +189,28 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	return Plugin_Continue;
 }
 
+public Action OnClientWeaponCanSwitchTo(int client, int weapon)
+{
+	if (GetStyle(client) == Style_Negev)
+	{
+		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+		if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_NEGEV))
+		{
+			return Plugin_Stop;
+		}
+	}
+	return Plugin_Continue;
+}
+
+public Action OnClientWeaponDrop(int client, int weapon)
+{
+	if (GetStyle(client) == Style_Negev)
+	{
+		return Plugin_Stop;
+	}
+	return Plugin_Continue;
+}
+
 
 
 // =====[ GENERAL ]=====
@@ -145,6 +220,45 @@ int GetStyle(int client)
 	return GOKZ_GetCoreOption(client, Option_Style);
 }
 
+int GiveWeapon(int client, const char[] classname, int weaponSlot, int weaponTeam = CS_TEAM_NONE)
+{
+	if (!IsValidClient(client) || !IsPlayerAlive(client) || GetClientTeam(client) == CS_TEAM_NONE)
+	{
+		return 0;
+	}        
+
+	// Switch team the weapon belongs to (glock for T etc), so player gets the skin
+	int playerTeam = GetClientTeam(client);
+	if (playerTeam != weaponTeam && weaponTeam != CS_TEAM_NONE)
+	{
+		SetEntProp(client, Prop_Data, "m_iTeamNum", weaponTeam);
+	}        
+
+	int currentWeapon = GetPlayerWeaponSlot(client, weaponSlot);
+	if (currentWeapon != -1)
+	{
+		AcceptEntityInput(currentWeapon, "kill");
+		RemovePlayerItem(client, currentWeapon);
+	}        
+
+	int weapon = GivePlayerItem(client, classname);
+	if (weapon == -1)
+	{
+		return 0;
+	}
+
+	// Switch back to original team
+	if (playerTeam != GetClientTeam(client))
+	{
+		SetEntProp(client, Prop_Data, "m_iTeamNum", playerTeam);
+	}        
+
+	// Switch to the weapon
+	FakeClientCommand(client, "use %s", classname);
+
+	return weapon;
+}
+
 
 
 // =====[ CONVARS ]=====
@@ -152,6 +266,10 @@ int GetStyle(int client)
 void CreateConVars()
 {
 	gCV_AutoBunnyHopping = FindConVar("sv_autobunnyhopping");
+
+	// Styles replicate it manually
+	gCV_AutoBunnyHopping.Flags &= ~FCVAR_NOTIFY;
+	gCV_AutoBunnyHopping.Flags &= ~FCVAR_REPLICATED;
 }
 
 void ReplicateConVars(int client)
@@ -174,3 +292,22 @@ void ReplicateConVars(int client)
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "0");
 	}
 }
+
+
+
+// =====[ PRIVATE ]=====
+
+static void HookEvents()
+{
+	HookEvent("player_spawn", OnPlayerSpawn, EventHookMode_Post);
+}
+
+static void HookClientEvents(int client)
+{
+	SDKHook(client, SDKHook_PreThinkPost, OnClientPreThink_Post);
+
+	SDKHook(client, SDKHook_StartTouchPost, OnStartTouchPost);
+
+	SDKHook(client, SDKHook_WeaponCanSwitchTo, OnClientWeaponCanSwitchTo);
+	SDKHook(client, SDKHook_WeaponDrop, OnClientWeaponDrop);
+} 

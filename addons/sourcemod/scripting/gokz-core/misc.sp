@@ -25,10 +25,44 @@ void OnMapStart_KZConfig()
 
 // =====[ GODMODE ]=====
 
+void OnClientPutInServer_GodMode(int client)
+{
+	gB_GodMode[client] = true; 
+}
+
 void OnPlayerSpawn_GodMode(int client)
 {
-	// Stop players from taking damage
-	SetEntProp(client, Prop_Data, "m_takedamage", 0);
+	UpdateGodMode(client);
+}
+
+void OnTimerStart_GodMode(int client)
+{
+	if (!gB_GodMode[client])
+	{
+		gB_GodMode[client] = true;
+		UpdateGodMode(client);
+
+		GOKZ_PrintToChat(client, true, "%t", "Enabled God Mode");
+	}
+}
+
+bool ToggleGodMode(int client)
+{
+	gB_GodMode[client] = !gB_GodMode[client];
+	UpdateGodMode(client);
+	return gB_GodMode[client];
+}
+
+void UpdateGodMode(int client)
+{
+	if (gB_GodMode[client])
+	{
+		SetEntProp(client, Prop_Data, "m_takedamage", 0);
+	}
+	else
+	{
+		SetEntProp(client, Prop_Data, "m_takedamage", 2);
+	}
 }
 
 

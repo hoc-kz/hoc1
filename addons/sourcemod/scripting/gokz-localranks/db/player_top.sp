@@ -5,10 +5,11 @@
 
 
 static int playerTopMode[MAXPLAYERS + 1];
+static int playerTopStyle[MAXPLAYERS + 1];
 
 
 
-void DB_OpenPlayerTop(int client, int timeType, int mode)
+void DB_OpenPlayerTop(int client, int timeType, int mode, int style)
 {
 	char query[1024];
 	
@@ -16,6 +17,7 @@ void DB_OpenPlayerTop(int client, int timeType, int mode)
 	data.WriteCell(GetClientUserId(client));
 	data.WriteCell(timeType);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	Transaction txn = SQL_CreateTransaction();
 	
@@ -24,12 +26,12 @@ void DB_OpenPlayerTop(int client, int timeType, int mode)
 	{
 		case TimeType_Nub:
 		{
-			FormatEx(query, sizeof(query), sql_gettopplayers, mode, LR_PLAYER_TOP_CUTOFF);
+			FormatEx(query, sizeof(query), sql_gettopplayers, mode, style, LR_PLAYER_TOP_CUTOFF);
 			txn.AddQuery(query);
 		}
 		case TimeType_Pro:
 		{
-			FormatEx(query, sizeof(query), sql_gettopplayerspro, mode, LR_PLAYER_TOP_CUTOFF);
+			FormatEx(query, sizeof(query), sql_gettopplayerspro, mode, style, LR_PLAYER_TOP_CUTOFF);
 			txn.AddQuery(query);
 		}
 	}
@@ -43,6 +45,7 @@ public void DB_TxnSuccess_OpenPlayerTop(Handle db, DataPack data, int numQueries
 	int client = GetClientOfUserId(data.ReadCell());
 	int timeType = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -57,7 +60,7 @@ public void DB_TxnSuccess_OpenPlayerTop(Handle db, DataPack data, int numQueries
 			case TimeType_Nub:GOKZ_PrintToChat(client, true, "%t", "Player Top - No Times");
 			case TimeType_Pro:GOKZ_PrintToChat(client, true, "%t", "Player Top - No Times (PRO)");
 		}
-		DisplayPlayerTopMenu(client, playerTopMode[client]);
+		DisplayPlayerTopMenu(client, playerTopMode[client], playerTopStyle[client]);
 		return;
 	}
 	
@@ -66,7 +69,7 @@ public void DB_TxnSuccess_OpenPlayerTop(Handle db, DataPack data, int numQueries
 	
 	// Set submenu title
 	menu.SetTitle("%T", "Player Top Submenu - Title", client, 
-		LR_PLAYER_TOP_CUTOFF, gC_TimeTypeNames[timeType], gC_ModeNames[mode]);
+		LR_PLAYER_TOP_CUTOFF, gC_TimeTypeNames[timeType], gC_ModeNames[mode], gC_StyleNames[style]);
 	
 	// Add submenu items
 	char display[256];
@@ -82,7 +85,7 @@ public void DB_TxnSuccess_OpenPlayerTop(Handle db, DataPack data, int numQueries
 	
 	menu.Display(client, MENU_TIME_FOREVER);
 }
-
+ 
 
 
 // =====[ MENUS ]=====
@@ -95,12 +98,23 @@ void DisplayPlayerTopModeMenu(int client)
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-void DisplayPlayerTopMenu(int client, int mode)
+void DisplayPlayerTopStyleMenu(int client, int mode)
 {
 	playerTopMode[client] = mode;
+
+	Menu menu = new Menu(MenuHandler_PlayerTopStyle);
+	menu.SetTitle("%T", "Player Top Style Menu - Title", client, gC_ModeNames[mode]);
+	GOKZ_MenuAddStyleItems(client, menu, false);
+	menu.Display(client, MENU_TIME_FOREVER);
+}
+
+void DisplayPlayerTopMenu(int client, int mode, int style)
+{
+	playerTopMode[client] = mode;
+	playerTopStyle[client] = style;
 	
 	Menu menu = new Menu(MenuHandler_PlayerTop);
-	menu.SetTitle("%T", "Player Top Menu - Title", client, gC_ModeNames[mode]);
+	menu.SetTitle("%T", "Player Top Menu - Title", client, gC_ModeNames[mode], gC_StyleNames[style]);
 	PlayerTopMenuAddItems(client, menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -124,7 +138,23 @@ public int MenuHandler_PlayerTopMode(Menu menu, MenuAction action, int param1, i
 {
 	if (action == MenuAction_Select)
 	{
-		DisplayPlayerTopMenu(param1, param2);
+		DisplayPlayerTopStyleMenu(param1, param2);
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
+}
+
+public int MenuHandler_PlayerTopStyle(Menu menu, MenuAction action, int param1, int param2)
+{
+	if (action == MenuAction_Select)
+	{
+		DisplayPlayerTopMenu(param1, playerTopMode[param1], param2);
+	}
+	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
+	{
+		DisplayPlayerTopModeMenu(param1);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -136,11 +166,11 @@ public int MenuHandler_PlayerTop(Menu menu, MenuAction action, int param1, int p
 {
 	if (action == MenuAction_Select)
 	{
-		DB_OpenPlayerTop(param1, param2, playerTopMode[param1]);
+		DB_OpenPlayerTop(param1, param2, playerTopMode[param1], playerTopStyle[param1]);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		DisplayPlayerTopModeMenu(param1);
+		DisplayPlayerTopStyleMenu(param1, playerTopMode[param1]);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -153,7 +183,7 @@ public int MenuHandler_PlayerTopSubmenu(Menu menu, MenuAction action, int param1
 	// Menu item info is player's SteamID32, but is currently not used
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		DisplayPlayerTopMenu(param1, playerTopMode[param1]);
+		DisplayPlayerTopMenu(param1, playerTopMode[param1], playerTopStyle[param1]);
 	}
 	else if (action == MenuAction_End)
 	{

@@ -1,4 +1,4 @@
-"Phrases"
+﻿"Phrases"
 {
 	// =====[ CHAT MESSAGES ]=====
 	"Option - Teleport Menu - Disable"
@@ -101,63 +101,43 @@
 	// =====[ TELEPORT MENU ]=====
 	"TP Menu - Checkpoint"
 	{
-		"en"		"Checkpoint"
-		"chi"		"存点"
-		"ru"		"Чекпойнт"
+		"en"		"Save location"
 	}
 	"TP Menu - Teleport"
 	{
-		"en"		"Teleport"
-		"chi"		"传送"
-		"ru"		"Телепорт"
+		"en"		"Teleport back"
 	}
 	"TP Menu - Prev CP"
 	{
-		"en"		"Prev CP"
-		"chi"		"上一个存点"
-		"ru"		"Назад ЧП"
+		"en"		"Previous save"
 	}
 	"TP Menu - Next CP"
 	{
-		"en"		"Next CP"
-		"chi"		"下一个存点"
-		"ru"		"Вперед ЧП"
+		"en"		"Next save"
 	}
 	"TP Menu - Undo TP"
 	{
-		"en"		"Undo TP"
-		"chi"		"撤销存点"
-		"ru"		"Отменить ТП"
+		"en"		"Undo teleport"
 	}
 	"TP Menu - Pause"
 	{
 		"en"		"Pause"
-		"chi"		"暂停计时"
-		"ru"		"Пауза"
 	}
 	"TP Menu - Resume"
 	{
 		"en"		"Resume"
-		"chi"		"恢复计时"
-		"ru"		"Возобновить"
 	}
 	"TP Menu - Start"
 	{
 		"en"		"Start"
-		"chi"		"开始"
-		"ru"		"Старт"
 	}
 	"TP Menu - Restart"
 	{
 		"en"		"Restart"
-		"chi"		"重新开始"
-		"ru"		"Рестарт"
 	}
 	"TP Menu - Respawn"
 	{
 		"en"		"Respawn"
-		"chi"		"重生"
-		"ru"		"Респавн"
 	}
 
 

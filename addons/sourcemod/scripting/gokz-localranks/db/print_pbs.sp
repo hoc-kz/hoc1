@@ -4,7 +4,7 @@
 
 
 
-void DB_PrintPBs(int client, int targetSteamID, int mapID, int course, int mode)
+void DB_PrintPBs(int client, int targetSteamID, int mapID, int course, int mode, int style)
 {
 	char query[1024];
 	
@@ -12,6 +12,7 @@ void DB_PrintPBs(int client, int targetSteamID, int mapID, int course, int mode)
 	data.WriteCell(GetClientUserId(client));
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	Transaction txn = SQL_CreateTransaction();
 	
@@ -26,23 +27,23 @@ void DB_PrintPBs(int client, int targetSteamID, int mapID, int course, int mode)
 	txn.AddQuery(query);
 	
 	// Get PB
-	FormatEx(query, sizeof(query), sql_getpb, targetSteamID, mapID, course, mode, 1);
+	FormatEx(query, sizeof(query), sql_getpb, targetSteamID, mapID, course, mode, style, 1);
 	txn.AddQuery(query);
 	// Get Rank
-	FormatEx(query, sizeof(query), sql_getmaprank, mapID, course, mode, targetSteamID, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getmaprank, mapID, course, mode, style, targetSteamID, mapID, course, mode, style);
 	txn.AddQuery(query);
 	// Get Number of Players with Times
-	FormatEx(query, sizeof(query), sql_getlowestmaprank, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getlowestmaprank, mapID, course, mode, style);
 	txn.AddQuery(query);
 	
 	// Get PRO PB
-	FormatEx(query, sizeof(query), sql_getpbpro, targetSteamID, mapID, course, mode, 1);
+	FormatEx(query, sizeof(query), sql_getpbpro, targetSteamID, mapID, course, mode, style, 1);
 	txn.AddQuery(query);
 	// Get PRO Rank
-	FormatEx(query, sizeof(query), sql_getmaprankpro, mapID, course, mode, targetSteamID, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getmaprankpro, mapID, course, mode, style, targetSteamID, mapID, course, mode, style);
 	txn.AddQuery(query);
 	// Get Number of Players with PRO Times
-	FormatEx(query, sizeof(query), sql_getlowestmaprankpro, mapID, course, mode);
+	FormatEx(query, sizeof(query), sql_getlowestmaprankpro, mapID, course, mode, style);
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintPBs, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
@@ -54,6 +55,7 @@ public void DB_TxnSuccess_PrintPBs(Handle db, DataPack data, int numQueries, Han
 	int client = GetClientOfUserId(data.ReadCell());
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -137,11 +139,11 @@ public void DB_TxnSuccess_PrintPBs(Handle db, DataPack data, int numQueries, Han
 	// Print PB header to chat
 	if (course == 0)
 	{
-		GOKZ_PrintToChat(client, true, "%t", "PB Header", playerName, mapName, gC_ModeNamesShort[mode]);
+		GOKZ_PrintToChat(client, true, "%t", "PB Header", playerName, mapName, GOKZ_FormatModeStyle(mode, style));
 	}
 	else
 	{
-		GOKZ_PrintToChat(client, true, "%t", "PB Header (Bonus)", playerName, mapName, course, gC_ModeNamesShort[mode]);
+		GOKZ_PrintToChat(client, true, "%t", "PB Header (Bonus)", playerName, mapName, course, GOKZ_FormatModeStyle(mode, style));
 	}
 	
 	// Print PB times to chat
@@ -165,7 +167,7 @@ public void DB_TxnSuccess_PrintPBs(Handle db, DataPack data, int numQueries, Han
 	}
 }
 
-void DB_PrintPBs_FindMap(int client, int targetSteamID, const char[] mapSearch, int course, int mode)
+void DB_PrintPBs_FindMap(int client, int targetSteamID, const char[] mapSearch, int course, int mode, int style)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
@@ -173,6 +175,7 @@ void DB_PrintPBs_FindMap(int client, int targetSteamID, const char[] mapSearch, 
 	data.WriteString(mapSearch);
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	DB_FindMap(mapSearch, DB_TxnSuccess_PrintPBs_FindMap, data, DBPrio_Low);
 }
@@ -186,6 +189,7 @@ public void DB_TxnSuccess_PrintPBs_FindMap(Handle db, DataPack data, int numQuer
 	data.ReadString(mapSearch, sizeof(mapSearch));
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -201,11 +205,11 @@ public void DB_TxnSuccess_PrintPBs_FindMap(Handle db, DataPack data, int numQuer
 	}
 	else if (SQL_FetchRow(results[0]))
 	{  // Result is the MapID
-		DB_PrintPBs(client, targetSteamID, SQL_FetchInt(results[0], 0), course, mode);
+		DB_PrintPBs(client, targetSteamID, SQL_FetchInt(results[0], 0), course, mode, style);
 	}
 }
 
-void DB_PrintPBs_FindPlayerAndMap(int client, const char[] playerSearch, const char[] mapSearch, int course, int mode)
+void DB_PrintPBs_FindPlayerAndMap(int client, const char[] playerSearch, const char[] mapSearch, int course, int mode, int style)
 {
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
@@ -213,6 +217,7 @@ void DB_PrintPBs_FindPlayerAndMap(int client, const char[] playerSearch, const c
 	data.WriteString(mapSearch);
 	data.WriteCell(course);
 	data.WriteCell(mode);
+	data.WriteCell(style);
 	
 	DB_FindPlayerAndMap(playerSearch, mapSearch, DB_TxnSuccess_PrintPBs_FindPlayerAndMap, data, DBPrio_Low);
 }
@@ -227,6 +232,7 @@ public void DB_TxnSuccess_PrintPBs_FindPlayerAndMap(Handle db, DataPack data, in
 	data.ReadString(mapSearch, sizeof(mapSearch));
 	int course = data.ReadCell();
 	int mode = data.ReadCell();
+	int style = data.ReadCell();
 	delete data;
 	
 	if (!IsValidClient(client))
@@ -246,6 +252,6 @@ public void DB_TxnSuccess_PrintPBs_FindPlayerAndMap(Handle db, DataPack data, in
 	}
 	else if (SQL_FetchRow(results[0]) && SQL_FetchRow(results[1]))
 	{
-		DB_PrintPBs(client, SQL_FetchInt(results[0], 0), SQL_FetchInt(results[1], 0), course, mode);
+		DB_PrintPBs(client, SQL_FetchInt(results[0], 0), SQL_FetchInt(results[1], 0), course, mode, style);
 	}
 }

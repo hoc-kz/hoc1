@@ -10,7 +10,7 @@ static GlobalForward H_OnTimeInserted;
 void CreateGlobalForwards()
 {
 	H_OnDatabaseConnect = new GlobalForward("GOKZ_DB_OnDatabaseConnect", ET_Ignore, Param_Cell);
-	H_OnClientSetup = new GlobalForward("GOKZ_DB_OnClientSetup", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell);
+	H_OnClientSetup = new GlobalForward("GOKZ_DB_OnClientSetup", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell);
 	H_OnMapSetup = new GlobalForward("GOKZ_DB_OnMapSetup", ET_Ignore, Param_Cell);
 	H_OnTimeInserted = new GlobalForward("GOKZ_DB_OnTimeInserted", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_Cell);
 }
@@ -22,7 +22,7 @@ void Call_OnDatabaseConnect()
 	Call_Finish();
 }
 
-void Call_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige)
+void Call_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
 {
 	Call_StartForward(H_OnClientSetup);
 	Call_PushCell(client);
@@ -30,6 +30,8 @@ void Call_OnClientSetup(int client, int steamID, bool cheater, int experience, i
 	Call_PushCell(cheater);
 	Call_PushCell(experience);
 	Call_PushCell(prestige);
+	Call_PushCell(rank);
+	Call_PushCell(maxrank);
 	Call_Finish();
 }
 

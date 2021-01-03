@@ -75,9 +75,8 @@ enum Option:
 
 enum
 {
-	Mode_Vanilla = 0, 
-	Mode_SimpleKZ, 
-	Mode_NoPre, 
+	Mode_Classic = 0,
+	Mode_Vanilla, 
 	MODE_COUNT
 };
 
@@ -87,6 +86,7 @@ enum
 	Style_AutoBhop,
 	Style_WOnly,
 	Style_SlowMotion,
+	Style_Negev,
 	STYLE_COUNT
 };
 
@@ -223,51 +223,44 @@ stock char gC_TimeTypeNames[TIMETYPE_COUNT][] =
 
 stock char gC_ModeNames[MODE_COUNT][] = 
 {
-	"Vanilla", 
-	"SimpleKZ", 
-	"NoPre"
+	"Classic",
+	"Vanilla"
 };
 
 stock char gC_ModeNamesShort[MODE_COUNT][] = 
 {
-	"VNL", 
-	"SKZ", 
-	"NOPRE"
+	"CLASSIC",
+	"VANILLA"
 };
 
 stock char gC_ModeKeys[MODE_COUNT][] = 
 {
-	"vanilla", 
-	"simplekz", 
-	"nopre"
+	"classic",
+	"vanilla"
 };
 
 stock float gF_ModeVirtualButtonRanges[MODE_COUNT] = 
 {
-	0.0, 
-	32.0, 
-	32.0
+	32.0,
+	16.0
 };
 
 stock char gC_ModeStartSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/button9.wav", 
-	"buttons/button3.wav"
+	"buttons/button3.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_ModeEndSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/bell1.wav", 
-	"buttons/button3.wav"
+	"buttons/button3.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_ModeFalseEndSounds[MODE_COUNT][] = 
 {
-	"common/wpn_select.wav", 
-	"buttons/button11.wav", 
-	"buttons/button2.wav"
+	"buttons/button2.wav",
+	"common/wpn_select.wav"
 };
 
 stock char gC_StyleNames[STYLE_COUNT][] = 
@@ -275,15 +268,17 @@ stock char gC_StyleNames[STYLE_COUNT][] =
 	"Normal",
 	"Auto-Bhop",
 	"W-Only",
-	"Slow-Motion"
+	"Slow-Motion",
+	"Negev"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
 {
-	"NRM",
-	"AUTOBHOP",
-	"WONLY",
-	"SLOWMO"
+	"NORMAL",
+	"AUTO-BHOP",
+	"W-ONLY",
+	"SLOW-MOTION",
+	"NEGEV"
 };
 
 stock char gC_CoreOptionNames[OPTION_COUNT][] = 
@@ -301,7 +296,7 @@ stock char gC_CoreOptionNames[OPTION_COUNT][] =
 
 stock char gC_CoreOptionDescriptions[OPTION_COUNT][] = 
 {
-	"Movement Mode - 0 = Vanilla, 1 = SimpleKZ, 2 = NoPre", 
+	"Movement Mode - 0 = Classic, 1 = Vanilla", 
 	"Movement Style - 0 = Normal, 1 = AutoBhop", 
 	"Automatic Restart Upon Teleport to Start - 0 = Disabled, 1 = Enabled", 
 	"Checkpoint Messages - 0 = Disabled, 1 = Enabled", 
@@ -347,7 +342,7 @@ stock int gI_CoreOptionCounts[OPTION_COUNT] =
 
 stock int gI_CoreOptionDefaults[OPTION_COUNT] = 
 {
-	Mode_NoPre, 
+	Mode_Classic, 
 	Style_Normal, 
 	AutoRestart_Disabled, 
 	CheckpointMessages_Disabled, 
@@ -1493,6 +1488,22 @@ stock int GOKZ_MatchIntFromEntityName(int entity, Regex re, int substringID)
 	}
 	
 	return num;
+}
+
+stock char[] GOKZ_FormatModeStyle(int mode, int style)
+{
+	char buffer[32];
+
+	if (style == Style_Normal)
+	{
+		FormatEx(buffer, sizeof(buffer), "%s", gC_ModeNamesShort[mode]);
+	}
+	else
+	{
+		FormatEx(buffer, sizeof(buffer), "%s %s", gC_ModeNamesShort[mode], gC_StyleNamesShort[style]);
+	}
+
+	return buffer;
 }
 
 

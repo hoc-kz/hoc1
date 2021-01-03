@@ -44,6 +44,7 @@ int gI_OldButtons[MAXPLAYERS + 1];
 int gI_TeleportCmdNum[MAXPLAYERS + 1];
 bool gB_OriginTeleported[MAXPLAYERS + 1];
 bool gB_VelocityTeleported[MAXPLAYERS + 1];
+bool gB_GodMode[MAXPLAYERS + 1];
 bool gB_LateLoad;
 
 ConVar gCV_gokz_chat_prefix;
@@ -148,6 +149,7 @@ public void OnLibraryAdded(const char[] name)
 
 public void OnClientPutInServer(int client)
 {
+	OnClientPutInServer_GodMode(client);
 	OnClientPutInServer_Timer(client);
 	OnClientPutInServer_Pause(client);
 	OnClientPutInServer_Teleports(client);
@@ -259,6 +261,7 @@ public void GOKZ_OnTimerStart_Post(int client, int course)
 	OnTimerStart_JoinTeam(client);
 	OnTimerStart_Pause(client);
 	OnTimerStart_Teleports(client);
+	OnTimerStart_GodMode(client);
 }
 
 public void GOKZ_OnTeleportToStart_Post(int client)

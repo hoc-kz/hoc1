@@ -148,7 +148,7 @@ static void TPMenuAddItemCheckpoint(KZPlayer player, Menu menu)
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Checkpoint", player.ID);
 	if (player.TimerRunning)
 	{
-		Format(display, sizeof(display), "%s #%d", display, player.CheckpointCount);
+		Format(display, sizeof(display), "%s (#%d)", display, player.CheckpointCount);
 	}
 	
 	menu.AddItem(ITEM_INFO_CHECKPOINT, display, ITEMDRAW_DEFAULT);
@@ -160,7 +160,7 @@ static void TPMenuAddItemTeleport(KZPlayer player, Menu menu)
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Teleport", player.ID);
 	if (player.TimerRunning)
 	{
-		Format(display, sizeof(display), "%s #%d", display, player.TeleportCount);
+		Format(display, sizeof(display), "%s (#%d)", display, player.TeleportCount);
 	}
 	
 	if (player.CanTeleportToCheckpoint)

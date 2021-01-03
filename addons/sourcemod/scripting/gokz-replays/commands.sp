@@ -9,7 +9,7 @@ void RegisterCommands()
 
 public Action CommandReplay(int client, int args)
 {
-	DisplayReplayModeMenu(client);
+	StartReplayMenu(client);
 	return Plugin_Handled;
 }
 
