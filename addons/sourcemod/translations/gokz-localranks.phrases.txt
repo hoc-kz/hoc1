@@ -647,6 +647,11 @@
 		"#format"	"{1:s},{2:s},{3:d},{4:d},{5:d},{6:d},{7:s},{8:s},{9:d},{10:d},{11:0.1f},{12:d},{13:d},{14:0.1f}"
 		"en"		"Player - {1}\nFrom - {2}\n \nRank - {3}/{4}\nLevel - {5}\nPrestige - {6}\n \nFirst Seen - {7}\nLast Seen - {8}\n \nNUB Completion - {9}/{10} ({11}%%)\nPRO Completion - {12}/{13} ({14}%%)\n "
 	}
+	"Profile Menu - Title (No Levels)"
+	{
+		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:d},{6:d},{7:0.1f},{8:d},{9:d},{10:0.1f}"
+		"en"		"Player - {1}\nFrom - {2}\n \nFirst Seen - {3}\nLast Seen - {4}\n \nNUB Completion - {5}/{6} ({7}%%)\nPRO Completion - {8}/{9} ({10}%%)\n "
+	}
 	"Profile Menu - Completed Maps"
 	{
 		"#format"	"{1:s}"

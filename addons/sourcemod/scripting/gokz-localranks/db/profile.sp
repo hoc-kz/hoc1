@@ -28,12 +28,6 @@ void DB_OpenProfile(int client, int targetSteamID)
 	// Select generic profile information
 	FormatEx(query, sizeof(query), sql_players_profile, targetSteamID);
 	txn.AddQuery(query);
-	// Select level, rank information
-	FormatEx(query, sizeof(query), sql_levels_rank_get, targetSteamID);
-	txn.AddQuery(query);
-	txn.AddQuery(sql_levels_maxrank_get);
-	FormatEx(query, sizeof(query), sql_levels_get, targetSteamID);
-	txn.AddQuery(query);
 	// Select main course count
 	txn.AddQuery(sql_getcount_maincourses);
 	// Select NUB completed main courses 
@@ -42,6 +36,16 @@ void DB_OpenProfile(int client, int targetSteamID)
 	// Select PRO completed main courses
 	FormatEx(query, sizeof(query), sql_getcount_maincoursescompletedprooverall, targetSteamID);
 	txn.AddQuery(query);
+
+	if (gB_GOKZLevels)
+	{
+		// Select level, rank information
+		FormatEx(query, sizeof(query), sql_levels_rank_get, targetSteamID);
+		txn.AddQuery(query);
+		txn.AddQuery(sql_levels_maxrank_get);
+		FormatEx(query, sizeof(query), sql_levels_get, targetSteamID);
+		txn.AddQuery(query);
+	}
 
 	DataPack datapack = new DataPack();
 	datapack.WriteCell(GetClientUserId(client));
@@ -64,7 +68,7 @@ public void DB_TxnSuccess_OpenProfile(Handle db, DataPack datapack, int numQueri
 
 	profileSteamID[client] = targetSteamID;
 
-	if (!SQL_FetchRow(results[0]) || !SQL_FetchRow(results[4]) || !SQL_FetchRow(results[5]) || !SQL_FetchRow(results[6]))
+	if (!SQL_FetchRow(results[0]) || !SQL_FetchRow(results[1]) || !SQL_FetchRow(results[2]) || !SQL_FetchRow(results[3]))
 	{
 		return;
 	}
@@ -74,22 +78,22 @@ public void DB_TxnSuccess_OpenProfile(Handle db, DataPack datapack, int numQueri
 	SQL_FetchString(results[0], 2, profileLastPlayedDate[client], sizeof(profileLastPlayedDate[]));
 	SQL_FetchString(results[0], 3, profileCreatedDate[client], sizeof(profileCreatedDate[]));
 
+	profileMapsTotal[client] = SQL_FetchInt(results[1], 0);
+	profileMapsCompletedNub[client] = SQL_FetchInt(results[2], 0);
+	profileMapsCompletedPro[client] = SQL_FetchInt(results[3], 0);
+
 	if (gB_GOKZLevels)
 	{
-		if (!SQL_FetchRow(results[1]) || !SQL_FetchRow(results[2]) || !SQL_FetchRow(results[3]))
+		if (!SQL_FetchRow(results[4]) || !SQL_FetchRow(results[5]) || !SQL_FetchRow(results[6]))
 		{
 			return;
 		}
 
-		profileRank[client] = SQL_FetchInt(results[1], 0);
-		profileMaxRank[client] = IntMax(profileRank[client], SQL_FetchInt(results[2], 0));
-		profileLevel[client] = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[3], 0));
-		profilePrestige[client] = SQL_FetchInt(results[3], 1);
+		profileRank[client] = SQL_FetchInt(results[4], 0);
+		profileMaxRank[client] = IntMax(profileRank[client], SQL_FetchInt(results[5], 0));
+		profileLevel[client] = GOKZ_LV_LevelForExperience(SQL_FetchInt(results[6], 0));
+		profilePrestige[client] = SQL_FetchInt(results[6], 1);
 	}
-
-	profileMapsTotal[client] = SQL_FetchInt(results[4], 0);
-	profileMapsCompletedNub[client] = SQL_FetchInt(results[5], 0);
-	profileMapsCompletedPro[client] = SQL_FetchInt(results[6], 0);
 
 	ReopenProfileMenu(client);
 }
@@ -140,16 +144,29 @@ static void ProfileMenuSetTitle(int client, Menu menu)
 	float mapsCompletedNubPercent = 100.0 * (profileMapsCompletedNub[client] / float(profileMapsTotal[client]));
 	float mapsCompletedProPercent = 100.0 * (profileMapsCompletedPro[client] / float(profileMapsTotal[client]));
 
-	menu.SetTitle("%T", "Profile Menu - Title", client, 
-		profileAlias[client],
-		profileCountry[client],
-		profileRank[client], profileMaxRank[client],
-		profileLevel[client],
-		profilePrestige[client],
-		profileCreatedDate[client],
-		profileLastPlayedDate[client],
-		profileMapsCompletedNub[client], profileMapsTotal[client], mapsCompletedNubPercent,
-		profileMapsCompletedPro[client], profileMapsTotal[client], mapsCompletedProPercent);
+	if (gB_GOKZLevels)
+	{
+		menu.SetTitle("%T", "Profile Menu - Title", client, 
+			profileAlias[client],
+			profileCountry[client],
+			profileRank[client], profileMaxRank[client],
+			profileLevel[client],
+			profilePrestige[client],
+			profileCreatedDate[client],
+			profileLastPlayedDate[client],
+			profileMapsCompletedNub[client], profileMapsTotal[client], mapsCompletedNubPercent,
+			profileMapsCompletedPro[client], profileMapsTotal[client], mapsCompletedProPercent);
+	}
+	else
+	{
+		menu.SetTitle("%T", "Profile Menu - Title (No Levels)", client, 
+			profileAlias[client],
+			profileCountry[client],
+			profileCreatedDate[client],
+			profileLastPlayedDate[client],
+			profileMapsCompletedNub[client], profileMapsTotal[client], mapsCompletedNubPercent,
+			profileMapsCompletedPro[client], profileMapsTotal[client], mapsCompletedProPercent);
+	}
 }
 
 static void ProfileMenuAddItems(int client, Menu menu)
