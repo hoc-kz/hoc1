@@ -2,10 +2,10 @@
 	Opens a menu with player profile.
 */
 
-static float lastProfileQueryTime[MAXPLAYERS + 1];
+
 
 static int steamID[MAXPLAYERS + 1];
-static char alias[MAXPLAYERS + 1][MAX_NAME_LENGTH];
+static char profileAlias[MAXPLAYERS + 1][MAX_NAME_LENGTH];
 static char country[MAXPLAYERS + 1][64];
 static char lastPlayedDate[MAXPLAYERS + 1][32];
 static char createdDate[MAXPLAYERS + 1][32];
@@ -69,7 +69,7 @@ public void DB_TxnSuccess_DisplayProfile(Handle db, DataPack datapack, int numQu
 		return;
 	}
 
-	SQL_FetchString(results[0], 0, alias[client], sizeof(alias[]));
+	SQL_FetchString(results[0], 0, profileAlias[client], sizeof(profileAlias[]));
 	SQL_FetchString(results[0], 1, country[client], sizeof(country[]));
 	SQL_FetchString(results[0], 2, lastPlayedDate[client], sizeof(lastPlayedDate[]));
 	SQL_FetchString(results[0], 3, createdDate[client], sizeof(createdDate[]));
@@ -132,7 +132,7 @@ void ReopenProfile(int client)
 	char buffer[64];
 	Panel menu = new Panel();
 
-	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Player", client, alias[client]);
+	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - Player", client, profileAlias[client]);
 	menu.DrawText(buffer);
 	FormatEx(buffer, sizeof(buffer), "%T - %s", "Profile - From", client, country[client]);
 	menu.DrawText(buffer);
@@ -194,19 +194,12 @@ public int MenuHandler_Profile(Menu menu, MenuAction action, int param1, int par
 		{
 			EmitSoundToClient(param1, "buttons/button14.wav");
 
-			if (!IsSpammingProfileQueries(param1))
+			switch (param2)
 			{
-				switch (param2)
-				{
-					case 1: DB_PrintOverallCompletedMaps(param1, steamID[param1], TimeType_Nub);
-					case 2: DB_PrintOverallCompletedMaps(param1, steamID[param1], TimeType_Pro);
-					case 3: DB_PrintOverallUncompletedMaps(param1, steamID[param1], TimeType_Nub);
-					case 4: DB_PrintOverallUncompletedMaps(param1, steamID[param1], TimeType_Pro);
-				}
-			}
-			else
-			{
-				ReopenProfile(param1);
+				case 1: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Nub, true);
+				case 2: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Pro, true);
+				case 3: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Nub, false);
+				case 4: DB_OpenProfileMapCompletion(param1, steamID[param1], TimeType_Pro, false);
 			}
 		}
 	}
@@ -216,77 +209,57 @@ public int MenuHandler_Profile(Menu menu, MenuAction action, int param1, int par
 	}
 }
 
-static bool IsSpammingProfileQueries(int client, bool printMessage = true)
+
+
+// =====[ OVERALL MAP COMPLETION ]=====
+
+void DB_OpenProfileMapCompletion(int client, int targetSteamID, int timeType, bool completed)
 {
-	float currentTime = GetEngineTime();
-	float timeSinceLastCommand = currentTime - lastProfileQueryTime[client];
-	if (timeSinceLastCommand < LR_PROFILE_QUERY_COOLDOWN)
+	char query[1024];
+	Transaction txn = SQL_CreateTransaction();
+
+	// Get target name
+	FormatEx(query, sizeof(query), sql_players_getalias, targetSteamID);
+	txn.AddQuery(query);
+
+	if (completed)
 	{
-		if (printMessage)
+		if (timeType == TimeType_Nub)
 		{
-			GOKZ_PrintToChat(client, true, "%t", "Please Wait Before Using Command", LR_PROFILE_QUERY_COOLDOWN - timeSinceLastCommand + 0.1);
+			FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall, targetSteamID);
 		}
-		return true;
-	}
-
-	// Not spamming commands - all good!
-	lastProfileQueryTime[client] = currentTime;
-	return false;
-}
-
-
-
-// =====[ COMPLETED / UNCOMPLETED MAPS ]=====
-
-static void DB_PrintOverallCompletedMaps(int client, int targetSteamID, int timeType)
-{
-	char query[1024];
-	Transaction txn = SQL_CreateTransaction();
-
-	if (timeType == TimeType_Nub)
-	{
-		FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall, targetSteamID);
+		else
+		{
+			FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall_pro, targetSteamID);
+		}
 	}
 	else
 	{
-		FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall_pro, targetSteamID);
-	}
+		if (timeType == TimeType_Nub)
+		{
+			FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall, targetSteamID);
+		}
+		else
+		{
+			FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall_pro, targetSteamID);
+		}	
+	}	
 	txn.AddQuery(query);
 
 	DataPack datapack = new DataPack();
 	datapack.WriteCell(GetClientUserId(client));
 	datapack.WriteCell(timeType);
+	datapack.WriteCell(completed);
 
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallCompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_OpenProfileMapCompletion, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
 }
 
-static void DB_PrintOverallUncompletedMaps(int client, int targetSteamID, int timeType)
-{
-	char query[1024];
-	Transaction txn = SQL_CreateTransaction();
-
-	if (timeType == TimeType_Nub)
-	{
-		FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall, targetSteamID);
-	}
-	else
-	{
-		FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall_pro, targetSteamID);
-	}
-	txn.AddQuery(query);
-
-	DataPack datapack = new DataPack();
-	datapack.WriteCell(GetClientUserId(client));
-	datapack.WriteCell(timeType);
-
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallUncompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
-}
-
-public void DB_TxnSuccess_PrintOverallCompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+public void DB_TxnSuccess_OpenProfileMapCompletion(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
 {
 	datapack.Reset();
 	int client = GetClientOfUserId(datapack.ReadCell());
 	int timeType = datapack.ReadCell();
+	bool completed = datapack.ReadCell();
 	delete datapack;
 
 	if (!IsValidClient(client))
@@ -294,61 +267,69 @@ public void DB_TxnSuccess_PrintOverallCompletedMaps(Handle db, DataPack datapack
 		return;
 	}
 
-	if (SQL_GetRowCount(results[0]) == 0)
+	// Get target name
+	if (!SQL_FetchRow(results[0]))
 	{
-		GOKZ_PrintToChat(client, true, "%T", "Player No Maps Completed", client, alias[client]);
+		return;
+	}
+	char alias[MAX_NAME_LENGTH];
+	SQL_FetchString(results[0], 0, alias, sizeof(alias));
+
+	if (SQL_GetRowCount(results[1]) == 0)
+	{
+		if (timeType == TimeType_Nub)
+		{
+			if (completed)
+			{
+				GOKZ_PrintToChat(client, true, "%T", "Profile Map Completion - None Completed", client, alias);
+			}
+			else
+			{
+				GOKZ_PrintToChat(client, true, "%T", "Profile Map Completion - All Completed", client, alias);
+			}
+		}
+		else
+		{
+			if (completed)
+			{
+				GOKZ_PrintToChat(client, true, "%T", "Profile Map Completion - None Completed (PRO)", client, alias);
+			}
+			else
+			{
+				GOKZ_PrintToChat(client, true, "%T", "Profile Map Completion - All Completed (PRO)", client, alias);
+			}
+		}
 		ReopenProfile(client);
 		return;
 	}
 
-	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
-	menu.SetTitle("%T", "Overall Completed Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias[client]);
+	Menu menu = new Menu(MenuHandler_ProfileMapCompletionSubmenu);
+	if (completed)
+	{
+		menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Completed)", client, gC_TimeTypeNames[timeType], alias);
+	}
+	else
+	{
+		menu.SetTitle("%T", "Profile Map Completion Submenu - Title (Uncompleted)", client, gC_TimeTypeNames[timeType], alias);
+	}
 
 	char buffer[128];
-	while (SQL_FetchRow(results[0]))
+	while (SQL_FetchRow(results[1]))
 	{
-		SQL_FetchString(results[0], 0, buffer, sizeof(buffer));
+		SQL_FetchString(results[1], 0, buffer, sizeof(buffer));
 		menu.AddItem("", buffer, ITEMDRAW_DISABLED);
 	}
 
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-public void DB_TxnSuccess_PrintOverallUncompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+
+
+// =====[ MENU HANDLERS ]=====
+
+public int MenuHandler_ProfileMapCompletionSubmenu(Menu menu, MenuAction action, int param1, int param2)
 {
-	datapack.Reset();
-	int client = GetClientOfUserId(datapack.ReadCell());
-	int timeType = datapack.ReadCell();
-	delete datapack;
-
-	if (!IsValidClient(client))
-	{
-		return;
-	}
-
-	if (SQL_GetRowCount(results[0]) == 0)
-	{
-		GOKZ_PrintToChat(client, true, "%T", "Player All Maps Completed", client, alias[client]);
-		ReopenProfile(client);
-		return;
-	}
-
-	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
-	menu.SetTitle("%T", "Overall Uncompleted Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias[client]);
-
-	char buffer[128];
-	while (SQL_FetchRow(results[0]))
-	{
-		SQL_FetchString(results[0], 0, buffer, sizeof(buffer));
-		menu.AddItem("", buffer, ITEMDRAW_DISABLED);
-	}
-
-	menu.Display(client, MENU_TIME_FOREVER);
-}
-
-public int MenuHandler_CompletedUncompletedMaps(Menu menu, MenuAction action, int param1, int param2)
-{
-	if (action == MenuAction_Cancel)
+	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
 		ReopenProfile(param1);
 	}

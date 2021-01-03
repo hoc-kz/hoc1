@@ -686,6 +686,36 @@
 	{
 		"en"		"Uncompleted Maps"
 	}
+	"Profile Map Completion - None Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map."
+	}
+	"Profile Map Completion - None Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map {blue}PRO{grey}."
+	}
+	"Profile Map Completion - All Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps."
+	}
+	"Profile Map Completion - All Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps {blue}PRO{grey}."
+	}
+	"Profile Map Completion Submenu - Title (Completed)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
+	}
+	"Profile Map Completion Submenu - Title (Uncompleted)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
+	}
 	
 	// =====[ MAP COMPLETION ]=====
 	"Map Completion Menu - Completed Maps"
