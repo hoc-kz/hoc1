@@ -73,3 +73,4 @@ GOKZ is an open-source, community-driven project. If you are interested in helpi
 [Steam Group](https://steamcommunity.com/groups/GOKZTimer)
 
 [Wiki](https://bitbucket.org/kztimerglobalteam/gokz/wiki)
+
