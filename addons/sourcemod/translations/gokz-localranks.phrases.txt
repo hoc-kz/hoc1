@@ -688,15 +688,25 @@
 	}
 	
 	// =====[ COMPLETED MAPS ]=====
+	"Completed Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s},{3:s},{4:s}"
+		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
+	}
+	"Uncompleted Maps Menu - Title"
+	{
+		"#format"	"{1:s},{2:s},{3:s},{4:s}"
+		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - {3}\nStyle - {4}\n "
+	}
 	"Overall Completed Maps Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Completed Maps\n \nPlayer - {2}\n "
+		"en"		"{1} Completed Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
 	}
 	"Overall Uncompleted Maps Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\n "
+		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\nMode - Any\nStyle - Any\n "
 	}
 	"Player No Maps Completed"
 	{

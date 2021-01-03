@@ -3,7 +3,6 @@
 */
 
 static float lastProfileQueryTime[MAXPLAYERS + 1];
-static bool cameFromProfileMenu[MAXPLAYERS + 1];
 
 static int steamID[MAXPLAYERS + 1];
 static char alias[MAXPLAYERS + 1][MAX_NAME_LENGTH];
@@ -19,11 +18,6 @@ static int mapsCompletedNub[MAXPLAYERS + 1];
 static int mapsCompletedPro[MAXPLAYERS + 1];
 
 
-
-bool GetCameFromProfileMenu(int client)
-{
-	return cameFromProfileMenu[client];
-}
 
 void DB_DisplayProfile(int client, int targetSteamID)
 {
@@ -135,8 +129,6 @@ public void DB_TxnSuccess_DisplayProfile_FindPlayer(Handle db, DataPack data, in
 
 void ReopenProfile(int client)
 {
-	cameFromProfileMenu[client] = false;
-
 	char buffer[64];
 	Panel menu = new Panel();
 
@@ -193,8 +185,6 @@ public int MenuHandler_Profile(Menu menu, MenuAction action, int param1, int par
 {
 	if (action == MenuAction_Select)
 	{
-		cameFromProfileMenu[param1] = true;
-
 		// Play menu sounds since we're actually using a panel.
 		if (param2 == 9)
 		{
@@ -242,4 +232,128 @@ static bool IsSpammingProfileQueries(int client, bool printMessage = true)
 	// Not spamming commands - all good!
 	lastProfileQueryTime[client] = currentTime;
 	return false;
+}
+
+
+
+// =====[ COMPLETED / UNCOMPLETED MAPS ]=====
+
+static void DB_PrintOverallCompletedMaps(int client, int targetSteamID, int timeType)
+{
+	char query[1024];
+	Transaction txn = SQL_CreateTransaction();
+
+	if (timeType == TimeType_Nub)
+	{
+		FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall, targetSteamID);
+	}
+	else
+	{
+		FormatEx(query, sizeof(query), sql_getcompletedmainmapcoursesoverall_pro, targetSteamID);
+	}
+	txn.AddQuery(query);
+
+	DataPack datapack = new DataPack();
+	datapack.WriteCell(GetClientUserId(client));
+	datapack.WriteCell(timeType);
+
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallCompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+}
+
+static void DB_PrintOverallUncompletedMaps(int client, int targetSteamID, int timeType)
+{
+	char query[1024];
+	Transaction txn = SQL_CreateTransaction();
+
+	if (timeType == TimeType_Nub)
+	{
+		FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall, targetSteamID);
+	}
+	else
+	{
+		FormatEx(query, sizeof(query), sql_getuncompletedmainmapcoursesoverall_pro, targetSteamID);
+	}
+	txn.AddQuery(query);
+
+	DataPack datapack = new DataPack();
+	datapack.WriteCell(GetClientUserId(client));
+	datapack.WriteCell(timeType);
+
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_PrintOverallUncompletedMaps, DB_TxnFailure_Generic_DataPack, datapack, DBPrio_Low);
+}
+
+public void DB_TxnSuccess_PrintOverallCompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+{
+	datapack.Reset();
+	int client = GetClientOfUserId(datapack.ReadCell());
+	int timeType = datapack.ReadCell();
+	delete datapack;
+
+	if (!IsValidClient(client))
+	{
+		return;
+	}
+
+	if (SQL_GetRowCount(results[0]) == 0)
+	{
+		GOKZ_PrintToChat(client, true, "%T", "Player No Maps Completed", client, alias[client]);
+		ReopenProfile(client);
+		return;
+	}
+
+	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
+	menu.SetTitle("%T", "Overall Completed Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias[client]);
+
+	char buffer[128];
+	while (SQL_FetchRow(results[0]))
+	{
+		SQL_FetchString(results[0], 0, buffer, sizeof(buffer));
+		menu.AddItem("", buffer, ITEMDRAW_DISABLED);
+	}
+
+	menu.Display(client, MENU_TIME_FOREVER);
+}
+
+public void DB_TxnSuccess_PrintOverallUncompletedMaps(Handle db, DataPack datapack, int numQueries, Handle[] results, any[] queryData)
+{
+	datapack.Reset();
+	int client = GetClientOfUserId(datapack.ReadCell());
+	int timeType = datapack.ReadCell();
+	delete datapack;
+
+	if (!IsValidClient(client))
+	{
+		return;
+	}
+
+	if (SQL_GetRowCount(results[0]) == 0)
+	{
+		GOKZ_PrintToChat(client, true, "%T", "Player All Maps Completed", client, alias[client]);
+		ReopenProfile(client);
+		return;
+	}
+
+	Menu menu = new Menu(MenuHandler_CompletedUncompletedMaps);
+	menu.SetTitle("%T", "Overall Uncompleted Maps Menu - Title", client, gC_TimeTypeNames[timeType], alias[client]);
+
+	char buffer[128];
+	while (SQL_FetchRow(results[0]))
+	{
+		SQL_FetchString(results[0], 0, buffer, sizeof(buffer));
+		menu.AddItem("", buffer, ITEMDRAW_DISABLED);
+	}
+
+	menu.Display(client, MENU_TIME_FOREVER);
+}
+
+public int MenuHandler_CompletedUncompletedMaps(Menu menu, MenuAction action, int param1, int param2)
+{
+	if (action == MenuAction_Cancel)
+	{
+		ReopenProfile(param1);
+	}
+	else if (action == MenuAction_End)
+	{
+		delete menu;
+	}
 }
