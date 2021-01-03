@@ -95,33 +95,39 @@ public int MenuHandler_Replay(Menu menu, MenuAction action, int param1, int para
 {
 	if (action == MenuAction_Select)
 	{
-		char info[4];
-		menu.GetItem(param2, info, sizeof(info));
-		int replayIndex = StringToInt(info);
-		int replayInfo[RP_CACHE_BLOCKSIZE];
-		g_ReplayInfoCache.GetArray(replayIndex, replayInfo);
-		int botClient = LoadReplayBot(replayInfo[0], replayInfo[1], replayInfo[2], replayInfo[3]);
-		if (botClient != -1)
+		if (!CanSpectate(param1))
 		{
-
-			// Join spectators and spec the bot
-			GOKZ_JoinTeam(param1, CS_TEAM_SPECTATOR);
-			SetEntProp(param1, Prop_Send, "m_iObserverMode", 4);
-			SetEntPropEnt(param1, Prop_Send, "m_hObserverTarget", botClient);
-			
-			int clientUserID = GetClientUserId(param1);
-			DataPack data = new DataPack();
-			data.WriteCell(clientUserID);
-			data.WriteCell(GetClientUserId(botClient));
-
-			CreateTimer(0.2, Timer_ResetSpectate, clientUserID);
-			CreateTimer(0.3, Timer_SpectateBot, data); // After delay so name is correctly updated in client's HUD
-			EnableReplayControls(param1);
+			DisplayReplayMenu(param1);
 		}
 		else
 		{
-			GOKZ_PrintToChat(param1, true, "%t", "No Bots Available");
-			GOKZ_PlayErrorSound(param1);
+			char info[4];
+			menu.GetItem(param2, info, sizeof(info));
+			int replayIndex = StringToInt(info);
+			int replayInfo[RP_CACHE_BLOCKSIZE];
+			g_ReplayInfoCache.GetArray(replayIndex, replayInfo);
+			int botClient = LoadReplayBot(replayInfo[0], replayInfo[1], replayInfo[2], replayInfo[3]);
+			if (botClient != -1)
+			{
+				// Join spectators and spec the bot
+				GOKZ_JoinTeam(param1, CS_TEAM_SPECTATOR);
+				SetEntProp(param1, Prop_Send, "m_iObserverMode", 4);
+				SetEntPropEnt(param1, Prop_Send, "m_hObserverTarget", botClient);
+				
+				int clientUserID = GetClientUserId(param1);
+				DataPack data = new DataPack();
+				data.WriteCell(clientUserID);
+				data.WriteCell(GetClientUserId(botClient));
+
+				CreateTimer(0.2, Timer_ResetSpectate, clientUserID);
+				CreateTimer(0.3, Timer_SpectateBot, data); // After delay so name is correctly updated in client's HUD
+				EnableReplayControls(param1);
+			}
+			else
+			{
+				GOKZ_PrintToChat(param1, true, "%t", "No Bots Available");
+				GOKZ_PlayErrorSound(param1);
+			}
 		}
 	}
 	else if (action == MenuAction_Cancel)
@@ -245,3 +251,8 @@ static int ReplayMenuAddItems(int client, Menu menu)
 	
 	return replaysAdded;
 } 
+
+static bool CanSpectate(int client)
+{
+	return GOKZ_GetPaused(client) || GOKZ_GetCanPause(client);
+}

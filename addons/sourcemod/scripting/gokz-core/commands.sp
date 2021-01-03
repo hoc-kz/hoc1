@@ -61,7 +61,7 @@ public Action CommandJoinTeam(int client, const char[] command, int argc)
 	char teamString[4];
 	GetCmdArgString(teamString, sizeof(teamString));
 	int team = StringToInt(teamString);
-	GOKZ_JoinTeam(client, team, _, false);
+	GOKZ_JoinTeam(client, team, _, false, false);
 	return Plugin_Handled;
 }
 

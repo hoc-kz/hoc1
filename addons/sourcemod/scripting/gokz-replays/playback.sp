@@ -566,15 +566,8 @@ static void SetBotStuff(int bot)
 	gB_HideNameChange = true;
 	SetClientName(client, name);
 	
-	// Set the bot's team based on if it's NUB or PRO
-	if (GOKZ_GetTimeTypeEx(botTeleportsUsed[bot]) == TimeType_Pro)
-	{
-		GOKZ_JoinTeam(client, CS_TEAM_CT);
-	}
-	else
-	{
-		GOKZ_JoinTeam(client, CS_TEAM_T);
-	}
+	// Set bot team
+	GOKZ_JoinTeam(client, CS_TEAM_T);
 	
 	// Set bot weapon according to mode of the replay
 	// Always start by removing the pistol

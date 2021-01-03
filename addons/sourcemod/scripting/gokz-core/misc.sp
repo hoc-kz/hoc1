@@ -239,20 +239,29 @@ void OnTimerStart_JoinTeam(int client)
 	hasSavedPosition[client] = false;
 }
 
-bool JoinTeam(int client, int newTeam, bool restorePos, bool force)
+bool JoinTeam(int client, int newTeam, bool restorePos, bool forceChange, bool forceTeam)
 {
 	KZPlayer player = KZPlayer(client);
 	int currentTeam = GetClientTeam(client);
 
-	// Don't use CS_TEAM_NONE
+	// Never use CS_TEAM_NONE
 	if (newTeam == CS_TEAM_NONE)
 	{
 		newTeam = CS_TEAM_SPECTATOR;
 	}
-	
+
+	if (!forceTeam)
+	{
+		// Don't use CS_TEAM_T
+		if (newTeam == CS_TEAM_T)
+		{
+			newTeam = CS_TEAM_CT;
+		}
+	}
+
 	if (newTeam == CS_TEAM_SPECTATOR && currentTeam != CS_TEAM_SPECTATOR)
 	{
-		if (!force && !player.Paused && !player.CanPause)
+		if (!forceChange && !player.Paused && !player.CanPause)
 		{
 			return false;
 		}
@@ -262,7 +271,7 @@ bool JoinTeam(int client, int newTeam, bool restorePos, bool force)
 		savedOnLadder[client] = player.Movetype == MOVETYPE_LADDER;
 		hasSavedPosition[client] = true;
 
-		if (force && !player.Paused && !player.CanPause)
+		if (forceChange && !player.Paused && !player.CanPause)
 		{
 			player.StopTimer();
 		}
