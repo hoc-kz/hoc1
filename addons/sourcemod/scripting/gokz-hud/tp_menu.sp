@@ -116,7 +116,7 @@ static void TPMenuSetTitle(KZPlayer player, Menu menu, HUDInfo info)
 {
 	if (player.TimerRunning && player.TimerText == TimerText_TPMenu)
 	{
-		menu.SetTitle(FormatTimerTextForMenu(player, info));
+		menu.SetTitle("%s\n ", FormatTimerTextForMenu(player, info));
 	}
 }
 
