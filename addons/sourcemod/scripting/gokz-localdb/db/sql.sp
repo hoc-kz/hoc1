@@ -409,9 +409,18 @@ CREATE TABLE IF NOT EXISTS Levels ( \
 	CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
 	ON UPDATE CASCADE ON DELETE CASCADE)";
 
-char sql_levels_upsert[] = "\
-REPLACE INTO Levels (SteamID32, Experience, Prestige) \
+char mysql_levels_insert[] = "\
+INSERT INTO Levels (SteamID32, Experience, Prestige) \
 	VALUES (%d, %d, %d)";
+
+char sqlite_levels_insert[] = "\
+INSERT OR IGNORE INTO Levels (SteamID32, Experience, Prestige) \
+	VALUES (%d, %d, %d)";
+
+char sql_levels_update[] = "\
+UPDATE Levels \
+	SET Experience=%d, Prestige=%d \
+	WHERE SteamID32=%d";
 
 char sql_levels_get[] = "\
 SELECT Experience, Prestige \

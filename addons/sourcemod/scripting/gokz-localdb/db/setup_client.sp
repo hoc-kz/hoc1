@@ -62,11 +62,19 @@ void DB_SetupClient(int client)
 			// INSERT OR IGNORE
 			FormatEx(query, sizeof(query), sqlite_players_insert, nameEscaped, country, clientIP, steamID);
 			txn.AddQuery(query);
+
+			// INSERT OR IGNORE
+			FormatEx(query, sizeof(query), sqlite_levels_insert, steamID, 0, 0);
+			txn.AddQuery(query);
 		}
 		case DatabaseType_MySQL:
 		{
 			// INSERT ... ON DUPLICATE KEY ...
 			FormatEx(query, sizeof(query), mysql_players_upsert, nameEscaped, country, clientIP, steamID);
+			txn.AddQuery(query);
+
+			// INSERT
+			FormatEx(query, sizeof(query), mysql_levels_insert, steamID, 0, 0);
 			txn.AddQuery(query);
 		}
 	}
