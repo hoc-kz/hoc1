@@ -31,7 +31,9 @@ enum
 {
 	TPMenu_Disabled = 0, 
 	TPMenu_Simple, 
-	TPMenu_Advanced, 
+	TPMenu_Advanced,
+	TPMenu_SimplePro,
+	TPMenu_AdvancedPro,
 	TPMENU_COUNT
 };
 
@@ -185,7 +187,9 @@ stock char gC_TPMenuPhrases[TPMENU_COUNT][] =
 {
 	"Options Menu - Disabled", 
 	"Options Menu - Simple", 
-	"Options Menu - Advanced"
+	"Options Menu - Advanced",
+	"Options Menu - Simple PRO",
+	"Options Menu - Advanced PRO",
 };
 
 stock char gC_ShowKeysPhrases[SHOWKEYS_COUNT][] = 
