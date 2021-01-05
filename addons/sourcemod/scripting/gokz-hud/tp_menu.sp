@@ -144,7 +144,7 @@ static void TPMenuAddItems(KZPlayer player, Menu menu, HUDInfo info)
 		case TPMenu_SimplePro:
 		{
 			bool timerRunning = player.TimerRunning;
-			bool timerRunningLong = info.Time >= PRO_MENU_RESTART_DISABLE_TIME;
+			bool timerRunningLong = timerRunning && (info.Time >= PRO_MENU_RESTART_DISABLE_TIME);
 
 			TPMenuAddItemCheckpoint(player, menu);
 			TPMenuAddItemTeleport(player, menu, !timerRunning && player.CanTeleportToCheckpoint);
@@ -154,7 +154,7 @@ static void TPMenuAddItems(KZPlayer player, Menu menu, HUDInfo info)
 		case TPMenu_AdvancedPro:
 		{
 			bool timerRunning = player.TimerRunning;
-			bool timerRunningLong = info.Time >= PRO_MENU_RESTART_DISABLE_TIME;
+			bool timerRunningLong = timerRunning && (info.Time >= PRO_MENU_RESTART_DISABLE_TIME);
 
 			TPMenuAddItemCheckpoint(player, menu);
 			TPMenuAddItemTeleport(player, menu, !timerRunning && player.CanTeleportToCheckpoint);
