@@ -16,7 +16,7 @@ static Handle timerHudSynchronizer;
 char[] FormatTimerTextForMenu(KZPlayer player, HUDInfo info)
 {
 	char timerTextString[32];
-	if (player.GetHUDOption(HUDOption_TimerType) == TimerType_Enabled)
+	if (player.GetHUDOption(HUDOption_TimerType) == TimerType_Enabled && info.TimeType == TimeType_Pro)
 	{
 		FormatEx(timerTextString, sizeof(timerTextString), 
 			"Time: %s (%s)", 
