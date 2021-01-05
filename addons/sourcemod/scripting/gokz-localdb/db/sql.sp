@@ -411,7 +411,8 @@ CREATE TABLE IF NOT EXISTS Levels ( \
 
 char mysql_levels_insert[] = "\
 INSERT INTO Levels (SteamID32, Experience, Prestige) \
-	VALUES (%d, %d, %d)";
+	VALUES (%d, %d, %d) \
+	ON DUPLICATE KEY UPDATE SteamID32=SteamID32";
 
 char sqlite_levels_insert[] = "\
 INSERT OR IGNORE INTO Levels (SteamID32, Experience, Prestige) \
