@@ -1,9 +1,9 @@
 void RegisterCommands()
 {
-	RegConsoleCmd("sm_menu", CommandMenu, "[KZ] Toggle the teleport menu.");
-	RegConsoleCmd("sm_adv", CommandMenu, "[KZ] Toggle the teleport menu.");
-	RegConsoleCmd("sm_smenu", CommandToggleSimpleMenu, "[KZ] Toggle the advanced teleport menu.");
-	RegConsoleCmd("sm_simple", CommandToggleSimpleMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_menu", CommandMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_adv", CommandMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_smenu", CommandToggleSimpleMenu, "[KZ] Toggle the simple teleport menu.");
+	RegConsoleCmd("sm_simple", CommandToggleSimpleMenu, "[KZ] Toggle the simple teleport menu.");
 	RegConsoleCmd("sm_panel", CommandToggleInfoPanel, "[KZ] Toggle visibility of the centre information panel.");
 	RegConsoleCmd("sm_timerstyle", CommandToggleTimerStyle, "[KZ] Toggle the style of the timer text.");
 	RegConsoleCmd("sm_timertype", CommandToggleTimerType, "[KZ] Toggle visibility of your time type.");
