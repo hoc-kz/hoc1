@@ -29,6 +29,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 	if (rows == 0)
 	{
 		GOKZ_PrintToChat(client, true, "%t", "No Jumpstats Found");
+		DisplayJumpTopBlockTypeMenu(client, jumpTopType[client]);
 		return;
 	}
 	
