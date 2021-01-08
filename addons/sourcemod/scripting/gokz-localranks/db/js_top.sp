@@ -61,7 +61,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 			airtime = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Air)) / GOKZ_DB_JS_AIRTIME_PRECISION;
 			
 			FormatEx(display, sizeof(display), "#%-2d   %.4f   %s", i + 1, distance, alias);
-			menu.AddItem(IntToStringEx(i), display);
+			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
 			PrintToConsole(client, "#%-2d   %.4f   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
 				i + 1, distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
@@ -90,7 +90,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 			airtime = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Air)) / GOKZ_DB_JS_AIRTIME_PRECISION;
 			
 			FormatEx(display, sizeof(display), "#%-2d   %d %T (%.4f)   %s", i + 1, block, "Block", client, distance, alias);
-			menu.AddItem(IntToStringEx(i), display);
+			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
 			PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
 				i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
