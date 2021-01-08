@@ -31,6 +31,9 @@ void RegisterCommands()
 
 	RegConsoleCmd("sm_profile", CommandProfile, "[KZ] Open a menu showing a profile. Usage: !profile <player>");
 	RegConsoleCmd("sm_mc", CommandMapCompletion, "[KZ] Open a menu showing map completion. Usage: !mc <player>");
+	RegConsoleCmd("sm_stats", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !stats <player>");
+	RegConsoleCmd("sm_jumpstats", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !jumpstats <player>");
+	RegConsoleCmd("sm_js", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !js <player>");
 
 	RegAdminCmd("sm_updatemappool", CommandUpdateMapPool, ADMFLAG_ROOT, "[KZ] Update the ranked map pool with the list of maps in cfg/sourcemod/gokz/gokz-localranks-mappool.cfg.");
 }
@@ -400,6 +403,26 @@ public Action CommandMapCompletion(int client, int args)
 		char argPlayer[MAX_NAME_LENGTH];
 		GetCmdArg(1, argPlayer, sizeof(argPlayer));
 		DB_OpenMapCompletionModeMenu_FindPlayer(client, argPlayer);
+	}
+	return Plugin_Handled;
+}
+
+public Action CommandJumpStats(int client, int args)
+{
+	if (IsSpammingCommands(client))
+	{
+		return Plugin_Handled;
+	}
+
+	if (args < 1)
+	{
+		DB_OpenJumpStatsModeMenu(client, GetSteamAccountID(client));
+	}
+	else if (args >= 1)
+	{
+		char argPlayer[MAX_NAME_LENGTH];
+		GetCmdArg(1, argPlayer, sizeof(argPlayer));
+		DB_OpenJumpStatsModeMenu_FindPlayer(client, argPlayer);
 	}
 	return Plugin_Handled;
 }

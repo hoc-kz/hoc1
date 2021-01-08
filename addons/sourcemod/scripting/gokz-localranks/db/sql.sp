@@ -473,6 +473,30 @@ SELECT JumpID, Distance, Block \
         IsBlockJump = %d \
     ORDER BY Block DESC, Distance DESC";
 
+char sql_jumpstats_getpbs[] = "\
+SELECT a.JumpType, a.Distance, a.Strafes, a.Sync, a.Pre, a.Max, a.Airtime \
+	FROM Jumpstats a \
+	INNER JOIN ( \
+		SELECT JumpType, MAX(Distance) _Distance \
+		FROM Jumpstats \
+		WHERE SteamID32 = %d AND Mode = %d AND IsBlockJump=0 \
+		GROUP BY JumpType ) b \
+	ON a.JumpType=b.JumpType and a.Distance=b._Distance \
+	WHERE a.SteamID32 = %d AND a.Mode = %d AND a.IsBlockJump=0 \
+	ORDER BY a.JumpType";
+
+char sql_jumpstats_getblockpbs[] = "\
+SELECT a.JumpType, a.Block, MAX(a.Distance), a.Strafes, a.Sync, a.Pre, a.Max, a.Airtime \
+	FROM Jumpstats a \
+	INNER JOIN ( \
+		SELECT JumpType, MAX(Block) _Block \
+		FROM Jumpstats \
+		WHERE SteamID32=%d AND Mode = %d AND IsBlockJump = 1 \
+		GROUP BY JumpType ) b \
+	ON a.JumpType=b.JumpType AND a.Block=b._Block \
+	WHERE a.SteamID32=%d AND a.Mode = %d \
+	GROUP BY a.JumpType, a.Block";
+
 
 
 // =====[ PROFILE ]=====
