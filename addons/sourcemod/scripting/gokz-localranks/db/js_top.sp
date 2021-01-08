@@ -41,6 +41,8 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 	
 	if (jumpTopBlockType[client] == 0)
 	{
+		menu.SetTitle("%T", "Jump Top Submenu - Title (Jump)", client, gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]]);
+
 		FormatEx(title, sizeof(title), "%s %s %T", gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]], "Top", client);
 		strcopy(display, sizeof(display), "----------------------------------------------------------------");
 		display[strlen(title)] = '\0';
@@ -69,6 +71,8 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 	}
 	else
 	{
+		menu.SetTitle("%T", "Jump Top Submenu - Title (Block Jump)", client, gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]]);
+
 		FormatEx(title, sizeof(title), "%s %T %s %T", gC_ModeNames[jumpTopMode[client]], "Block", client, gC_JumpTypes[jumpTopType[client]], "Top", client);
 		strcopy(display, sizeof(display), "----------------------------------------------------------------");
 		display[strlen(title)] = '\0';
@@ -105,7 +109,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 void DisplayJumpTopModeMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_JumpTopMode);
-	menu.SetTitle("%T %T", "Jumpstats", client, "Top", client);
+	menu.SetTitle("%T", "Jump Top Mode Menu - Title", client);
 	GOKZ_MenuAddModeItems(client, menu, false);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -115,7 +119,7 @@ void DisplayJumpTopTypeMenu(int client, int mode)
 	jumpTopMode[client] = mode;
 	
 	Menu menu = new Menu(MenuHandler_JumpTopType);
-	menu.SetTitle("%s %T %T", gC_ModeNames[jumpTopMode[client]], "Jumpstats", client, "Top", client);
+	menu.SetTitle("%T", "Jump Top Type Menu - Title", client, gC_ModeNames[jumpTopMode[client]]);
 	JumpTopTypeMenuAddItems(menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -135,7 +139,7 @@ void DisplayJumpTopBlockTypeMenu(int client, int type)
 	jumpTopType[client] = type;
 	
 	Menu menu = new Menu(MenuHandler_JumpTopBlockType);
-	menu.SetTitle("%s %s %T", gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]], "Top", client);
+	menu.SetTitle("%T", "Jump Top Block Type Menu - Title", client, gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]]);
 	JumpTopBlockTypeMenuAddItems(client, menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
