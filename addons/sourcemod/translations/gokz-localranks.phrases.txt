@@ -550,7 +550,7 @@
 	{
 		// Recently Broken Records
 		//
-		"en"		"Recently Broken Records\n "
+		"en"		"Recently Broken Records\n \nSelect a Mode"
 	}
 	"Recent Records Style Menu - Title"
 	{
@@ -559,7 +559,7 @@
 		// Mode - Vanilla
 		//
 		"#format"	"{1:s}"
-		"en"		"Recently Broken Records\n \nMode - {1}\n "
+		"en"		"Recently Broken Records\n \nMode - {1}\n \nSelect a Style"
 	}
 	"Recent Records Time Type Menu - Title"
 	{
@@ -731,12 +731,12 @@
 	"Map Completion Mode Menu - Title"
 	{
 		"#format"	"{1:s}"
-		"en"		"Map Completion\n \nPlayer - {1}\n "
+		"en"		"Map Completion\n \nPlayer - {1}\n \nSelect a Mode"
 	}
 	"Map Completion Style Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\n "
+		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\n \nSelect a Style"
 	}
 	"Map Completion Menu - Title"
 	{
@@ -790,12 +790,12 @@
 	"Jump Stats Mode Menu - Title"
 	{
 		"#format"	"{1:s}"
-		"en"		"Jumpstats\n \nPlayer - {1}\n "
+		"en"		"Jumpstats\n \nPlayer - {1}\n \nSelect a Mode"
 	}
 	"Jump Stats Block Type Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"Jumpstats\n \nPlayer - {1}\nMode - {2}\n "
+		"en"		"Jumpstats\n \nPlayer - {1}\nMode - {2}\n \nSelect a Category"
 	}
 	"Jump Stats Submenu - Title (Jump)"
 	{
@@ -833,17 +833,17 @@
 	// =====[ JUMPTOP MENU ]=====
 	"Jump Top Mode Menu - Title"
 	{
-		"en"		"Jumpstats Top\n "
+		"en"		"Jumpstats Top\n \nSelect a Mode"
 	}
 	"Jump Top Type Menu - Title"
 	{
 		"#format"	"{1:s}"
-		"en"		"Jumpstats Top\n \nMode - {1}\n "
+		"en"		"Jumpstats Top\n \nMode - {1}\n \nSelect a Type"
 	}
 	"Jump Top Block Type Menu - Title"
 	{
 		"#format"	"{1:s},{2:s}"
-		"en"		"Jumpstats Top\n \nMode - {1}\nType - {2}\n "
+		"en"		"Jumpstats Top\n \nMode - {1}\nType - {2}\n \nSelect a Category"
 	}
 	"Jump Top Submenu - Title (Jump)"
 	{
