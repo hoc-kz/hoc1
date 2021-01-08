@@ -216,7 +216,7 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 			float airtime = SQL_FetchFloat(results[1], 6) / GOKZ_DB_JS_AIRTIME_PRECISION;
 
 			FormatEx(buffer, sizeof(buffer), "%0.4f  %s", distance, gC_JumpTypes[jumpType]);
-			menu.AddItem("", buffer);
+			menu.AddItem("", buffer, ITEMDRAW_DISABLED);
 
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
@@ -247,7 +247,7 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 			float airtime = SQL_FetchFloat(results[1], 7) / GOKZ_DB_JS_AIRTIME_PRECISION;
 
 			FormatEx(buffer, sizeof(buffer), "%d %T (%0.4f)  %s", block, "Block", client, distance, gC_JumpTypes[jumpType]);
-			menu.AddItem("", buffer);
+			menu.AddItem("", buffer, ITEMDRAW_DISABLED);
 
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
