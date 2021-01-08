@@ -215,14 +215,7 @@ public int MenuHandler_JumpTopList(Menu menu, MenuAction action, int param1, int
 {
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		if (jumpTopType[param1] == JumpType_LadderJump)
-		{
-			DisplayJumpTopTypeMenu(param1, jumpTopMode[param1]);
-		}
-		else
-		{
-			DisplayJumpTopBlockTypeMenu(param1, jumpTopType[param1]);
-		}
+		DisplayJumpTopBlockTypeMenu(param1, jumpTopType[param1]);
 	}
 	else if (action == MenuAction_End)
 	{
