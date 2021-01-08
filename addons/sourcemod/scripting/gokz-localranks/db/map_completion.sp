@@ -261,7 +261,7 @@ public void DB_TxnSuccess_OpenMapCompletion(Handle db, DataPack datapack, int nu
 	while (SQL_FetchRow(results[1]))
 	{
 		SQL_FetchString(results[1], 0, buffer, sizeof(buffer));
-		menu.AddItem("", buffer, ITEMDRAW_DISABLED);
+		menu.AddItem("", buffer);
 	}
 
 	menu.Display(client, MENU_TIME_FOREVER);
