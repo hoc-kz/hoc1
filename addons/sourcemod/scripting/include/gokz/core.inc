@@ -85,6 +85,7 @@ enum
 	Style_Normal = 0, 
 	Style_AutoBhop,
 	Style_WOnly,
+	Style_Sideways,
 	Style_SlowMotion,
 	Style_Negev,
 	STYLE_COUNT
@@ -267,6 +268,7 @@ stock char gC_StyleNames[STYLE_COUNT][] =
 	"Normal",
 	"Auto-Bhop",
 	"W-Only",
+	"Sideways",
 	"Slow-Motion",
 	"Negev"
 };
@@ -276,6 +278,7 @@ stock char gC_StyleNamesShort[STYLE_COUNT][] =
 	"NORMAL",
 	"AUTO-BHOP",
 	"W-ONLY",
+	"SIDEWAYS",
 	"SLOW-MOTION",
 	"NEGEV"
 };

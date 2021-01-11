@@ -24,12 +24,17 @@ public Plugin myinfo =
 };
 
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-styles.txt"
-#define WONLY_MAX_LADDERJUMP_TIME 2.0
+#define MAX_LADDERJUMP_TIME 2.0
+#define MAX_BAD_BUTTON_TIME 0.1
 
 ConVar gCV_AutoBunnyHopping;
 
 bool gB_LadderJump[MAXPLAYERS + 1];
 float gF_LadderJumpTime[MAXPLAYERS + 1];
+
+bool gB_SidewaysBlockGround[MAXPLAYERS + 1];
+bool gB_SidewaysBlockAir[MAXPLAYERS + 1];
+float gF_OnGroundChangedTime[MAXPLAYERS + 1];
 
 
 
@@ -72,6 +77,10 @@ public void OnClientPutInServer(int client)
 {
 	gB_LadderJump[client] = false;
 	gF_LadderJumpTime[client] = -999999.0;
+
+	gB_SidewaysBlockGround[client] = false;
+	gB_SidewaysBlockAir[client] = false;
+	gF_OnGroundChangedTime[client] = -999999.0;
 
 	HookClientEvents(client);
 	ReplicateConVars(client);
@@ -128,6 +137,13 @@ public void Movement_OnStartTouchGround(int client)
 {
 	// Touched the ground, so not perforing a ladder jump anymore.
 	gB_LadderJump[client] = false;
+
+	gF_OnGroundChangedTime[client] = GetEngineTime();
+}
+
+public void Movement_OnStopTouchGround(int client, bool jumped)
+{
+	gF_OnGroundChangedTime[client] = GetEngineTime();
 }
 
 public void OnClientPreThink_Post(int client)
@@ -163,7 +179,8 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		return Plugin_Continue;
 	}
 
-	if (GetStyle(client) == Style_WOnly)
+	int style = GetStyle(client);
+	if (style == Style_WOnly)
 	{
 		int flags = GetEntityFlags(client);
 		MoveType moveType = GetEntityMoveType(client);
@@ -171,7 +188,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 		int badButtons = (buttons & IN_BACK) | (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
 		bool noclip = (moveType == MOVETYPE_NOCLIP);
 		bool ladder = (moveType == MOVETYPE_LADDER);
-		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + WONLY_MAX_LADDERJUMP_TIME));
+		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + MAX_LADDERJUMP_TIME));
 		if (badButtons != 0 && !noclip && !(ladder || ladderJump))
 		{
 			flags |= FL_ATCONTROLS;
@@ -184,8 +201,76 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 
 		SetEntityFlags(client, flags);
 	}
+	else if (style == Style_Sideways)
+	{
+		int flags = GetEntityFlags(client);
+		MoveType moveType = GetEntityMoveType(client);
 
-	if (GetStyle(client) == Style_Negev)
+		bool noclip = (moveType == MOVETYPE_NOCLIP);
+		bool ladder = (moveType == MOVETYPE_LADDER);
+		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + MAX_LADDERJUMP_TIME));
+
+		if (!noclip && !(ladder || ladderJump))
+		{
+			if (flags & FL_ONGROUND)
+			{
+				gB_SidewaysBlockGround[client] = false;
+				if (gB_SidewaysBlockAir[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME))
+				{
+					int badButtons = (buttons & IN_FORWARD) | (buttons & IN_BACK);
+					if (badButtons != 0)
+					{
+						flags |= FL_ATCONTROLS;
+						buttons &= ~badButtons;
+					}
+					else
+					{
+						flags &= ~FL_ATCONTROLS;
+					}
+				}
+				else
+				{
+					int badButtons = (buttons & IN_FORWARD) | (buttons & IN_BACK);
+					if (badButtons == 0)
+					{
+						gB_SidewaysBlockAir[client] = true;
+					}
+				}			
+			}
+			else
+			{
+				gB_SidewaysBlockAir[client] = false;
+				if (gB_SidewaysBlockGround[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME))
+				{
+					int badButtons = (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
+					if (badButtons != 0)
+					{
+						flags |= FL_ATCONTROLS;
+						buttons &= ~badButtons;
+					}
+					else
+					{
+						flags &= ~FL_ATCONTROLS;
+					}
+				}
+				else
+				{
+					int badButtons = (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
+					if (badButtons == 0)
+					{
+						gB_SidewaysBlockGround[client] = true;
+					}
+				}	
+			}
+		}
+		else
+		{
+			flags &= ~FL_ATCONTROLS;
+		}
+	
+		SetEntityFlags(client, flags);
+	}
+	else if (style == Style_Negev)
 	{
 		int primary = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
 		if (primary == -1)
