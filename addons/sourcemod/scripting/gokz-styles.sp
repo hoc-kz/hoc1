@@ -345,7 +345,6 @@ public void OnClientStartTouch(int client, int other)
 	if (other == 0)
 	{
 		gB_TouchingWorld[client] = true;
-		PrintToServer("a");
 	}
 }
 
@@ -354,7 +353,6 @@ public void OnClientEndTouch(int client, int other)
 	if (other == 0)
 	{
 		gB_TouchingWorld[client] = false;
-		PrintToServer("bbbb");
 	}
 }
 
