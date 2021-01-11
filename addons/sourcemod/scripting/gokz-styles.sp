@@ -12,6 +12,13 @@
 #pragma newdecls required
 #pragma semicolon 1
 
+/*
+	This file is very messy!!!
+
+	This should really be split into multiple files, each for it's own style, like modes are.
+	The reason it's not at the moment, is that I didn't know what an appropriate API would be at the time.
+*/
+
 
 
 public Plugin myinfo = 
