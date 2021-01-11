@@ -254,7 +254,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 				if (badButtons != 0)
 				{
 					flags |= FL_ATCONTROLS;
-					buttons &= ~badButtons;
+					//buttons &= ~badButtons;
 				}
 			}
 			else
@@ -278,13 +278,13 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 				{
 					if (gB_TouchingWorld[client])
 					{
-						vel[1] *= (125.0 / 450.0);
+						vel[1] *= (80.0 / 450.0);
 					}
 					else
 					{
-						vel[1] *= (15.0 / 450.0);
-					}					
-					buttons &= ~badButtons;
+						vel[1] *= (7.0 / 450.0);
+					}			
+					//buttons &= ~badButtons;
 				}
 			}
 			else
