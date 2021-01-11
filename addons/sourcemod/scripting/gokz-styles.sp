@@ -45,6 +45,7 @@ bool gB_SidewaysBlockAir[MAXPLAYERS + 1];
 float gF_OnGroundChangedTime[MAXPLAYERS + 1];
 int gI_LastJumpTick[MAXPLAYERS + 1];
 int gI_LadderGrabTick[MAXPLAYERS + 1];
+bool gB_TouchingWorld[MAXPLAYERS + 1];
 
 
 
@@ -275,7 +276,14 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 			{
 				if (badButtons != 0)
 				{
-					flags |= FL_ATCONTROLS;
+					if (gB_TouchingWorld[client])
+					{
+						vel[1] *= (125.0 / 450.0);
+					}
+					else
+					{
+						vel[1] *= (15.0 / 450.0);
+					}					
 					buttons &= ~badButtons;
 				}
 			}
@@ -330,6 +338,24 @@ public Action OnClientWeaponDrop(int client, int weapon)
 		return Plugin_Stop;
 	}
 	return Plugin_Continue;
+}
+
+public void OnClientStartTouch(int client, int other)
+{
+	if (other == 0)
+	{
+		gB_TouchingWorld[client] = true;
+		PrintToServer("a");
+	}
+}
+
+public void OnClientEndTouch(int client, int other)
+{
+	if (other == 0)
+	{
+		gB_TouchingWorld[client] = false;
+		PrintToServer("bbbb");
+	}
 }
 
 
@@ -429,4 +455,7 @@ static void HookClientEvents(int client)
 
 	SDKHook(client, SDKHook_WeaponCanSwitchTo, OnClientWeaponCanSwitchTo);
 	SDKHook(client, SDKHook_WeaponDrop, OnClientWeaponDrop);
+
+	SDKHook(client, SDKHook_StartTouchPost, OnClientStartTouch);
+	SDKHook(client, SDKHook_EndTouchPost, OnClientEndTouch);
 } 
