@@ -184,6 +184,24 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 
 		SetEntityFlags(client, flags);
 	}
+
+	if (GetStyle(client) == Style_Negev)
+	{
+		int primary = GetPlayerWeaponSlot(client, CS_SLOT_PRIMARY);
+		if (primary == -1)
+		{
+			GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+		}
+		else
+		{
+			int defIndex = GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex");
+			if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_NEGEV))
+			{
+				GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+			}
+		}
+	}
+
 	return Plugin_Continue;
 }
 
