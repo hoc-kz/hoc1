@@ -182,90 +182,86 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	int style = GetStyle(client);
 	if (style == Style_WOnly)
 	{
-		int flags = GetEntityFlags(client);
+		int flags = GetEntityFlags(client) & ~FL_ATCONTROLS;
 		MoveType moveType = GetEntityMoveType(client);
 		
 		int badButtons = (buttons & IN_BACK) | (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
 		bool noclip = (moveType == MOVETYPE_NOCLIP);
 		bool ladder = (moveType == MOVETYPE_LADDER);
 		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + MAX_LADDERJUMP_TIME));
-		if (badButtons != 0 && !noclip && !(ladder || ladderJump))
+
+		if (noclip || ladder || ladderJump)
+		{
+			return Plugin_Continue;
+		}
+
+		if (badButtons != 0)
 		{
 			flags |= FL_ATCONTROLS;
 			buttons &= ~badButtons;
-		}
-		else
-		{
-			flags &= ~FL_ATCONTROLS;
 		}
 
 		SetEntityFlags(client, flags);
 	}
 	else if (style == Style_Sideways)
 	{
-		int flags = GetEntityFlags(client);
+		int flags = GetEntityFlags(client) & ~FL_ATCONTROLS;
 		MoveType moveType = GetEntityMoveType(client);
 
 		bool noclip = (moveType == MOVETYPE_NOCLIP);
 		bool ladder = (moveType == MOVETYPE_LADDER);
 		bool ladderJump = (gB_LadderJump[client] && (GetEngineTime() <= gF_LadderJumpTime[client] + MAX_LADDERJUMP_TIME));
 
-		if (!noclip && !(ladder || ladderJump))
+		if (noclip || ladder || ladderJump)
 		{
-			if (flags & FL_ONGROUND)
+			return Plugin_Continue;
+		}
+
+		if (flags & FL_ONGROUND)
+		{
+			int badButtons = (buttons & IN_FORWARD) | (buttons & IN_BACK);
+
+			gB_SidewaysBlockGround[client] = false;
+			bool blockAirButtons = gB_SidewaysBlockAir[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME);
+
+			if (blockAirButtons)
 			{
-				gB_SidewaysBlockGround[client] = false;
-				if (gB_SidewaysBlockAir[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME))
+				if (badButtons != 0)
 				{
-					int badButtons = (buttons & IN_FORWARD) | (buttons & IN_BACK);
-					if (badButtons != 0)
-					{
-						flags |= FL_ATCONTROLS;
-						buttons &= ~badButtons;
-					}
-					else
-					{
-						flags &= ~FL_ATCONTROLS;
-					}
+					flags |= FL_ATCONTROLS;
+					buttons &= ~badButtons;
 				}
-				else
-				{
-					int badButtons = (buttons & IN_FORWARD) | (buttons & IN_BACK);
-					if (badButtons == 0)
-					{
-						gB_SidewaysBlockAir[client] = true;
-					}
-				}			
 			}
 			else
 			{
-				gB_SidewaysBlockAir[client] = false;
-				if (gB_SidewaysBlockGround[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME))
+				if (badButtons == 0)
 				{
-					int badButtons = (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
-					if (badButtons != 0)
-					{
-						flags |= FL_ATCONTROLS;
-						buttons &= ~badButtons;
-					}
-					else
-					{
-						flags &= ~FL_ATCONTROLS;
-					}
+					gB_SidewaysBlockAir[client] = true;
 				}
-				else
-				{
-					int badButtons = (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
-					if (badButtons == 0)
-					{
-						gB_SidewaysBlockGround[client] = true;
-					}
-				}	
-			}
+			}			
 		}
 		else
 		{
-			flags &= ~FL_ATCONTROLS;
+			int badButtons = (buttons & IN_MOVELEFT) | (buttons & IN_MOVERIGHT);
+
+			gB_SidewaysBlockAir[client] = false;
+			bool blockGroundButtons = gB_SidewaysBlockGround[client] || (GetEngineTime() > gF_OnGroundChangedTime[client] + MAX_BAD_BUTTON_TIME);
+
+			if (blockGroundButtons)
+			{
+				if (badButtons != 0)
+				{
+					flags |= FL_ATCONTROLS;
+					buttons &= ~badButtons;
+				}
+			}
+			else
+			{
+				if (badButtons == 0)
+				{
+					gB_SidewaysBlockGround[client] = true;
+				}
+			}	
 		}
 	
 		SetEntityFlags(client, flags);
