@@ -173,11 +173,11 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 	{
 		if (blockType == 0)
 		{
-			GOKZ_PrintToChat(client, true, "Jump Stats Menu - No Jump Stats", client, alias);
+			GOKZ_PrintToChat(client, true, "%T", "Jump Stats Menu - No Jump Stats", client, alias);
 		}
 		else
 		{
-			GOKZ_PrintToChat(client, true, "Jump Stats Menu - No Block Jump Stats", client, alias);
+			GOKZ_PrintToChat(client, true, "%T", "Jump Stats Menu - No Block Jump Stats", client, alias);
 		}
 		
 		DisplayJumpStatsBlockTypeMenu(client, mode);

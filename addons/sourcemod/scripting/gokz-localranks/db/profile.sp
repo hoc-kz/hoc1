@@ -149,11 +149,11 @@ static void ProfileMenuSetTitle(int client, Menu menu)
 		menu.SetTitle("%T", "Profile Menu - Title", client, 
 			profileAlias[client],
 			profileCountry[client],
+			profileCreatedDate[client],
+			profileLastPlayedDate[client],
 			profileRank[client], profileMaxRank[client],
 			profileLevel[client],
 			profilePrestige[client],
-			profileCreatedDate[client],
-			profileLastPlayedDate[client],
 			profileMapsCompletedNub[client], profileMapsTotal[client], mapsCompletedNubPercent,
 			profileMapsCompletedPro[client], profileMapsTotal[client], mapsCompletedProPercent);
 	}
