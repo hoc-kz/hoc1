@@ -33,6 +33,7 @@ public Plugin myinfo =
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-styles.txt"
 #define MAX_LADDERJUMP_TIME 2.0
 #define MAX_BAD_BUTTON_TIME 0.1
+#define MAX_LAH_GROUND_TICKS 5
 
 ConVar gCV_AutoBunnyHopping;
 
@@ -42,6 +43,8 @@ float gF_LadderJumpTime[MAXPLAYERS + 1];
 bool gB_SidewaysBlockGround[MAXPLAYERS + 1];
 bool gB_SidewaysBlockAir[MAXPLAYERS + 1];
 float gF_OnGroundChangedTime[MAXPLAYERS + 1];
+int gI_LastJumpTick[MAXPLAYERS + 1];
+int gI_LadderGrabTick[MAXPLAYERS + 1];
 
 
 
@@ -88,6 +91,8 @@ public void OnClientPutInServer(int client)
 	gB_SidewaysBlockGround[client] = false;
 	gB_SidewaysBlockAir[client] = false;
 	gF_OnGroundChangedTime[client] = -999999.0;
+	gI_LastJumpTick[client] = -999999;
+	gI_LadderGrabTick[client] = -999999;
 
 	HookClientEvents(client);
 	ReplicateConVars(client);
@@ -132,8 +137,15 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 
 public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType newMovetype)
 {
+	if (newMovetype == MOVETYPE_LADDER)
+	{
+		gI_LadderGrabTick[client] = GetGameTickCount();
+	}
+
 	// Keep track of when the player is performing a ladder jump.
-	if (oldMovetype == MOVETYPE_LADDER)
+	bool onGround = (GetEntityFlags(client) & FL_ONGROUND) != 0;
+	bool ladderHop = (GetGameTickCount() - gI_LastJumpTick[client] <= MAX_LAH_GROUND_TICKS) && (GetGameTickCount() - gI_LadderGrabTick[client] > MAX_LAH_GROUND_TICKS);
+	if (oldMovetype == MOVETYPE_LADDER && !onGround && !ladderHop)
 	{
 		gB_LadderJump[client] = true;
 		gF_LadderJumpTime[client] = GetEngineTime();
@@ -151,6 +163,11 @@ public void Movement_OnStartTouchGround(int client)
 public void Movement_OnStopTouchGround(int client, bool jumped)
 {
 	gF_OnGroundChangedTime[client] = GetEngineTime();
+
+	if (jumped)
+	{
+		gI_LastJumpTick[client] = GetGameTickCount();
+	}
 }
 
 public void OnClientPreThink_Post(int client)
