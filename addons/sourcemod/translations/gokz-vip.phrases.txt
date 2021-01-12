@@ -1,5 +1,16 @@
 ﻿"Phrases"
 {
+	// =====[ CHAT MESSAGES ]=====
+	"Options Menu - Buy VIP"
+	{
+		"en"		"{grey}You need VIP to access this menu."
+	}
+	"Options Menu - Buy VIP Learn More"
+	{
+		"en"		"{grey}Learn more at {default}houseofclimb.com/pages/donate{grey}"
+	}
+	
+	
 	// =====[ OPTIONS MENU ]=====
 	"Options Menu - VIP"
 	{
@@ -26,7 +37,7 @@
 		"en"		"Lime"
 	}
 	"Options Menu - Green"
-	{
+	{ 
 		"en"		"Green"
 	}
 	"Options Menu - Light Blue"

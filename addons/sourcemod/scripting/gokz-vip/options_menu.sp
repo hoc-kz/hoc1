@@ -49,8 +49,38 @@ public void TopMenuHandler_Categories(TopMenu topmenu, TopMenuAction action, Top
 	}
 }
 
+public void RequestFrameCallback_OpenTopMenu(int userid)
+{
+	int client = GetClientOfUserId(userid);
+	if (!IsValidClient(client))
+	{
+		return;
+	}
+
+	optionsTopMenu.Display(client, TopMenuPosition_LastRoot);
+}
+
 public void TopMenuHandler_VIP(TopMenu topmenu, TopMenuAction action, TopMenuObject topobj_id, int param, char[] buffer, int maxlength)
 {
+	bool firstOption = (topobj_id == itemsVIP[0]);
+	if ((firstOption && action == TopMenuAction_DrawOption) || action == TopMenuAction_SelectOption)
+	{
+		if (!CheckCommandAccess(param, "has_vip_fake_command", ADMFLAG_CUSTOM1))
+		{
+			RequestFrame(RequestFrameCallback_OpenTopMenu, GetClientUserId(param));
+			
+			if (action == TopMenuAction_DrawOption)
+			{
+				GOKZ_PrintToChat(param, true, "%T", "Options Menu - Buy VIP", param);
+				GOKZ_PrintToChat(param, false, "%T", "Options Menu - Buy VIP Learn More", param);
+			}
+			else if (action == TopMenuAction_SelectOption)
+			{
+				return;
+			}
+		}
+	}
+
 	VIPOption option = VIPOPTION_INVALID;
 	for (int i = 0; i < view_as<int>(VIPOPTION_COUNT); i++)
 	{
