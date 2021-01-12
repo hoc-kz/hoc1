@@ -37,8 +37,7 @@ enum
 
 enum
 {
-	HookColor_Grey = 0, 
-	HookColor_White,
+	HookColor_White = 0,
 	HookColor_Red, 
 	HookColor_Green,
 	HookColor_Blue,
@@ -85,7 +84,7 @@ stock int gI_VIPOptionDefaults[VIPOPTION_COUNT] =
 {
 	0,
 	ChatNameColor_Grey,
-	HookColor_Grey
+	HookColor_White
 };
 
 stock char gC_ChatNameColorPhrases[CHATNAMECOLOR_COUNT][] = 
@@ -114,7 +113,6 @@ stock int gI_ChatNameColorValues[CHATNAMECOLOR_COUNT] =
 
 stock char gC_HookColorPhrases[HOOKCOLOR_COUNT][] = 
 {
-	"Options Menu - Grey", 
 	"Options Menu - White", 
 	"Options Menu - Red", 
 	"Options Menu - Green",
@@ -125,8 +123,7 @@ stock char gC_HookColorPhrases[HOOKCOLOR_COUNT][] =
 
 stock int gI_HookColorValues[HOOKCOLOR_COUNT][4] =
 {
-	{128, 128, 128, 255}, // Grey
-	{255, 255, 255, 255}, // White
+	{192, 192, 192, 255}, // White
 	{255, 0,   0,   255}, // Red
 	{0,   255, 0,   255}, // Green
 	{0,   0,   255, 255}, // Blue
