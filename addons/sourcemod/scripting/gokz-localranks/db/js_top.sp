@@ -1,24 +1,23 @@
 
 static int jumpTopMode[MAXPLAYERS + 1];
 static int jumpTopType[MAXPLAYERS + 1];
-static int jumpTopBlockType[MAXPLAYERS + 1];
 
 
 
-void DB_GetJumpTop(int client)
+void DB_OpenJumpTop(int client, int mode, int jumpType, int blockType)
 {
 	char query[1024];
 	
 	Transaction txn = SQL_CreateTransaction();
 
-	FormatEx(query, sizeof(query), sql_jumpstats_gettop, jumpTopType[client], jumpTopMode[client], jumpTopBlockType[client], jumpTopType[client], jumpTopMode[client], jumpTopBlockType[client], JS_TOP_RECORD_COUNT);
+	FormatEx(query, sizeof(query), sql_jumpstats_gettop, jumpType, mode, blockType, jumpType, mode, blockType, JS_TOP_RECORD_COUNT);
 	txn.AddQuery(query);
 
 	DataPack data = new DataPack();
 	data.WriteCell(GetClientUserId(client));
-	data.WriteCell(jumpTopMode[client]);
-	data.WriteCell(jumpTopType[client]);
-	data.WriteCell(jumpTopBlockType[client]);
+	data.WriteCell(mode);
+	data.WriteCell(jumpType);
+	data.WriteCell(blockType);
 
 	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_GetJumpTop, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
 }
@@ -41,7 +40,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[]
 	if (rows == 0)
 	{
 		GOKZ_PrintToChat(client, true, "%t", "No Jumpstats Found");
-		DisplayJumpTopBlockTypeMenu(client, type);
+		DisplayJumpTopBlockTypeMenu(client, mode, type);
 		return;
 	}
 	
@@ -174,8 +173,9 @@ static void JumpTopTypeMenuAddItems(Menu menu)
 	}
 }
 
-void DisplayJumpTopBlockTypeMenu(int client, int type)
+void DisplayJumpTopBlockTypeMenu(int client, int mode, int type)
 {
+	jumpTopMode[client] = mode;
 	jumpTopType[client] = type;
 	
 	Menu menu = new Menu(MenuHandler_JumpTopBlockType);
@@ -191,12 +191,6 @@ static void JumpTopBlockTypeMenuAddItems(int client, Menu menu)
 	menu.AddItem("jump", str);
 	FormatEx(str, sizeof(str), "%T %T", "Block", client, "Jump Records", client);
 	menu.AddItem("blockjump", str);
-}
-
-void DisplayJumpTopMenu(int client, int blockType)
-{
-	jumpTopBlockType[client] = blockType;
-	DB_GetJumpTop(client);
 }
 
 
@@ -221,7 +215,7 @@ public int MenuHandler_JumpTopType(Menu menu, MenuAction action, int param1, int
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = type
-		DisplayJumpTopBlockTypeMenu(param1, param2);
+		DisplayJumpTopBlockTypeMenu(param1, jumpTopMode[param1], param2);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
@@ -238,7 +232,7 @@ public int MenuHandler_JumpTopBlockType(Menu menu, MenuAction action, int param1
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = block type
-		DisplayJumpTopMenu(param1, param2);
+		DB_OpenJumpTop(param1, jumpTopMode[param1], jumpTopType[param1], param2);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
@@ -254,7 +248,7 @@ public int MenuHandler_JumpTopList(Menu menu, MenuAction action, int param1, int
 {
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		DisplayJumpTopBlockTypeMenu(param1, jumpTopType[param1]);
+		DisplayJumpTopBlockTypeMenu(param1, jumpTopMode[param1], jumpTopType[param1]);
 	}
 	else if (action == MenuAction_End)
 	{
