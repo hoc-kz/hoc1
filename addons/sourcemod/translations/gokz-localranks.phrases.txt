@@ -640,7 +640,20 @@
 		"en"		"Block"
 		"ru"		"Блок"
 	}
+	"ReleaseW"
+	{
+		"en"		"W"
+	}
+	"DeadAir"
+	{
+		"en"		"DA"
+	}
+	"Overlap"
+	{
+		"en"		"OL"
+	}
 
+	
 	// =====[ PROFILE ]=====
 	"Profile Menu - Title"
 	{

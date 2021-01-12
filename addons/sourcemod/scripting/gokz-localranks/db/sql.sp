@@ -474,7 +474,7 @@ SELECT JumpID, Distance, Block \
     ORDER BY Block DESC, Distance DESC";
 
 char sql_jumpstats_getpbs[] = "\
-SELECT a.JumpType, a.Distance, a.Strafes, a.Sync, a.Pre, a.Max, a.Airtime \
+SELECT a.JumpType, a.Distance, a.Strafes, a.Sync, a.Pre, a.Max, a.Overlap, a.DeadAir, a.ReleaseW, a.Airtime \
 	FROM Jumpstats a \
 	INNER JOIN ( \
 		SELECT JumpType, MAX(Distance) _Distance \
@@ -486,7 +486,7 @@ SELECT a.JumpType, a.Distance, a.Strafes, a.Sync, a.Pre, a.Max, a.Airtime \
 	ORDER BY a.JumpType";
 
 char sql_jumpstats_getblockpbs[] = "\
-SELECT a.JumpType, a.Block, MAX(a.Distance), a.Strafes, a.Sync, a.Pre, a.Max, a.Airtime \
+SELECT a.JumpType, a.Block, MAX(a.Distance), a.Strafes, a.Sync, a.Pre, a.Max, a.Overlap, a.DeadAir, a.ReleaseW, a.Airtime \
 	FROM Jumpstats a \
 	INNER JOIN ( \
 		SELECT JumpType, MAX(Block) _Block \

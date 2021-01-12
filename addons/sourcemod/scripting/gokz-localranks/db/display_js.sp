@@ -213,15 +213,29 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 			float sync = SQL_FetchFloat(results[1], 3) / GOKZ_DB_JS_SYNC_PRECISION;
 			float pre = SQL_FetchFloat(results[1], 4) / GOKZ_DB_JS_PRE_PRECISION;
 			float max = SQL_FetchFloat(results[1], 5) / GOKZ_DB_JS_MAX_PRECISION;
-			float airtime = SQL_FetchFloat(results[1], 6) / GOKZ_DB_JS_AIRTIME_PRECISION;
+			int overlap = SQL_FetchInt(results[1], 6);
+			int deadair = SQL_FetchInt(results[1], 7);
+			int releaseW = SQL_FetchInt(results[1], 8);
+			float airtime = SQL_FetchFloat(results[1], 9) / GOKZ_DB_JS_AIRTIME_PRECISION;
 
 			FormatEx(buffer, sizeof(buffer), "%0.4f  %s", distance, gC_JumpTypes[jumpType]);
 			menu.AddItem("", buffer, ITEMDRAW_DISABLED);
 
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
-			PrintToConsole(client, "%s  %0.4f  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
-				buffer, distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
+
+			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump || jumpType == JumpType_Bhop)
+			{
+				PrintToConsole(client, "%s  %0.4f  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
+					buffer, distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
+					airtime, "Air", overlap, "Overlap", deadair, "DeadAir", releaseW, "ReleaseW");
+			}
+			else
+			{
+				PrintToConsole(client, "%s  %0.4f  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t]", 
+					buffer, distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
+					airtime, "Air", overlap, "Overlap", deadair, "DeadAir");
+			}
 		}
 	}
 	else
@@ -244,15 +258,28 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 			float sync = SQL_FetchFloat(results[1], 4) / GOKZ_DB_JS_SYNC_PRECISION;
 			float pre = SQL_FetchFloat(results[1], 5) / GOKZ_DB_JS_PRE_PRECISION;
 			float max = SQL_FetchFloat(results[1], 6) / GOKZ_DB_JS_MAX_PRECISION;
-			float airtime = SQL_FetchFloat(results[1], 7) / GOKZ_DB_JS_AIRTIME_PRECISION;
+			int overlap = SQL_FetchInt(results[1], 7);
+			int deadair = SQL_FetchInt(results[1], 8);
+			int releaseW = SQL_FetchInt(results[1], 9);
+			float airtime = SQL_FetchFloat(results[1], 10) / GOKZ_DB_JS_AIRTIME_PRECISION;
 
 			FormatEx(buffer, sizeof(buffer), "%d %T (%0.4f)  %s", block, "Block", client, distance, gC_JumpTypes[jumpType]);
 			menu.AddItem("", buffer, ITEMDRAW_DISABLED);
 
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
-			PrintToConsole(client, "%s  %d %t (%0.4f)  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
-				buffer, block, "Block", distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
+			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump || jumpType == JumpType_Bhop)
+			{
+				PrintToConsole(client, "%s  %d %t (%0.4f)  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
+					buffer, block, "Block", distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
+					airtime, "Air", overlap, "Overlap", deadair, "DeadAir", releaseW, "ReleaseW");
+			}
+			else
+			{
+				PrintToConsole(client, "%s  %d %t (%0.4f)  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t]", 
+					buffer, block, "Block", distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
+					airtime, "Air", overlap, "Overlap", deadair, "DeadAir");
+			}
 		}
 	}
 
