@@ -28,7 +28,9 @@ void RegisterCommands()
 	RegConsoleCmd("sm_virtualbuttons", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_vb", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_mode", CommandMode, "[KZ] Open the movement mode selection menu.");
+	RegConsoleCmd("sm_modes", CommandMode, "[KZ] Open the movement mode selection menu.");
 	RegConsoleCmd("sm_style", CommandStyle, "[KZ] Open the movement style selection menu.");
+	RegConsoleCmd("sm_styles", CommandStyle, "[KZ] Open the movement style selection menu.");
 	RegConsoleCmd("sm_c", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_classic", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
