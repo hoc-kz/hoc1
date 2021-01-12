@@ -84,7 +84,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[]
 			FormatEx(display, sizeof(display), "#%-2d   %.4f   %s", i + 1, distance, alias);
 			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
-			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump || type == JumpType_Bhop)
+			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump)
 			{
 				PrintToConsole(client, "#%-2d   %.4f   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
 					i + 1, distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
@@ -128,7 +128,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[]
 			FormatEx(display, sizeof(display), "#%-2d   %d %T (%.4f)   %s", i + 1, block, "Block", client, distance, alias);
 			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
-			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump || type == JumpType_Bhop)
+			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump)
 			{
 				PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
 					i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",

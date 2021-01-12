@@ -224,7 +224,7 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
 
-			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump || jumpType == JumpType_Bhop)
+			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump)
 			{
 				PrintToConsole(client, "%s  %0.4f  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
 					buffer, distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
@@ -268,7 +268,7 @@ public void DB_TxnSuccess_OpenJumpStats(Handle db, DataPack datapack, int numQue
 
 			FormatEx(buffer, sizeof(buffer), "%8s", gC_JumpTypesShort[jumpType]);
 			buffer[3] = '\0';
-			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump || jumpType == JumpType_Bhop)
+			if (jumpType == JumpType_LongJump || jumpType == JumpType_LadderJump || jumpType == JumpType_WeirdJump)
 			{
 				PrintToConsole(client, "%s  %d %t (%0.4f)  [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
 					buffer, block, "Block", distance, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", 
