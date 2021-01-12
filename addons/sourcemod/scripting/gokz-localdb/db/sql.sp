@@ -189,6 +189,9 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	Sync INTEGER NOT NULL, \
 	Pre INTEGER NOT NULL, \
 	Max INTEGER NOT NULL, \
+	Overlap INTEGER NOT NULL, \
+	DeadAir INTEGER NOT NULL, \
+	ReleaseW INTEGER NOT NULL, \
 	Airtime INTEGER NOT NULL, \
 	Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
 	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
@@ -208,6 +211,9 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	Sync INTEGER UNSIGNED NOT NULL, \
 	Pre INTEGER UNSIGNED NOT NULL, \
 	Max INTEGER UNSIGNED NOT NULL, \
+	Overlap INTEGER UNSIGNED NOT NULL, \
+	DeadAir INTEGER UNSIGNED NOT NULL, \
+	ReleaseW INTEGER UNSIGNED NOT NULL, \
 	Airtime INTEGER UNSIGNED NOT NULL, \
 	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
 	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
@@ -215,8 +221,8 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_jumpstats_insert[] = "\
-INSERT INTO Jumpstats (SteamID32, JumpType, Mode, Distance, IsBlockJump, Block, Strafes, Sync, Pre, Max, Airtime) \
-	VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
+INSERT INTO Jumpstats (SteamID32, JumpType, Mode, Distance, IsBlockJump, Block, Strafes, Sync, Pre, Max, Overlap, DeadAir, ReleaseW, Airtime) \
+	VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
 
 char sql_jumpstats_update[] = "\
 UPDATE Jumpstats \
@@ -231,6 +237,9 @@ UPDATE Jumpstats \
 		Sync=%d, \
 		Pre=%d, \
 		Max=%d, \
+		Overlap=%d, \
+		DeadAir=%d, \
+		ReleaseW=%d, \
 		Airtime=%d \
 	WHERE \
 		JumpID=%d";
