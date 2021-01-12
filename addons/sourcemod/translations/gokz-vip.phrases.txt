@@ -5,20 +5,60 @@
 	{
 		"en"		"VIP"
 	}
-	"Options Menu - Test"
+	"Options Menu - Player Model"
 	{
-		"en"		"Test"
+		"en"		"Player Model"
 	}
-	"Options Menu - XD"
+	"Options Menu - Chat Name Color"
 	{
-		"en"		"XD"
+		"en"		"Chat Name Color"
 	}
-	"Options Menu - LOL"
+	"Options Menu - Hook Color"
 	{
-		"en"		"LOL"
+		"en"		"Hook Color"
 	}
-	"Options Menu - KEKW"
+	"Options Menu - Grey"
 	{
-		"en"		"KEKW"
+		"en"		"Grey"
+	}
+	"Options Menu - Lime"
+	{
+		"en"		"Lime"
+	}
+	"Options Menu - Green"
+	{
+		"en"		"Green"
+	}
+	"Options Menu - Light Blue"
+	{
+		"en"		"Light Blue"
+	}
+	"Options Menu - Blue"
+	{
+		"en"		"Blue"
+	}
+	"Options Menu - Light Red"
+	{
+		"en"		"Light Red"
+	}
+	"Options Menu - Red"
+	{
+		"en"		"Red"
+	}
+	"Options Menu - Purple"
+	{
+		"en"		"Purple"
+	}
+	"Options Menu - Orchid"
+	{
+		"en"		"Orchid"
+	}
+	"Options Menu - White"
+	{
+		"en"		"White"
+	}
+	"Options Menu - Yellow"
+	{
+		"en"		"Yellow"
 	}
 }

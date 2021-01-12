@@ -11,22 +11,48 @@
 
 
 
+// =====[ NATIVES ]=====
+
+//native void GOKZ_VIP_DisplayOptionsMenu(int client, TopMenuPosition position = TopMenuPosition_Start);
+
+
+
 // =====[ ENUMS ]=====
 
 enum VIPOption:
 {
 	VIPOPTION_INVALID = -1, 
-	VIPOption_Test, 
+	VIPOption_PlayerModel, 
+	VIPOption_ChatNameColor,
+	VIPOption_HookColor,
 	VIPOPTION_COUNT
 };
 
 enum
 {
-	Test_XD = 0, 
-	Test_LOL,
-	Test_KEKW, 
-	TEST_COUNT
+	ChatNameColor_Grey = 0,
+	ChatNameColor_Lime,
+	ChatNameColor_Green,
+	ChatNameColor_LightBlue, 
+	ChatNameColor_Blue,
+	ChatNameColor_LightRed,
+	ChatNameColor_Red,
+	ChatNameColor_Purple,
+	ChatNameColor_Orchid,
+	CHATNAMECOLOR_COUNT
 };
+
+enum
+{
+	HookColor_Grey = 0, 
+	HookColor_White,
+	HookColor_Red, 
+	HookColor_Green,
+	HookColor_Blue,
+	HookColor_Purple,
+	HookColor_Yellow,
+	HOOKCOLOR_COUNT
+}
 
 
 
@@ -36,34 +62,85 @@ enum
 
 stock char gC_VIPOptionNames[VIPOPTION_COUNT][] = 
 {
-	"GOKZ VIP - Test"
+	"GOKZ VIP - Player Model",
+	"GOKZ VIP - Chat Name Color",
+	"GOKZ VIP - Hook Color"
 };
 
 stock char gC_VIPOptionDescriptions[VIPOPTION_COUNT][] = 
 {
-	"Test - 0 = XD, 1 = LOL, 2 = KEKW"
+	"Player Model",
+	"Chat Name Color",
+	"Hook Color"
 };
 
 stock char gC_VIPOptionPhrases[VIPOPTION_COUNT][] = 
 {
-	"Options Menu - Test"
+	"Options Menu - Player Model",
+	"Options Menu - Chat Name Color",
+	"Options Menu - Hook Color"
 };
 
 stock int gI_VIPOptionCounts[VIPOPTION_COUNT] = 
 {
-	TEST_COUNT
+	999999,
+	CHATNAMECOLOR_COUNT,
+	HOOKCOLOR_COUNT
 };
 
 stock int gI_VIPOptionDefaults[VIPOPTION_COUNT] = 
 {
-	Test_XD
+	0,
+	ChatNameColor_Grey,
+	HookColor_Grey
 };
 
-stock char gC_TestPhrases[TEST_COUNT][] = 
+stock char gC_ChatNameColorPhrases[CHATNAMECOLOR_COUNT][] = 
 {
-	"Options Menu - XD", 
-	"Options Menu - LOL", 
-	"Options Menu - KEKW"
+	"Options Menu - Grey", 
+	"Options Menu - Lime", 
+	"Options Menu - Green",
+	"Options Menu - Light Blue", 
+	"Options Menu - Blue",
+	"Options Menu - Light Red",
+	"Options Menu - Red",
+	"Options Menu - Purple",
+	"Options Menu - Orchid"
+};
+
+stock int gI_ChatNameColorValues[CHATNAMECOLOR_COUNT] =
+{
+	0x08, // Grey
+	0x06, // Lime
+	0x04, // Green
+	0x0B, // Light Blue
+	0x0C, // Blue
+	0x0F, // Light Red
+	0x07, // Red
+	0x03, // Purple
+	0x0E, // Orchid
+};
+
+stock char gC_HookColorPhrases[HOOKCOLOR_COUNT][] = 
+{
+	"Options Menu - Grey", 
+	"Options Menu - White", 
+	"Options Menu - Red", 
+	"Options Menu - Green",
+	"Options Menu - Blue",
+	"Options Menu - Purple",
+	"Options Menu - Yellow"
+};
+
+stock int gI_HookColorValues[HOOKCOLOR_COUNT][4] =
+{
+	{128, 128, 128, 255}, // Grey
+	{255, 255, 255, 255}, // White
+	{255, 0,   0,   255}, // Red
+	{0,   255, 0,   255}, // Green
+	{0,   0,   255, 255}, // Blue
+	{255, 0,   255, 255}, // Purple
+	{255, 255, 0,   255}, // Yellow
 };
 
 

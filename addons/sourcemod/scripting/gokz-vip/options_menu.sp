@@ -70,19 +70,41 @@ public void TopMenuHandler_VIP(TopMenu topmenu, TopMenuAction action, TopMenuObj
 	{
 		switch (option)
 		{
-			case VIPOption_Test:
+			case VIPOption_PlayerModel:
+			{
+				char modelName[64];
+				GOKZ_PM_GetPlayerModelDisplayName(param, modelName, sizeof(modelName));
+
+				FormatEx(buffer, maxlength, "%T - %s", 
+					gC_VIPOptionPhrases[option], param,
+					modelName);
+			}
+			case VIPOption_ChatNameColor:
 			{
 				FormatEx(buffer, maxlength, "%T - %T", 
 					gC_VIPOptionPhrases[option], param, 
-					gC_TestPhrases[GOKZ_VIP_GetOption(param, option)], param);
+					gC_ChatNameColorPhrases[GOKZ_VIP_GetOption(param, option)], param);
+			}
+			case VIPOption_HookColor:
+			{
+				FormatEx(buffer, maxlength, "%T - %T", 
+					gC_VIPOptionPhrases[option], param, 
+					gC_HookColorPhrases[GOKZ_VIP_GetOption(param, option)], param);
 			}
 			default:FormatToggleableOptionDisplay(param, option, buffer, maxlength);
 		}
 	}
 	else if (action == TopMenuAction_SelectOption)
 	{
-		GOKZ_VIP_CycleOption(param, option);
-		optionsTopMenu.Display(param, TopMenuPosition_LastCategory);
+		if (option == VIPOption_PlayerModel)
+		{
+			GOKZ_PM_DisplayPlayerModelMenu(param, true);
+		}
+		else 
+		{
+			GOKZ_VIP_CycleOption(param, option);
+			optionsTopMenu.Display(param, TopMenuPosition_LastCategory);
+		}
 	}
 }
 

@@ -5,6 +5,7 @@
 #include <clientprefs>
 
 #include <gokz/core>
+#include <gokz/vip>
 
 #include <autoexecconfig>
 
@@ -37,9 +38,15 @@ enum struct PlayerModel
 }
 
 ArrayList gH_PlayerModels;
+StringMap gH_PlayerModelNames;
 Cookie gH_PlayerModelCookie;
 ConVar gCV_gokz_player_models_alpha;
 ConVar gCV_sv_disable_immunity_alpha;
+
+TopMenu gH_OptionsMenu;
+bool gB_CameFromOptionsMenu[MAXPLAYERS + 1];
+
+#include "gokz-playermodels/api.sp"
 
 
 
@@ -47,6 +54,7 @@ ConVar gCV_sv_disable_immunity_alpha;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
+	CreateNatives();
 	RegPluginLibrary("gokz-playermodels");
 	return APLRes_Success;
 }
@@ -67,6 +75,12 @@ public void OnAllPluginsLoaded()
 	if (LibraryExists("updater"))
 	{
 		Updater_AddPlugin(UPDATER_URL);
+	}
+
+	TopMenu topMenu;
+	if (LibraryExists("gokz-core") && ((topMenu = GOKZ_GetOptionsTopMenu()) != null))
+	{
+		GOKZ_OnOptionsMenuReady(topMenu);
 	}
 }
 
@@ -110,6 +124,11 @@ public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) //
 public void OnMapStart()
 {
 	LoadPlayerModels();
+}
+
+public void GOKZ_OnOptionsMenuReady(TopMenu topMenu)
+{
+	gH_OptionsMenu = topMenu;
 }
 
 
@@ -203,7 +222,9 @@ bool LoadPlayerModels()
 	}
 
 	delete gH_PlayerModels;
+	delete gH_PlayerModelNames;
 	gH_PlayerModels = new ArrayList(sizeof(PlayerModel));
+	gH_PlayerModelNames = new StringMap();
 
 	ArrayList tempFiles = new ArrayList(256);
 	char fileName[256];
@@ -213,6 +234,7 @@ bool LoadPlayerModels()
 	playerModel.Name = "Default";
 	playerModel.Path = DEFAULT_PLAYER_MODEL;
 	gH_PlayerModels.PushArray(playerModel, sizeof(playerModel));
+	gH_PlayerModelNames.SetString(playerModel.Path, playerModel.Name);
 	PrecacheModel(DEFAULT_PLAYER_MODEL, true);
 
 	do
@@ -259,6 +281,7 @@ bool LoadPlayerModels()
 		if (!failed && hasMdl)
 		{
 			gH_PlayerModels.PushArray(playerModel, sizeof(playerModel));
+			gH_PlayerModelNames.SetString(playerModel.Path, playerModel.Name);
 
 			PrecacheModel(playerModel.Path, true);
 			for (int i = 0; i < tempFiles.Length; i++)
@@ -296,12 +319,25 @@ void GetDesiredPlayerModel(int client, char[] path, int maxlength)
 	}
 }
 
+void GetPlayerModelDisplayName(int client, char[] buffer, int maxlength)
+{
+	char modelPath[256];
+	GetDesiredPlayerModel(client, modelPath, sizeof(modelPath));
+
+	if (!gH_PlayerModelNames.GetString(modelPath, buffer, maxlength))
+	{
+		FormatEx(buffer, maxlength, "?");
+	}
+}
+
 
 
 // =====[ MODEL MENU ]=====
 
-void DisplayPlayerModelMenu(int client)
+void DisplayPlayerModelMenu(int client, bool cameFromMenu = false)
 {
+	gB_CameFromOptionsMenu[client] = cameFromMenu;
+
 	Menu menu = new Menu(MenuHandler_PlayerModel);
 	menu.SetTitle("%T", "Player Model Menu - Title", client);
 	PlayerModelMenuAddItems(client, menu);
@@ -317,6 +353,15 @@ public int MenuHandler_PlayerModel(Menu menu, MenuAction action, int param1, int
 
 		gH_PlayerModelCookie.Set(param1, info);
 		UpdatePlayerModel(param1);
+
+		if (gB_CameFromOptionsMenu[param1])
+		{
+			DisplayOptionsMenu(param1, TopMenuPosition_LastCategory);
+		}
+	}
+	else if (action == MenuAction_Cancel && gB_CameFromOptionsMenu[param1])
+	{
+		DisplayOptionsMenu(param1, TopMenuPosition_LastCategory);
 	}
 	else if (action == MenuAction_End)
 	{
@@ -347,6 +392,11 @@ void PlayerModelMenuAddItems(int client, Menu menu)
 			menu.AddItem(playerModel.Path, playerModel.Name);
 		}
 	}
+}
+
+void DisplayOptionsMenu(int client, TopMenuPosition position = TopMenuPosition_Start)
+{
+	gH_OptionsMenu.Display(client, position);
 }
 
 
