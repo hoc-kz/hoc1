@@ -11,12 +11,6 @@
 
 
 
-// =====[ NATIVES ]=====
-
-//native void GOKZ_VIP_DisplayOptionsMenu(int client, TopMenuPosition position = TopMenuPosition_Start);
-
-
-
 // =====[ ENUMS ]=====
 
 enum VIPOption:

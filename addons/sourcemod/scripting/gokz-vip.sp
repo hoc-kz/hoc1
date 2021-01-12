@@ -26,7 +26,6 @@ public Plugin myinfo =
 
 #include "gokz-vip/options.sp"
 #include "gokz-vip/options_menu.sp"
-#include "gokz-vip/api.sp"
 
 
 
@@ -34,7 +33,6 @@ public Plugin myinfo =
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	CreateNatives();
 	RegPluginLibrary("gokz-vip");
 	return APLRes_Success;
 }
