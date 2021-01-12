@@ -401,7 +401,7 @@ static void HookEvents()
 	HookEvent("player_death", OnPlayerDeath, EventHookMode_Pre);
 	HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
 	AddNormalSoundHook(view_as<NormalSHook>(OnNormalSound));
-	
+
 	GameData gameData = new GameData("sdktools.games");
 	int offset;
 	

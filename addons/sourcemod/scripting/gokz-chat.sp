@@ -133,6 +133,33 @@ public Action OnPlayerJoinTeam(Event event, const char[] name, bool dontBroadcas
 
 
 
+// =====[ OTHER EVENTS ]=====
+
+public Action OnTextMsg(UserMsg msg_id, BfRead msg, const int[] players, int playersNum, bool reliable, bool init)
+{
+	char text[64];
+	PbReadString(msg, "params", text, sizeof(text), 0);
+
+	if (StrContains(text, "#SFUI_Notice_Killed_Teammate") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	if (StrContains(text, "#Cstrike_TitlesTXT_Game_teammate_attack") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	if (StrContains(text, "#Hint_try_not_to_injure_teammates") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	return Plugin_Continue;
+}
+
+
+
 // =====[ GENERAL ]=====
 
 void CreateConVars()
@@ -151,6 +178,8 @@ void HookEvents()
 {
 	HookEvent("player_disconnect", OnPlayerDisconnect, EventHookMode_Pre);
 	HookEvent("player_team", OnPlayerJoinTeam, EventHookMode_Pre);
+
+	HookUserMessage(GetUserMessageId("TextMsg"), OnTextMsg, true);
 }
 
 
