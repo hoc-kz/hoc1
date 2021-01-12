@@ -405,7 +405,7 @@ void DisplayOptionsMenu(int client, TopMenuPosition position = TopMenuPosition_S
 
 void RegisterCommands()
 {
-	RegConsoleCmd("sm_model", CommandModel);
+	RegAdminCmd("sm_model", CommandModel, ADMFLAG_CUSTOM1);	
 }
 
 public Action CommandModel(int client, int argc)
