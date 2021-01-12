@@ -1,0 +1,24 @@
+﻿"Phrases"
+{
+	// =====[ OPTIONS MENU ]=====
+	"Options Menu - VIP"
+	{
+		"en"		"VIP"
+	}
+	"Options Menu - Test"
+	{
+		"en"		"Test"
+	}
+	"Options Menu - XD"
+	{
+		"en"		"XD"
+	}
+	"Options Menu - LOL"
+	{
+		"en"		"LOL"
+	}
+	"Options Menu - KEKW"
+	{
+		"en"		"KEKW"
+	}
+}
