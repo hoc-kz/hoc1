@@ -29,7 +29,6 @@ enum
 	ChatNameColor_Green,
 	ChatNameColor_LightBlue, 
 	ChatNameColor_Blue,
-	ChatNameColor_LightRed,
 	ChatNameColor_Red,
 	ChatNameColor_Purple,
 	ChatNameColor_Orchid,
@@ -96,7 +95,6 @@ stock char gC_ChatNameColorPhrases[CHATNAMECOLOR_COUNT][] =
 	"Options Menu - Green",
 	"Options Menu - Light Blue", 
 	"Options Menu - Blue",
-	"Options Menu - Light Red",
 	"Options Menu - Red",
 	"Options Menu - Purple",
 	"Options Menu - Orchid"
@@ -104,12 +102,11 @@ stock char gC_ChatNameColorPhrases[CHATNAMECOLOR_COUNT][] =
 
 stock int gI_ChatNameColorValues[CHATNAMECOLOR_COUNT] =
 {
-	0x08, // Grey
+	0x0A, // Grey
 	0x06, // Lime
 	0x04, // Green
 	0x0B, // Light Blue
 	0x0C, // Blue
-	0x0F, // Light Red
 	0x07, // Red
 	0x03, // Purple
 	0x0E, // Orchid

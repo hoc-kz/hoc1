@@ -37,10 +37,6 @@
 	{
 		"en"		"Blue"
 	}
-	"Options Menu - Light Red"
-	{
-		"en"		"Light Red"
-	}
 	"Options Menu - Red"
 	{
 		"en"		"Red"

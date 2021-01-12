@@ -3,6 +3,7 @@
 #include <cstrike>
 
 #include <gokz/core>
+#include <gokz/vip>
 
 #include <autoexecconfig>
 #include <sourcemod-colors>
@@ -196,15 +197,17 @@ void OnClientSayCommand_ChatProcessing(int client, const char[] command, const c
 		GOKZ_LV_FormatLevelTag(consoleLevelTag, sizeof(consoleLevelTag), level, prestige, false);
 	}
 
+	int nameColor = gI_ChatNameColorValues[GOKZ_VIP_GetOption(client, VIPOption_ChatNameColor)];
+
 	if (IsSpectating(client))
 	{
-		GOKZ_PrintToChatAll(false, "{default}%s *{lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		GOKZ_PrintToChatAll(false, "{default}%s *%c%s{default}: %s", chatLevelTag, nameColor, sanitisedName, sanitisedMessage);
 		PrintToConsoleAll("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 		PrintToServer("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}
 	else
 	{
-		GOKZ_PrintToChatAll(false, "{default}%s {lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		GOKZ_PrintToChatAll(false, "{default}%s %c%s{default}: %s", chatLevelTag, nameColor, sanitisedName, sanitisedMessage);
 		PrintToConsoleAll("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 		PrintToServer("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}
