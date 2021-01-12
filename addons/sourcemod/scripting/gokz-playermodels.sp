@@ -406,6 +406,7 @@ void DisplayOptionsMenu(int client, TopMenuPosition position = TopMenuPosition_S
 void RegisterCommands()
 {
 	RegAdminCmd("sm_model", CommandModel, ADMFLAG_CUSTOM1);	
+	RegAdminCmd("sm_models", CommandModel, ADMFLAG_CUSTOM1);	
 }
 
 public Action CommandModel(int client, int argc)
