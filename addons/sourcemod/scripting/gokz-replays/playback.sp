@@ -547,17 +547,35 @@ static void SetBotStuff(int bot)
 	GOKZ_SetCoreOption(client, Option_Style, botStyle[bot]);
 	
 	// Set bot clan tag
+	bool usesStyle = botStyle[bot] != Style_Normal;
 	char tag[MAX_NAME_LENGTH];
-	if (botCourse[bot] == 0)
-	{  // Main course so tag "MODE NUB/PRO"
-		FormatEx(tag, sizeof(tag), "%s %s", 
-			gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+	if (!usesStyle)
+	{
+		if (botCourse[bot] == 0)
+		{  // Main course so tag "MODE NUB/PRO"
+			FormatEx(tag, sizeof(tag), "%s %s", 
+				gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+		}
+		else
+		{  // Bonus course so tag "MODE B# NUB/PRO"
+			FormatEx(tag, sizeof(tag), "%s B%d %s", 
+				gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+		}
 	}
 	else
-	{  // Bonus course so tag "MODE B# NUB/PRO"
-		FormatEx(tag, sizeof(tag), "%s B%d %s", 
-			gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+	{
+		if (botCourse[bot] == 0)
+		{  // Main course so tag "MODE+ NUB/PRO"
+			FormatEx(tag, sizeof(tag), "%s+ %s", 
+				gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+		}
+		else
+		{  // Bonus course so tag "MODE+ B# NUB/PRO"
+			FormatEx(tag, sizeof(tag), "%s+ B%d %s", 
+				gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+		}
 	}
+
 	CS_SetClientClanTag(client, tag);
 	
 	// Set bot name e.g. "DanZay (01:23.45)"
