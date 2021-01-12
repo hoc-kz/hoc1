@@ -36,6 +36,9 @@ void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[]
 		return;
 	}
 
+	jumpTopMode[client] = mode;
+	jumpTopType[client] = type;
+
 	int rows = SQL_GetRowCount(results[0]);
 	if (rows == 0)
 	{
