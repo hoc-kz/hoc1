@@ -28,6 +28,10 @@ enum ACReason:
 #define AC_MAX_BHOP_SAMPLES 30
 #define AC_BINDEXCEPTION_SAMPLES 5
 #define AC_LOG_PATH "logs/gokz-anticheat.log"
+#define AC_FPS_MAX_CHECK_INTERVAL 1.0
+#define AC_FPS_MAX_KICK_TIMEOUT 10.0
+#define AC_FPS_MAX_MIN_VALUE 120
+#define AC_MYAW_MAX_VALUE 0.3
 
 
 

@@ -56,6 +56,9 @@ bool gB_LastLandingWasValid[MAXPLAYERS + 1];
 bool gB_BindExceptionPending[MAXPLAYERS + 1];
 bool gB_BindExceptionPostPending[MAXPLAYERS + 1];
 
+int gI_FPSMax[MAXPLAYERS + 1];
+bool gB_waitingForFPSKick[MAXPLAYERS + 1];
+
 ConVar gCV_gokz_autoban;
 ConVar gCV_gokz_autoban_duration_bhop_hack;
 ConVar gCV_gokz_autoban_duration_bhop_macro;
@@ -64,6 +67,7 @@ ConVar gCV_sv_autobunnyhopping;
 #include "gokz-anticheat/api.sp"
 #include "gokz-anticheat/bhop_tracking.sp"
 #include "gokz-anticheat/commands.sp"
+#include "gokz-anticheat/convar_checks.sp"
 
 
 
@@ -86,6 +90,12 @@ public void OnPluginStart()
 	CreateGlobalForwards();
 	HookEvents();
 	RegisterCommands();
+}
+
+public void OnMapStart()
+{
+	// Setup a timer to monitor server/client integrity
+	CreateTimer(1.0, IntegrityChecks, INVALID_HANDLE, TIMER_FLAG_NO_MAPCHANGE | TIMER_REPEAT);
 }
 
 public void OnAllPluginsLoaded()
@@ -130,11 +140,22 @@ public void OnLibraryRemoved(const char[] name)
 
 
 
+// =====[ OTHER EVENTS ]=====
+
+Action IntegrityChecks(Handle timer)
+{
+	IntegrityChecks_ConvarChecks();
+	return Plugin_Continue;
+}
+
+
+
 // =====[ CLIENT EVENTS ]=====
 
 public void OnClientPutInServer(int client)
 {
 	OnClientPutInServer_BhopTracking(client);
+	OnClientPutInServer_ConvarChecks(client);
 	HookClientEvents(client);
 }
 
