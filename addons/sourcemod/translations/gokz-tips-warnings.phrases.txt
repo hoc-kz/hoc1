@@ -1,0 +1,7 @@
+"Phrases"
+{
+	"Bind Null Warning"
+	{
+		"en"		"{yellow}This server is running an {lightred}anti-bind {yellow}and {lightred}anti-null{yellow} plugin."
+	}
+}

@@ -73,8 +73,6 @@ native int GOKZ_LV_GetLevel(int client);
  */
 native int GOKZ_LV_GetPrestige(int client);
 
-
-
 // =====[ STOCKS ]=====
 
 stock int GOKZ_LV_LevelForExperience(int experience)
