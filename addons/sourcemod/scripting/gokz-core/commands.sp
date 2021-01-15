@@ -45,6 +45,8 @@ void RegisterCommands()
 	RegConsoleCmd("sm_god", CommandToggleGodMode, "[KZ] Toggle god mode.");
 	RegConsoleCmd("sm_godmode", CommandToggleGodMode, "[KZ] Toggle god mode.");
 	RegConsoleCmd("sm_mortal", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_tp", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
+	RegConsoleCmd("sm_thirdperson", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
 }
 
 void AddCommandsListeners()
@@ -304,6 +306,11 @@ public Action CommandToggleGodMode(int client, int args)
 	return Plugin_Handled;
 }
 
+public Action CommandToggleThirdPerson(int client, int args)
+{
+	ToggleThirdPerson(client);
+	return Plugin_Handled;
+}
 
 
 // =====[ PRIVATE ]=====

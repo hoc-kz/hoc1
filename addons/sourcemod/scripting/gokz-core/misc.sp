@@ -67,6 +67,59 @@ void UpdateGodMode(int client)
 
 
 
+// =====[ THIRD PERSON ]=====
+
+void OnClientPutInServer_ThirdPerson(int client)
+{
+	gB_ThirdPerson[client] = false;
+}
+
+void OnPlayerSpawn_ThirdPerson(int client)
+{
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "thirdperson");
+	}
+	else 
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+void OnPlayerDeath_ThirdPerson(int client)
+{
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+void OnJoinTeam_ThirdPerson(int client, int team)
+{
+	if (gB_ThirdPerson[client] && team == CS_TEAM_SPECTATOR)
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+bool ToggleThirdPerson(int client)
+{
+	gB_ThirdPerson[client] = !gB_ThirdPerson[client];
+
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "thirdperson");
+	}
+	else 
+	{
+		ClientCommand(client, "firstperson");
+	}
+
+	return gB_ThirdPerson[client];
+}
+
+
+
 // =====[ NOCLIP ]=====
 
 int noclipReleaseTime[MAXPLAYERS + 1];
