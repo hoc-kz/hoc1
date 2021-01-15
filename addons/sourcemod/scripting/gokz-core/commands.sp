@@ -327,7 +327,7 @@ public Action CommandFieldOfView(int client, int args)
 		int fov = StringToInt(arg);
 		if (fov < 20 || fov > 140)
 		{
-			GOKZ_PrintToChat(client, true, "%t", "FOV Not In Range", 20.0, 140.0);
+			GOKZ_PrintToChat(client, true, "%t", "FOV Not In Range", 20, 140);
 			SetFieldOfView(client, 90);
 		}
 		else

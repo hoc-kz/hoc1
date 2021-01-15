@@ -229,7 +229,7 @@
 	}
 	"FOV Not In Range"
 	{
-		"#format"	"{1:.0f},{2:.0f}"
+		"#format"	"{1:d},{2:d}"
 		"en"		"{darkred}FOV must be between {1} and {2}."
 	}
 
