@@ -325,16 +325,14 @@ static void PrintEndTimeString(int client)
 				GOKZ_PrintToChatAll(true, "%t", "Beat Map (NUB)", 
 					client, 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 			case TimeType_Pro:
 			{
 				GOKZ_PrintToChatAll(true, "%t", "Beat Map (PRO)", 
 					client, 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 		}
 	}
@@ -348,8 +346,7 @@ static void PrintEndTimeString(int client)
 					client, 
 					currentCourse[client], 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 			case TimeType_Pro:
 			{
@@ -357,8 +354,7 @@ static void PrintEndTimeString(int client)
 					client, 
 					currentCourse[client], 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 		}
 	}
