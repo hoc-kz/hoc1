@@ -227,6 +227,11 @@
 	{
 		"en"		"{grey}You are now mortal."
 	}
+	"FOV Not In Range"
+	{
+		"#format"	"{1:.0f},{2:.0f}"
+		"en"		"{darkred}FOV must be between {1} and {2}."
+	}
 
 
 	// =====[ MODE MENU ]=====

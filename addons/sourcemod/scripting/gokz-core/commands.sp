@@ -47,6 +47,7 @@ void RegisterCommands()
 	RegConsoleCmd("sm_mortal", CommandToggleGodMode, "[KZ] Toggle god mode.");
 	RegConsoleCmd("sm_tp", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
 	RegConsoleCmd("sm_thirdperson", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
+	RegConsoleCmd("sm_fov", CommandFieldOfView, "[KZ] Set field of view.");
 }
 
 void AddCommandsListeners()
@@ -311,6 +312,32 @@ public Action CommandToggleThirdPerson(int client, int args)
 	ToggleThirdPerson(client);
 	return Plugin_Handled;
 }
+
+public Action CommandFieldOfView(int client, int args)
+{
+	if (args == 0)
+	{
+		SetFieldOfView(client, 90);
+	}
+	else
+	{
+		char arg[16];
+		GetCmdArg(1, arg, sizeof(arg));
+
+		int fov = StringToInt(arg);
+		if (fov < 20 || fov > 140)
+		{
+			GOKZ_PrintToChat(client, true, "%t", "FOV Not In Range", 20.0, 140.0);
+			SetFieldOfView(client, 90);
+		}
+		else
+		{
+			SetFieldOfView(client, fov);
+		}
+	}	
+	return Plugin_Handled;
+}
+
 
 
 // =====[ PRIVATE ]=====

@@ -120,6 +120,16 @@ bool ToggleThirdPerson(int client)
 
 
 
+// =====[ FOV ]=====
+
+void SetFieldOfView(int client, int fov)
+{
+	SetEntProp(client, Prop_Send, "m_iFOV", fov);
+	SetEntProp(client, Prop_Send, "m_iDefaultFOV", fov);
+}
+
+
+
 // =====[ NOCLIP ]=====
 
 int noclipReleaseTime[MAXPLAYERS + 1];
