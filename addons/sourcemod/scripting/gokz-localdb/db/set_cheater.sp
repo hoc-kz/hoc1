@@ -30,6 +30,20 @@ void DB_SetCheater(int cheaterClient, bool cheater)
 
 void DB_SetCheaterSteamID(int client, int cheaterSteamID, bool cheater)
 {
+	// Find if the player is on the server, and mark him as a cheater too.
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i))
+		{
+			int steamID = GetSteamAccountID(i);
+			if (steamID == cheaterSteamID)
+			{
+				gB_Cheater[i] = cheater;
+				break;
+			}
+		}		
+	}
+
 	DataPack data = new DataPack();
 	data.WriteCell(client == 0 ? -1 : GetClientUserId(client)); // -1 if called from server console
 	data.WriteCell(cheaterSteamID);
