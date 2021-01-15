@@ -516,12 +516,11 @@ SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
 		WHERE SteamID32=%d \
 		LIMIT 1 \
 	) AS p \
-	INNER JOIN Players ON Players.SteamID32=SteamID32 \
-	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+	WHERE NOT p.Found OR (Levels.Prestige > p.Prestige) OR (Levels.Experience > p.Experience AND Levels.Prestige = p.Prestige)";
 
 char sql_levels_maxrank_get[] = "\
 SELECT COUNT(DISTINCT Levels.SteamID32) \
 	FROM Levels \
-	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	INNER JOIN Players ON Players.SteamID32=Levels.SteamID32 \
 	WHERE Players.Cheater=0";
-
+	

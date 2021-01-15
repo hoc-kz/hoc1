@@ -336,6 +336,13 @@ void GetPlayerModelDisplayName(int client, char[] buffer, int maxlength)
 
 void DisplayPlayerModelMenu(int client, bool cameFromMenu = false)
 {
+	if (!cameFromMenu && GOKZ_GetTimerRunning(client))
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Cant Change Model (Timer On)");
+		GOKZ_PlayErrorSound(client);
+		return;
+	}
+
 	gB_CameFromOptionsMenu[client] = cameFromMenu;
 
 	Menu menu = new Menu(MenuHandler_PlayerModel);
@@ -348,11 +355,19 @@ public int MenuHandler_PlayerModel(Menu menu, MenuAction action, int param1, int
 {
 	if (action == MenuAction_Select)
 	{
-		char info[256];
-		menu.GetItem(param2, info, sizeof(info));
+		if (GOKZ_GetTimerRunning(param1))
+		{
+			GOKZ_PrintToChat(param1, true, "%t", "Cant Change Model (Timer On)");
+			GOKZ_PlayErrorSound(param1);
+		}
+		else 
+		{
+			char info[256];
+			menu.GetItem(param2, info, sizeof(info));
 
-		gH_PlayerModelCookie.Set(param1, info);
-		UpdatePlayerModel(param1);
+			gH_PlayerModelCookie.Set(param1, info);
+			UpdatePlayerModel(param1);
+		}
 
 		if (gB_CameFromOptionsMenu[param1])
 		{
