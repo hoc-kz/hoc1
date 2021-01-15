@@ -295,6 +295,22 @@ void OnClientPutInServer_JoinTeam(int client)
 {
 	hasSavedPosition[client] = false;
 	specMovetype[client] = MOVETYPE_WALK;
+
+	CreateTimer(12.0, Timer_ForceJoinTeam, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+}
+
+static Action Timer_ForceJoinTeam(Handle timer, int userid)
+{
+	int client = GetClientOfUserId(userid);
+	if (IsValidClient(client))
+	{
+		int team = GetClientTeam(client);
+		if (team == 0)
+		{
+			GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
+		}
+	}
+	return Plugin_Stop;
 }
 
 void OnTimerStart_JoinTeam(int client)
