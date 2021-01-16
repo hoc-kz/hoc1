@@ -497,6 +497,12 @@ SELECT a.JumpType, a.Block, MAX(a.Distance), a.Strafes, a.Sync, a.Pre, a.Max, a.
 	WHERE a.SteamID32=%d AND a.Mode = %d \
 	GROUP BY a.JumpType, a.Block";
 
+char sql_jumpstats_getallrecords[] = "\
+SELECT Distance, Block, Strafes, Sync, Pre, Max, Overlap, DeadAir, ReleaseW, Airtime, Created \
+	FROM Jumpstats \
+	WHERE SteamID32=%d AND JumpType=%d AND Mode=%d AND IsBlockJump=%d \
+	ORDER BY Block DESC, Distance DESC";
+
 
 
 // =====[ PROFILE ]=====

@@ -38,6 +38,7 @@ void RegisterCommands()
 	RegConsoleCmd("sm_js", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !js <player>");
 
 	RegAdminCmd("sm_updatemappool", CommandUpdateMapPool, ADMFLAG_ROOT, "[KZ] Update the ranked map pool with the list of maps in cfg/sourcemod/gokz/gokz-localranks-mappool.cfg.");
+	RegAdminCmd("sm_printjumprecords", CommandPrintJumpRecords, ADMFLAG_BAN, "[KZ] Print jump records of steamid to console. Usage: !printjumprecords <STEAM_1:X:X>");
 }
 
 public Action CommandTop(int client, int args)
@@ -506,6 +507,66 @@ void DisplayJumpstatRecordCommand(int client, int args, int jumpType)
 	{
 		DisplayJumpstatRecord(client, jumpType);
 	}
+}
+
+public Action CommandPrintJumpRecords(int client, int args)
+{
+	if (args < 3)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Print Jump Records Usage");
+		return Plugin_Handled;
+	}
+	
+	int steamAccountID, isBlock, mode, jumpType;
+	char query[1024], split[4][32];
+	
+	// Get arguments
+	split[3][0] = '\0';
+	GetCmdArgString(query, sizeof(query));
+	ExplodeString(query, " ", split, 4, 32, false);
+	
+	// SteamID32
+	steamAccountID = Steam2ToSteamAccountID(split[0]);
+	if (steamAccountID == -1)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid SteamID");
+		return Plugin_Handled;
+	}
+	
+	// Mode
+	for (mode = 0; mode < MODE_COUNT; mode++)
+	{
+		if (StrEqual(split[1], gC_ModeNames[mode]) || StrEqual(split[1], gC_ModeNamesShort[mode], false))
+		{
+			break;
+		}
+	}
+	if (mode == MODE_COUNT)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid Mode");
+		return Plugin_Handled;
+	}
+	
+	// Jumptype
+	for (jumpType = 0; jumpType < JUMPTYPE_COUNT; jumpType++)
+	{
+		if (StrEqual(split[2], gC_JumpTypes[jumpType]) || StrEqual(split[2], gC_JumpTypesShort[jumpType], false))
+		{
+			break;
+		}
+	}
+	if (jumpType == JUMPTYPE_COUNT)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid Jumptype");
+		return Plugin_Handled;
+	}
+	
+	// Is it a block jump?
+	isBlock = StrEqual(split[3], "yes", false) || StrEqual(split[3], "true", false) || StrEqual(split[3], "1");
+
+	DB_PrintJumpRecords(client, steamAccountID, jumpType, mode, isBlock);
+
+	return Plugin_Handled;
 }
 
 

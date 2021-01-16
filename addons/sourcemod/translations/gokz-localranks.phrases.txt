@@ -392,6 +392,21 @@
 		"en"		"{1} block {2} record of {3}: {4} block ({5} jump)"
 		"ru"		"{1} блок {2} поставил рекорд на {3}: {4} блок ({5} прыжок)"
 	}
+	"Invalid SteamID"
+	{
+		"en"		"{darkred}Invalid SteamID (Format: STEAM_1:X:X)."
+		"ru"		"{darkred}Недопустимый SteamID (Формат: STEAM_1:X:X)."
+	}
+	"Invalid Mode"
+	{
+		"en"		"{darkred}Invalid mode (Options: CLASSIC, VANILLA)"
+		"ru"		"{darkred}Несуществующий режим (Режимы: CLASSIC, VANILLA)"
+	}
+	"Invalid Jumptype"
+	{
+		"en"		"{darkred}Invalid jumptype (Options: LJ, BH, MBH, WJ, LAJ, LAH, JB, LBH, LWJ)"
+		"ru"		"{darkred}Неверный тип прыжка (Варианты: LJ, BH, MBH, WJ, LAJ, LAH, JB, LBH, LWJ)"
+	}
 
 
 	// =====[ MAP TOP MENU ]=====
@@ -841,6 +856,23 @@
 		"en"		"{1} block jumpstats for {2} <STEAM_1:{3}:{4}>"
 	}
 	
+	
+	
+	// =====[ JUMPSTATS RECORD PRINT ]=====
+	"Print Jump Records - Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} jump records for {2} <STEAM_1:{3}:{4}>"
+	}
+	"Print Jump Records - Block Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} block jump records for {2} <STEAM_1:{3}:{4}>"
+	}
+	"Print Jump Records Usage"
+	{
+		"en"		"Usage: !printjumprecords <STEAM_1:X:X>"
+	}
 	
 	
 	// =====[ JUMPTOP MENU ]=====
