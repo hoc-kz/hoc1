@@ -1,6 +1,6 @@
 void RegisterCommands()
 {
-	RegAdminCmd("sm_bhopcheck", CommandBhopCheck, ADMFLAG_ROOT, "[KZ] Show bunnyhop stats report including perf ratio and scroll pattern.");
+	RegAdminCmd("sm_bhopcheck", CommandBhopCheck, ADMFLAG_CUSTOM1, "[KZ] Show bunnyhop stats report including perf ratio and scroll pattern.");
 }
 
 public Action CommandBhopCheck(int client, int args)

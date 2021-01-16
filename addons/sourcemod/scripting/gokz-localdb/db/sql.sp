@@ -275,6 +275,10 @@ DELETE \
 			) AS tmp \
 		)";
 
+char sql_jumpstats_deleteallrecords[] = "\
+DELETE FROM Jumpstats \
+	WHERE SteamID32=%d";
+
 char sql_jumpstats_getpbs[] = "\
 SELECT MAX(Distance), Mode, JumpType \
 	FROM \
