@@ -40,8 +40,8 @@
 	}
 	"Invalid Mode"
 	{
-		"en"		"{darkred}Invalid mode (Options: SKZ, KZT, VNL)"
-		"ru"		"{darkred}Несуществующий режим (Режимы: SKZ, KZT, VNL)"
+		"en"		"{darkred}Invalid mode (Options: CLASSIC, VANILLA)"
+		"ru"		"{darkred}Несуществующий режим (Режимы: CLASSIC, VANILLA)"
 	}
 	"Invalid Jumptype"
 	{
