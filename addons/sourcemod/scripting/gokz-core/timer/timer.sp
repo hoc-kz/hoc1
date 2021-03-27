@@ -318,15 +318,6 @@ static void PrintEndTimeString(int client)
 {
 	if (GetCurrentCourse(client) == 0)
 	{
-
-	}
-	else 
-	{
-		
-	}
-
-	if (GetCurrentCourse(client) == 0)
-	{
 		switch (GetCurrentTimeType(client))
 		{
 			case TimeType_Nub:
