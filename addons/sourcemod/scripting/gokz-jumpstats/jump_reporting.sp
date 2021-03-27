@@ -43,6 +43,7 @@ void OnLanding_JumpReporting(Jump jump)
 	// Report the jumpstat to the client and their spectators
 	DoJumpstatsReport(jump.jumper, jump, tier);
 	
+	bool cheater = GOKZ_DB_IsCheater(jump.jumper);
 	for (int client = 1; client <= MaxClients; client++)
 	{
 		if (IsValidClient(client) && client != jump.jumper)
@@ -51,7 +52,7 @@ void OnLanding_JumpReporting(Jump jump)
 			{
 				DoJumpstatsReport(client, jump, tier);
 			}
-			else 
+			else if (!cheater)
 			{
 				minTier = GOKZ_JS_GetOption(client, JSOption_MinChatBroadcastTier);
 				if (minTier != 0 && tier >= minTier)
