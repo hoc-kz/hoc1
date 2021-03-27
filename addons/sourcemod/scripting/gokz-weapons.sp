@@ -36,7 +36,6 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
-	HookEvents();
 	RegisterCommands();
 }
 
@@ -54,28 +53,6 @@ public void OnLibraryAdded(const char[] name)
 	{
 		Updater_AddPlugin(UPDATER_URL);
 	}
-}
-
-
-
-// =====[ CLIENT EVENTS ]=====
-
-public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) // player_spawn post hook 
-{
-	int client = GetClientOfUserId(event.GetInt("userid"));
-	if (IsValidClient(client))
-	{
-		GiveWeapon(client, "weapon_usp_silencer", CS_SLOT_SECONDARY, CS_TEAM_CT);
-	}
-}
-
-
-
-// =====[ GENERAL ]=====
-
-void HookEvents()
-{
-	HookEvent("player_spawn", OnPlayerSpawn, EventHookMode_Post);
 }
 
 
