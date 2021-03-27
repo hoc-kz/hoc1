@@ -585,7 +585,7 @@ static void SetBotStuff(int bot)
 	SetClientName(client, name);
 	
 	// Set bot team
-	GOKZ_JoinTeam(client, CS_TEAM_T);
+	GOKZ_JoinTeam(client, CS_TEAM_T, .forceTeam = true);
 	
 	// Set bot weapon according to mode of the replay
 	// Always start by removing the pistol

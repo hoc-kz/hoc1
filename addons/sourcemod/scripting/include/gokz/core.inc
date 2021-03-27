@@ -1196,7 +1196,7 @@ native bool GOKZ_GetValidJump(int client);
  * @param forceTeam		Ignore team restrictions.
  * @param
  */
-native bool GOKZ_JoinTeam(int client, int team, bool restorePos = true, bool forceChange = true, bool forceTeam = true);
+native bool GOKZ_JoinTeam(int client, int team, bool restorePos = true, bool forceChange = true, bool forceTeam = false);
 
 
 
@@ -1209,7 +1209,7 @@ native bool GOKZ_JoinTeam(int client, int team, bool restorePos = true, bool for
  * @param team			Which team to switch to if not on one.
  * @param restorePos	Whether to restore saved position if leaving spectators.
  */
-stock void GOKZ_RespawnPlayer(int client, int team = CS_TEAM_T, bool restorePos = true)
+stock void GOKZ_RespawnPlayer(int client, int team = CS_TEAM_CT, bool restorePos = true)
 {
 	if (IsSpectating(client))
 	{
