@@ -87,7 +87,7 @@ public void DB_TxnSuccess_OpenJumpStatsModeMenu_FindPlayer(Handle db, DataPack d
 
 // =====[ MENUS ]=====
 
-void DisplayJumpStatsModeMenu(int client)
+static void DisplayJumpStatsModeMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_JumpStatsMode);
 	menu.SetTitle("%T", "Jump Stats Mode Menu - Title", client, jumpStatsTargetAlias[client]);
@@ -95,7 +95,7 @@ void DisplayJumpStatsModeMenu(int client)
 	menu.Display(client, MENU_TIME_FOREVER);
 }
 
-void DisplayJumpStatsBlockTypeMenu(int client, int mode)
+static void DisplayJumpStatsBlockTypeMenu(int client, int mode)
 {
 	jumpStatsMode[client] = mode;
 	

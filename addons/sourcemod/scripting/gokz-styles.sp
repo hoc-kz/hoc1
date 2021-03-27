@@ -107,10 +107,15 @@ public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
 		return;
 	}
 
-	// Give a negev (negev style)
-	if (GetStyle(client) == Style_Negev) 
+	// Give a weapon (negev/deagle styles)
+	int style = GetStyle(client);
+	if (style == Style_Negev)
 	{
 		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
+	else if (style == Style_Deagle)
+	{
+		GiveWeapon(client, "weapon_deagle", CS_SLOT_SECONDARY);
 	}
 }
 
@@ -126,10 +131,14 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 	// Reset lagged movement (undo slow-motion style)
 	SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
 
-	// Give a negev (negev style)
+	// Give a weapon (negev/deagle styles)
 	if (newValue == Style_Negev)
 	{
 		GiveWeapon(client, "weapon_negev", CS_SLOT_PRIMARY);
+	}
+	else if (newValue == Style_Deagle)
+	{
+		GiveWeapon(client, "weapon_deagle", CS_SLOT_SECONDARY);
 	}
 
 	// Remove ATCONTROLS flag (w only)
@@ -314,16 +323,41 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 			}
 		}
 	}
+	else if (style == Style_Deagle)
+	{
+		int secondary = GetPlayerWeaponSlot(client, CS_SLOT_SECONDARY);
+		if (secondary == -1)
+		{
+			GiveWeapon(client, "weapon_deagle", CS_SLOT_SECONDARY);
+		}
+		else
+		{
+			int defIndex = GetEntProp(secondary, Prop_Send, "m_iItemDefinitionIndex");
+			if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_DEAGLE))
+			{
+				GiveWeapon(client, "weapon_deagle", CS_SLOT_SECONDARY);
+			}
+		}
+	}
 
 	return Plugin_Continue;
 }
 
 public Action OnClientWeaponCanSwitchTo(int client, int weapon)
 {
-	if (GetStyle(client) == Style_Negev)
+	int style = GetStyle(client);
+	if (style == Style_Negev)
 	{
 		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_NEGEV))
+		{
+			return Plugin_Stop;
+		}
+	}
+	else if (style == Style_Deagle)
+	{
+		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
+		if (defIndex != CS_WeaponIDToItemDefIndex(CSWeapon_DEAGLE))
 		{
 			return Plugin_Stop;
 		}
@@ -333,7 +367,8 @@ public Action OnClientWeaponCanSwitchTo(int client, int weapon)
 
 public Action OnClientWeaponDrop(int client, int weapon)
 {
-	if (GetStyle(client) == Style_Negev)
+	int style = GetStyle(client);
+	if (style == Style_Negev || style == Style_Deagle)
 	{
 		return Plugin_Stop;
 	}
