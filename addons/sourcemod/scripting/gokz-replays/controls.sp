@@ -121,15 +121,15 @@ bool IsReplayBotControlled(int bot, int botClient)
 
 int MenuHandler_ReplayControls(Menu menu, MenuAction action, int param1, int param2)
 {
-	if (!IsValidClient(param1))
-	{
-		return 0;
-	}
-	
 	switch (action)
 	{
 		case MenuAction_Select:
 		{
+			if (!IsValidClient(param1))
+			{
+				return 0;
+			}
+
 			int bot = GetBotFromClient(GetObserverTarget(param1));
 			if (bot == -1 || controllingPlayer[bot] != param1)
 			{
@@ -164,12 +164,16 @@ int MenuHandler_ReplayControls(Menu menu, MenuAction action, int param1, int par
 		
 		case MenuAction_Cancel:
 		{
+			if (!IsValidClient(param1))
+			{
+				return 0;
+			}
+
 			showReplayControls[param1] = param2 != MenuCancel_Exit;
 		}
 		
 		case MenuAction_End:
 		{
-			showReplayControls[param1] = false;
 			delete menu;
 		}
 	}
