@@ -1,5 +1,10 @@
 ﻿"Phrases"
 {
+	"Cant Change Model (Timer On)"
+	{
+		"en"		"{darkred}Stop the timer to change your model."
+	}
+	
 	//=====[ MENU ]=====
 	"Player Model Menu - Title"
 	{

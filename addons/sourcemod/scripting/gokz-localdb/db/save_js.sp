@@ -12,7 +12,7 @@ public void OnLanding_SaveJumpstat(Jump jump)
 	if (jump.type == JumpType_Invalid || jump.type == JumpType_FullInvalid
 		 || jump.type == JumpType_Fall || jump.type == JumpType_Other
 		 || jump.type != JumpType_LadderJump && jump.offset < -EPSILON
-		 || jump.distance > JS_MAX_JUMP_DISTANCE
+		 || jump.type != JumpType_MultiBhop && jump.distance > JS_MAX_JUMP_DISTANCE
 		 || jump.type == JumpType_LadderJump && jump.distance < JS_MIN_LAJ_BLOCK_DISTANCE
 		 || jump.type != JumpType_LadderJump && jump.distance < JS_MIN_BLOCK_DISTANCE)
 	{
@@ -63,6 +63,9 @@ static DataPack JSRecord_FillDataPack(Jump jump, int steamid, int mode, bool blo
 	data.WriteCell(RoundToNearest(jump.sync * GOKZ_DB_JS_SYNC_PRECISION));
 	data.WriteCell(RoundToNearest(jump.preSpeed * GOKZ_DB_JS_PRE_PRECISION));
 	data.WriteCell(RoundToNearest(jump.maxSpeed * GOKZ_DB_JS_MAX_PRECISION));
+	data.WriteCell(jump.overlap);
+	data.WriteCell(jump.deadair);
+	data.WriteCell(jump.releaseW);
 	data.WriteCell(RoundToNearest(jump.duration * GOKZ_DB_JS_AIRTIME_PRECISION));
 	return data;
 }
@@ -80,6 +83,9 @@ public void DB_TxnSuccess_LookupJSRecordForSave(Handle db, DataPack data, int nu
 	int sync = data.ReadCell();
 	int pre = data.ReadCell();
 	int max = data.ReadCell();
+	int overlap = data.ReadCell();
+	int deadair = data.ReadCell();
+	int releaseW = data.ReadCell();
 	int airtime = data.ReadCell();
 	
 	if (!IsValidClient(client))
@@ -92,7 +98,7 @@ public void DB_TxnSuccess_LookupJSRecordForSave(Handle db, DataPack data, int nu
 	int rows = SQL_GetRowCount(results[0]);
 	if (rows == 0)
 	{
-		FormatEx(query, sizeof(query), sql_jumpstats_insert, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, airtime);
+		FormatEx(query, sizeof(query), sql_jumpstats_insert, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, overlap, deadair, releaseW, airtime);
 	}
 	else
 	{
@@ -118,7 +124,7 @@ public void DB_TxnSuccess_LookupJSRecordForSave(Handle db, DataPack data, int nu
 		
 		if (rows < GOKZ_DB_JS_MAX_JUMPS_PER_PLAYER)
 		{
-			FormatEx(query, sizeof(query), sql_jumpstats_insert, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, airtime);
+			FormatEx(query, sizeof(query), sql_jumpstats_insert, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, overlap, deadair, releaseW, airtime);
 		}
 		else
 		{
@@ -127,7 +133,7 @@ public void DB_TxnSuccess_LookupJSRecordForSave(Handle db, DataPack data, int nu
 				SQL_FetchRow(results[0]);
 			}
 			int min_rec_id = SQL_FetchInt(results[0], JumpstatDB_Lookup_JumpID);
-			FormatEx(query, sizeof(query), sql_jumpstats_update, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, airtime, min_rec_id);
+			FormatEx(query, sizeof(query), sql_jumpstats_update, steamid, jumpType, mode, distance, block > 0, block, strafes, sync, pre, max, overlap, deadair, releaseW, airtime, min_rec_id);
 		}
 		
 	}
@@ -216,6 +222,34 @@ public void DB_TxnSuccess_JumpDeleted(Handle db, DataPack data, int numQueries, 
 		gC_ModeNames[mode], 
 		blockString, 
 		gC_JumpTypes[jumpType],
+		steamAccountID & 1,
+		steamAccountID >> 1);
+}
+
+public void DB_DeleteAllJumps(int client, int steamAccountID)
+{
+	DataPack data = new DataPack();
+	data.WriteCell(client == 0 ? -1 : GetClientUserId(client)); // -1 if called from server console
+	data.WriteCell(steamAccountID);
+
+	char query[1024];
+
+	FormatEx(query, sizeof(query), sql_jumpstats_deleteallrecords, steamAccountID);
+
+	Transaction txn = SQL_CreateTransaction();
+	txn.AddQuery(query);
+
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_AllJumpsDeleted, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
+}
+
+public void DB_TxnSuccess_AllJumpsDeleted(Handle db, DataPack data, int numQueries, Handle[] results, any[] queryData)
+{
+	data.Reset();
+	int client = GetClientOfUserId(data.ReadCell());
+	int steamAccountID = data.ReadCell();
+	delete data;
+
+	GOKZ_PrintToChatAndLog(client, true, "%t", "All Jumps Deleted", 
 		steamAccountID & 1,
 		steamAccountID >> 1);
 }

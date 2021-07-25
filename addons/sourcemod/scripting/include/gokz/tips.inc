@@ -27,6 +27,7 @@ enum
 #define TIPS_PLUGINS_COUNT 10
 #define TIPS_CORE "gokz-tips-core.phrases.txt"
 #define TIPS_TIPS "gokz-tips-tips.phrases.txt"
+#define TIPS_WARNINGS "gokz-tips-warnings.phrases.txt"
 #define TIPS_OPTION_NAME "GOKZ - Tips"
 #define TIPS_OPTION_DESCRIPTION "Random Tips Periodically in Chat - 0 = Disabled, 1 = Enabled"
 

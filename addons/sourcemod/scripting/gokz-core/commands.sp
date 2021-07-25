@@ -28,7 +28,9 @@ void RegisterCommands()
 	RegConsoleCmd("sm_virtualbuttons", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_vb", CommandToggleVirtualButtonsLock, "[KZ] Toggle locking virtual buttons, preventing them from being moved.");
 	RegConsoleCmd("sm_mode", CommandMode, "[KZ] Open the movement mode selection menu.");
+	RegConsoleCmd("sm_modes", CommandMode, "[KZ] Open the movement mode selection menu.");
 	RegConsoleCmd("sm_style", CommandStyle, "[KZ] Open the movement style selection menu.");
+	RegConsoleCmd("sm_styles", CommandStyle, "[KZ] Open the movement style selection menu.");
 	RegConsoleCmd("sm_c", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_classic", CommandClassic, "[KZ] Switch to the Classic mode.");
 	RegConsoleCmd("sm_vanilla", CommandVanilla, "[KZ] Switch to the Vanilla mode.");
@@ -43,6 +45,9 @@ void RegisterCommands()
 	RegConsoleCmd("sm_god", CommandToggleGodMode, "[KZ] Toggle god mode.");
 	RegConsoleCmd("sm_godmode", CommandToggleGodMode, "[KZ] Toggle god mode.");
 	RegConsoleCmd("sm_mortal", CommandToggleGodMode, "[KZ] Toggle god mode.");
+	RegConsoleCmd("sm_tp", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
+	RegConsoleCmd("sm_thirdperson", CommandToggleThirdPerson, "[KZ] Toggle between third person and first person.");
+	RegConsoleCmd("sm_fov", CommandFieldOfView, "[KZ] Set field of view.");
 }
 
 void AddCommandsListeners()
@@ -61,7 +66,7 @@ public Action CommandJoinTeam(int client, const char[] command, int argc)
 	char teamString[4];
 	GetCmdArgString(teamString, sizeof(teamString));
 	int team = StringToInt(teamString);
-	GOKZ_JoinTeam(client, team);
+	GOKZ_JoinTeam(client, team, _, false, false);
 	return Plugin_Handled;
 }
 
@@ -299,6 +304,37 @@ public Action CommandToggleGodMode(int client, int args)
 	{
 		GOKZ_PrintToChat(client, true, "%t", "Disabled God Mode");
 	}
+	return Plugin_Handled;
+}
+
+public Action CommandToggleThirdPerson(int client, int args)
+{
+	ToggleThirdPerson(client);
+	return Plugin_Handled;
+}
+
+public Action CommandFieldOfView(int client, int args)
+{
+	if (args == 0)
+	{
+		SetFieldOfView(client, 90);
+	}
+	else
+	{
+		char arg[16];
+		GetCmdArg(1, arg, sizeof(arg));
+
+		int fov = StringToInt(arg);
+		if (fov < 20 || fov > 140)
+		{
+			GOKZ_PrintToChat(client, true, "%t", "FOV Not In Range", 20, 140);
+			SetFieldOfView(client, 90);
+		}
+		else
+		{
+			SetFieldOfView(client, fov);
+		}
+	}	
 	return Plugin_Handled;
 }
 

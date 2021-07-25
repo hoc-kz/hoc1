@@ -21,8 +21,10 @@ void RegisterCommands()
 
 	RegConsoleCmd("sm_ljpb", CommandLJPB, "[KZ] Show PB Long Jump in chat. Usage: !ljpb <jumper>");
 	RegConsoleCmd("sm_bhpb", CommandBHPB, "[KZ] Show PB Bunnyhop in chat. Usage: !bhpb <jumper>");
+	RegConsoleCmd("sm_lbhpb", CommandLBHPB, "[KZ] Show PB Lowpre Bunnyhop in chat. Usage: !lbhpb <jumper>");
 	RegConsoleCmd("sm_mbhpb", CommandMBHPB, "[KZ] Show PB Multi Bunnyhop in chat. Usage: !mbhpb <jumper>");
 	RegConsoleCmd("sm_wjpb", CommandWJPB, "[KZ] Show PB Weird Jump in chat. Usage: !wjpb <jumper>");
+	RegConsoleCmd("sm_lwjpb", CommandLWJPB, "[KZ] Show PB Lowpre Weird Jump in chat. Usage: !lwjpb <jumper>");
 	RegConsoleCmd("sm_lajpb", CommandLAJPB, "[KZ] Show PB Ladder Jump in chat. Usage: !lajpb <jumper>");
 	RegConsoleCmd("sm_lahpb", CommandLAHPB, "[KZ] Show PB Ladderhop in chat. Usage: !lahpb <jumper>");
 	RegConsoleCmd("sm_jbpb", CommandJBPB, "[KZ] Show PB Jumpbug in chat. Usage: !jbpb <jumper>");
@@ -30,8 +32,13 @@ void RegisterCommands()
 	RegConsoleCmd("sm_jumptop", CommandJSTop, "[KZ] Open a menu showing the top jumpstats.");
 
 	RegConsoleCmd("sm_profile", CommandProfile, "[KZ] Open a menu showing a profile. Usage: !profile <player>");
+	RegConsoleCmd("sm_mc", CommandMapCompletion, "[KZ] Open a menu showing map completion. Usage: !mc <player>");
+	RegConsoleCmd("sm_stats", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !stats <player>");
+	RegConsoleCmd("sm_jumpstats", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !jumpstats <player>");
+	RegConsoleCmd("sm_js", CommandJumpStats, "[KZ] Open a menu showing player's jumpstats. Usage: !js <player>");
 
 	RegAdminCmd("sm_updatemappool", CommandUpdateMapPool, ADMFLAG_ROOT, "[KZ] Update the ranked map pool with the list of maps in cfg/sourcemod/gokz/gokz-localranks-mappool.cfg.");
+	RegAdminCmd("sm_printjumprecords", CommandPrintJumpRecords, ADMFLAG_BAN, "[KZ] Print jump records of steamid to console. Usage: !printjumprecords <STEAM_1:X:X>");
 }
 
 public Action CommandTop(int client, int args)
@@ -372,13 +379,53 @@ public Action CommandProfile(int client, int args)
 
 	if (args < 1)
 	{
-		DB_DisplayProfile(client, GetSteamAccountID(client));
+		DB_OpenProfile(client, GetSteamAccountID(client));
 	}
 	else if (args >= 1)
 	{
 		char argPlayer[MAX_NAME_LENGTH];
 		GetCmdArg(1, argPlayer, sizeof(argPlayer));
-		DB_DisplayProfile_FindPlayer(client, argPlayer);
+		DB_OpenProfile_FindPlayer(client, argPlayer);
+	}
+	return Plugin_Handled;
+}
+
+public Action CommandMapCompletion(int client, int args)
+{
+	if (IsSpammingCommands(client))
+	{
+		return Plugin_Handled;
+	}
+
+	if (args < 1)
+	{
+		DB_OpenMapCompletionModeMenu(client, GetSteamAccountID(client));
+	}
+	else if (args >= 1)
+	{
+		char argPlayer[MAX_NAME_LENGTH];
+		GetCmdArg(1, argPlayer, sizeof(argPlayer));
+		DB_OpenMapCompletionModeMenu_FindPlayer(client, argPlayer);
+	}
+	return Plugin_Handled;
+}
+
+public Action CommandJumpStats(int client, int args)
+{
+	if (IsSpammingCommands(client))
+	{
+		return Plugin_Handled;
+	}
+
+	if (args < 1)
+	{
+		DB_OpenJumpStatsModeMenu(client, GetSteamAccountID(client));
+	}
+	else if (args >= 1)
+	{
+		char argPlayer[MAX_NAME_LENGTH];
+		GetCmdArg(1, argPlayer, sizeof(argPlayer));
+		DB_OpenJumpStatsModeMenu_FindPlayer(client, argPlayer);
 	}
 	return Plugin_Handled;
 }
@@ -400,6 +447,12 @@ public Action CommandBHPB(int client, int args)
 	return Plugin_Handled;
 }
 
+public Action CommandLBHPB(int client, int args)
+{
+	DisplayJumpstatRecordCommand(client, args, JumpType_LowpreBhop);
+	return Plugin_Handled;
+}
+
 public Action CommandMBHPB(int client, int args)
 {
 	DisplayJumpstatRecordCommand(client, args, JumpType_MultiBhop);
@@ -409,6 +462,12 @@ public Action CommandMBHPB(int client, int args)
 public Action CommandWJPB(int client, int args)
 {
 	DisplayJumpstatRecordCommand(client, args, JumpType_WeirdJump);
+	return Plugin_Handled;
+}
+
+public Action CommandLWJPB(int client, int args)
+{
+	DisplayJumpstatRecordCommand(client, args, JumpType_LowpreWeirdJump);
 	return Plugin_Handled;
 }
 
@@ -448,6 +507,66 @@ void DisplayJumpstatRecordCommand(int client, int args, int jumpType)
 	{
 		DisplayJumpstatRecord(client, jumpType);
 	}
+}
+
+public Action CommandPrintJumpRecords(int client, int args)
+{
+	if (args < 3)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Print Jump Records Usage");
+		return Plugin_Handled;
+	}
+	
+	int steamAccountID, isBlock, mode, jumpType;
+	char query[1024], split[4][32];
+	
+	// Get arguments
+	split[3][0] = '\0';
+	GetCmdArgString(query, sizeof(query));
+	ExplodeString(query, " ", split, 4, 32, false);
+	
+	// SteamID32
+	steamAccountID = Steam2ToSteamAccountID(split[0]);
+	if (steamAccountID == -1)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid SteamID");
+		return Plugin_Handled;
+	}
+	
+	// Mode
+	for (mode = 0; mode < MODE_COUNT; mode++)
+	{
+		if (StrEqual(split[1], gC_ModeNames[mode]) || StrEqual(split[1], gC_ModeNamesShort[mode], false))
+		{
+			break;
+		}
+	}
+	if (mode == MODE_COUNT)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid Mode");
+		return Plugin_Handled;
+	}
+	
+	// Jumptype
+	for (jumpType = 0; jumpType < JUMPTYPE_COUNT; jumpType++)
+	{
+		if (StrEqual(split[2], gC_JumpTypes[jumpType]) || StrEqual(split[2], gC_JumpTypesShort[jumpType], false))
+		{
+			break;
+		}
+	}
+	if (jumpType == JUMPTYPE_COUNT)
+	{
+		GOKZ_PrintToChat(client, true, "%t", "Invalid Jumptype");
+		return Plugin_Handled;
+	}
+	
+	// Is it a block jump?
+	isBlock = StrEqual(split[3], "yes", false) || StrEqual(split[3], "true", false) || StrEqual(split[3], "1");
+
+	DB_PrintJumpRecords(client, steamAccountID, jumpType, mode, isBlock);
+
+	return Plugin_Handled;
 }
 
 

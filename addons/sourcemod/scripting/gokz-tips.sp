@@ -52,6 +52,7 @@ public void OnPluginStart()
 	LoadTranslations("gokz-tips.phrases");
 	LoadTranslations("gokz-tips-tips.phrases");
 	LoadTranslations("gokz-tips-core.phrases");
+	LoadTranslations("gokz-tips-warnings.phrases");
 	
 	// Load translations of tips for other GOKZ plugins
 	char translation[PLATFORM_MAX_PATH];
@@ -248,6 +249,7 @@ public Action Timer_PrintTip(Handle timer)
 		KZPlayer player = KZPlayer(client);
 		if (player.InGame && player.Tips != Tips_Disabled)
 		{
+			GOKZ_PrintToChat(client, true, "%t", "Bind Null Warning");
 			GOKZ_PrintToChat(client, true, "%t", tip);
 		}
 	}

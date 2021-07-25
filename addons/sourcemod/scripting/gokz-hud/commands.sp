@@ -1,8 +1,11 @@
 void RegisterCommands()
 {
-	RegConsoleCmd("sm_menu", CommandMenu, "[KZ] Toggle the simple teleport menu.");
-	RegConsoleCmd("sm_cpmenu", CommandMenu, "[KZ] Toggle the simple teleport menu.");
-	RegConsoleCmd("sm_adv", CommandToggleAdvancedMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_menu", CommandMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_adv", CommandMenu, "[KZ] Toggle the advanced teleport menu.");
+	RegConsoleCmd("sm_smenu", CommandToggleSimpleMenu, "[KZ] Toggle the simple teleport menu.");
+	RegConsoleCmd("sm_simple", CommandToggleSimpleMenu, "[KZ] Toggle the simple teleport menu.");
+	RegConsoleCmd("sm_pro", CommandToggleProMenu, "[KZ] Toggle the pro teleport menu.");
+	RegConsoleCmd("sm_promenu", CommandToggleProMenu, "[KZ] Toggle the pro teleport menu.");
 	RegConsoleCmd("sm_panel", CommandToggleInfoPanel, "[KZ] Toggle visibility of the centre information panel.");
 	RegConsoleCmd("sm_timerstyle", CommandToggleTimerStyle, "[KZ] Toggle the style of the timer text.");
 	RegConsoleCmd("sm_timertype", CommandToggleTimerType, "[KZ] Toggle visibility of your time type.");
@@ -12,26 +15,49 @@ void RegisterCommands()
 
 public Action CommandMenu(int client, int args)
 {
-	if (GOKZ_HUD_GetOption(client, HUDOption_TPMenu) != TPMenu_Disabled)
-	{
-		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Disabled);
-	}
-	else
-	{
-		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Simple);
-	}
-	return Plugin_Handled;
-}
-
-public Action CommandToggleAdvancedMenu(int client, int args)
-{
 	if (GOKZ_HUD_GetOption(client, HUDOption_TPMenu) != TPMenu_Advanced)
 	{
 		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Advanced);
 	}
 	else
 	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Disabled);
+	}
+	return Plugin_Handled;
+}
+
+public Action CommandToggleSimpleMenu(int client, int args)
+{
+	if (GOKZ_HUD_GetOption(client, HUDOption_TPMenu) != TPMenu_Simple)
+	{
 		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Simple);
+	}
+	else
+	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Disabled);
+	}
+	return Plugin_Handled;
+}
+
+public Action CommandToggleProMenu(int client, int args)
+{
+	int tpMenu = GOKZ_HUD_GetOption(client, HUDOption_TPMenu);
+
+	if (tpMenu == TPMenu_SimplePro)
+	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Simple);
+	}
+	else if (tpMenu == TPMenu_Simple)
+	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_SimplePro);
+	}
+	else if (tpMenu == TPMenu_AdvancedPro)
+	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_Advanced);
+	}
+	else
+	{
+		GOKZ_HUD_SetOption(client, HUDOption_TPMenu, TPMenu_AdvancedPro);
 	}
 	return Plugin_Handled;
 }

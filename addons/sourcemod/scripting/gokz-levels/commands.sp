@@ -12,6 +12,7 @@ public Action CommandPrestige(int client, int args)
 		gI_Experience[client] = 0;
 
 		GOKZ_PrintToChat(client, true, "%t", "Prestige");
+		UpdateInDatabase(client);
 
 		Call_OnLevelChanged(client, 0, gI_Prestige[client]);
 	}

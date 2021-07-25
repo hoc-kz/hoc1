@@ -67,7 +67,72 @@ void UpdateGodMode(int client)
 
 
 
+// =====[ THIRD PERSON ]=====
+
+void OnClientPutInServer_ThirdPerson(int client)
+{
+	gB_ThirdPerson[client] = false;
+}
+
+void OnPlayerSpawn_ThirdPerson(int client)
+{
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "thirdperson");
+	}
+	else 
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+void OnPlayerDeath_ThirdPerson(int client)
+{
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+void OnJoinTeam_ThirdPerson(int client, int team)
+{
+	if (gB_ThirdPerson[client] && team == CS_TEAM_SPECTATOR)
+	{
+		ClientCommand(client, "firstperson");
+	}
+}
+
+bool ToggleThirdPerson(int client)
+{
+	gB_ThirdPerson[client] = !gB_ThirdPerson[client];
+
+	if (gB_ThirdPerson[client])
+	{
+		ClientCommand(client, "thirdperson");
+	}
+	else 
+	{
+		ClientCommand(client, "firstperson");
+	}
+
+	return gB_ThirdPerson[client];
+}
+
+
+
+// =====[ FOV ]=====
+
+void SetFieldOfView(int client, int fov)
+{
+	SetEntProp(client, Prop_Send, "m_iFOV", fov);
+	SetEntProp(client, Prop_Send, "m_iDefaultFOV", fov);
+}
+
+
+
 // =====[ NOCLIP ]=====
+
+int noclipReleaseTime[MAXPLAYERS + 1];
 
 void ToggleNoclip(int client)
 {
@@ -93,6 +158,7 @@ void DisableNoclip(int client)
 {
 	if (IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
 	{
+		noclipReleaseTime[client] = GetGameTickCount();
 		Movement_SetMovetype(client, MOVETYPE_WALK);
 		SetEntProp(client, Prop_Send, "m_CollisionGroup", GOKZ_COLLISION_GROUP_STANDARD);
 		
@@ -126,6 +192,7 @@ void DisableNoclipNotrigger(int client)
 {
 	if (IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
 	{
+		noclipReleaseTime[client] = GetGameTickCount();
 		Movement_SetMovetype(client, MOVETYPE_WALK);
 		SetEntProp(client, Prop_Send, "m_CollisionGroup", GOKZ_COLLISION_GROUP_STANDARD);
 		
@@ -154,6 +221,16 @@ void RemoveNoclipGroundFlag(int client)
 		SetEntityFlags(client, GetEntityFlags(client) & ~FL_ONGROUND);
 	}
 	delete trace;
+}
+
+bool JustNoclipped(int client)
+{
+	return GetGameTickCount() - noclipReleaseTime[client] <= GOKZ_TIMER_START_NOCLIP_TICKS;
+}
+
+void OnClientPutInServer_Noclip(int client)
+{
+	noclipReleaseTime[client] = 0;
 }
 
 
@@ -218,6 +295,22 @@ void OnClientPutInServer_JoinTeam(int client)
 {
 	hasSavedPosition[client] = false;
 	specMovetype[client] = MOVETYPE_WALK;
+
+	CreateTimer(12.0, Timer_ForceJoinTeam, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+}
+
+static Action Timer_ForceJoinTeam(Handle timer, int userid)
+{
+	int client = GetClientOfUserId(userid);
+	if (IsValidClient(client))
+	{
+		int team = GetClientTeam(client);
+		if (team == 0)
+		{
+			GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
+		}
+	}
+	return Plugin_Stop;
 }
 
 void OnTimerStart_JoinTeam(int client)
@@ -225,62 +318,43 @@ void OnTimerStart_JoinTeam(int client)
 	hasSavedPosition[client] = false;
 }
 
-void OnPlayerJoinTeam_JoinTeam(int client, int team, int oldteam)
-{
-	if (team == CS_TEAM_CT || team == CS_TEAM_T)
-	{
-		// The position is not correct before the next frame
-		DataPack data = new DataPack();
-		data.WriteCell(client);
-		RequestFrame(UnspecUnstuck, data);
-	}
-	else if (oldteam == CS_TEAM_CT || oldteam == CS_TEAM_T)
-	{
-		if (GOKZ_GetPaused(client))
-		{
-			specMovetype[client] = GetPausedOnLadder(client) ? MOVETYPE_LADDER : MOVETYPE_WALK;
-		}
-		else
-		{
-			specMovetype[client] = Movement_GetMovetype(client);
-		}
-	}
-}
-
-void UnspecUnstuck(DataPack data)
-{
-	data.Reset();
-	int client = data.ReadCell();
-	delete data;
-	
-	float origin[3], angles[3];
-	Movement_GetOrigin(client, origin);
-	Movement_GetEyeAngles(client, angles);
-	Movement_SetMovetype(client, specMovetype[client]);
-	TeleportPlayer(client, origin, angles);
-}
-
-void JoinTeam(int client, int newTeam, bool restorePos)
+bool JoinTeam(int client, int newTeam, bool restorePos, bool forceChange, bool forceTeam)
 {
 	KZPlayer player = KZPlayer(client);
 	int currentTeam = GetClientTeam(client);
 
-	// Don't use CS_TEAM_NONE
+	// Never use CS_TEAM_NONE
 	if (newTeam == CS_TEAM_NONE)
 	{
 		newTeam = CS_TEAM_SPECTATOR;
 	}
-	
+
+	if (!forceTeam)
+	{
+		// Don't use CS_TEAM_T
+		if (newTeam == CS_TEAM_T)
+		{
+			newTeam = CS_TEAM_CT;
+		}
+	}
+
 	if (newTeam == CS_TEAM_SPECTATOR && currentTeam != CS_TEAM_SPECTATOR)
 	{
+		if (!forceChange && !player.Paused && !player.CanPause)
+		{
+			return false;
+		}
+
 		player.GetOrigin(savedOrigin[client]);
 		player.GetEyeAngles(savedAngles[client]);
 		savedOnLadder[client] = player.Movetype == MOVETYPE_LADDER;
 		hasSavedPosition[client] = true;
-		if (!player.Paused && !player.CanPause)
+
+		if (forceChange && !player.Paused && !player.CanPause)
 		{
 			player.StopTimer();
 		}
+		
 		ChangeClientTeam(client, CS_TEAM_SPECTATOR);
 		Call_GOKZ_OnJoinTeam(client, newTeam);
 	}
@@ -292,8 +366,7 @@ void JoinTeam(int client, int newTeam, bool restorePos)
 		CS_RespawnPlayer(client);
 		if (restorePos && hasSavedPosition[client])
 		{
-			player.SetOrigin(savedOrigin[client]);
-			player.SetEyeAngles(savedAngles[client]);
+			TeleportPlayer(client, savedOrigin[client], savedAngles[client]);
 			if (savedOnLadder[client])
 			{
 				player.Movetype = MOVETYPE_LADDER;
@@ -306,6 +379,8 @@ void JoinTeam(int client, int newTeam, bool restorePos)
 		hasSavedPosition[client] = false;
 		Call_GOKZ_OnJoinTeam(client, newTeam);
 	}
+
+	return true;
 }
 
 

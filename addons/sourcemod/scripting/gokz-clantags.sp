@@ -73,7 +73,7 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 		return;
 	}
 	
-	if (coreOption == Option_Mode)
+	if (coreOption == Option_Mode || coreOption == Option_Style)
 	{
 		UpdateClanTag(client);
 	}
@@ -93,17 +93,32 @@ void UpdateClanTag(int client)
 		return;
 	}
 
+	bool usesStyle = GOKZ_GetCoreOption(client, Option_Style) != Style_Normal;
+	char clantag[32];
+
 	if (gB_GOKZLevels && GOKZ_DB_IsClientSetUp(client))
 	{
 		int level = GOKZ_LV_GetLevel(client);
-
-		char clantag[32];
-		FormatEx(clantag, sizeof(clantag), "[Lv%d] %s", level, gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
-
-		CS_SetClientClanTag(client, clantag);
+		if (usesStyle)
+		{
+			FormatEx(clantag, sizeof(clantag), "[Lv%d] %s+", level, gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
+		}
+		else
+		{
+			FormatEx(clantag, sizeof(clantag), "[Lv%d] %s", level, gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
+		}
 	}
 	else
 	{
-		CS_SetClientClanTag(client, gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
+		if (usesStyle)
+		{
+			FormatEx(clantag, sizeof(clantag), "%s+", gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
+		}
+		else
+		{
+			FormatEx(clantag, sizeof(clantag), "%s", gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)]);
+		}
 	}
+
+	CS_SetClientClanTag(client, clantag);
 }

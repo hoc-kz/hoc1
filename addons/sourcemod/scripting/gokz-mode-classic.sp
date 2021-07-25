@@ -312,7 +312,8 @@ void TweakVelMod(KZPlayer player)
 	if (IsValidEntity(weapon))
 	{
 		int defIndex = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
-		if (defIndex == CS_WeaponIDToItemDefIndex(CSWeapon_USP_SILENCER))
+		if (defIndex == CS_WeaponIDToItemDefIndex(CSWeapon_USP_SILENCER) ||
+			defIndex == CS_WeaponIDToItemDefIndex(CSWeapon_HKP2000))
 		{
 			player.VelocityModifier = SPEED_NORMAL / 240.0;
 		}

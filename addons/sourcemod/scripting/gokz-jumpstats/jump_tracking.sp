@@ -23,6 +23,7 @@ enum struct Pose
 // =====[ GLOBAL VARIABLES ]===================================================
 
 static int entityTouchCount[MAXPLAYERS + 1];
+static int lastFlags[MAXPLAYERS + 1];
 static bool validCmd[MAXPLAYERS + 1]; // Whether no illegal action is detected	
 static const float playerMins[3] =  { -16.0, -16.0, 0.0 };
 static const float playerMaxs[3] =  { 16.0, 16.0, 0.0 };
@@ -119,6 +120,7 @@ enum struct JumpTracker
 	{
 		// Initialize stats
 		this.CalcTakeoff();
+		this.AdjustLowpreJumptypes();
 		
 		this.failstatBlockDetected = this.jump.type != JumpType_LadderJump;
 		this.failstatFailed = false;
@@ -252,12 +254,31 @@ enum struct JumpTracker
 		poseHistory[this.jumper][0].speed = this.jump.preSpeed;
 	}
 	
+	void AdjustLowpreJumptypes()
+	{
+		// Exclude SKZ and VNL stats.
+		if (GOKZ_GetCoreOption(this.jumper, Option_Mode) == Mode_Classic)
+		{
+			if (this.jump.type == JumpType_Bhop &&
+				this.jump.preSpeed < 355.0)
+			{
+				this.jump.type = JumpType_LowpreBhop;
+			}
+			else if (this.jump.type == JumpType_WeirdJump &&
+					 this.jump.preSpeed < 300.0)
+			{
+				this.jump.type = JumpType_LowpreWeirdJump;
+			}
+		}
+	}
+
 	int DetermineType(bool jumped, bool ladderJump, bool jumpbug)
 	{
 		// Check whether the player touches more than just the ground or if
 		// he just teleported.
-		if (entityTouchCount[this.jumper] > 0 ||
-			GetGameTickCount() - this.lastTeleportTick < JS_MIN_TELEPORT_DELAY)
+		int allowedTouchingEntities = (lastFlags[this.jumper] & FL_ONGROUND) ? 1 : 0;		
+		if (entityTouchCount[this.jumper] > allowedTouchingEntities ||
+				GetGameTickCount() - this.lastTeleportTick < JS_MIN_TELEPORT_DELAY)
 		{
 			return JumpType_Invalid;
 		}
@@ -299,6 +320,7 @@ enum struct JumpTracker
 				{
 					case JumpType_LongJump:return JumpType_Bhop;
 					case JumpType_Bhop:return JumpType_MultiBhop;
+					case JumpType_LowpreBhop:return JumpType_MultiBhop;
 					case JumpType_MultiBhop:return JumpType_MultiBhop;
 					default:return JumpType_Other;
 				}
@@ -536,7 +558,9 @@ enum struct JumpTracker
 				this.lastType == JumpType_MultiBhop || 
 				this.lastType == JumpType_Ladderhop || 
 				this.lastType == JumpType_WeirdJump ||
-				this.lastType == JumpType_Jumpbug)
+				this.lastType == JumpType_Jumpbug ||
+				this.lastType == JumpType_LowpreBhop ||
+				this.lastType == JumpType_LowpreWeirdJump)
 			 && this.jump.distance >= JS_MIN_BLOCK_DISTANCE)
 		{
 			// Add the player model to the distance.
@@ -610,7 +634,9 @@ enum struct JumpTracker
 				this.jump.type == JumpType_MultiBhop || 
 				this.jump.type == JumpType_Ladderhop || 
 				this.jump.type == JumpType_WeirdJump ||
-				this.jump.type == JumpType_Jumpbug)
+				this.jump.type == JumpType_Jumpbug ||
+				this.jump.type == JumpType_LowpreBhop ||
+				this.jump.type == JumpType_LowpreWeirdJump)
 			 && this.jump.distance >= JS_MIN_BLOCK_DISTANCE)
 		{
 			this.CalcBlockStats(this.position);
@@ -1374,6 +1400,8 @@ public void OnPlayerRunCmdPost_JumpTracking(int client, int cmdnum)
 	
 	// We always have to track this, no matter if in the air or not
 	jumpTrackers[client].UpdateRelease();
+
+	lastFlags[client] = GetEntityFlags(client);
 }
 
 public void OnChangeMovetype_JumpTracking(int client, MoveType oldMovetype, MoveType newMovetype)

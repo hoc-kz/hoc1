@@ -1,47 +1,65 @@
 
 static int jumpTopMode[MAXPLAYERS + 1];
 static int jumpTopType[MAXPLAYERS + 1];
-static int jumpTopBlockType[MAXPLAYERS + 1];
 
 
 
-void DB_GetJumpTop(int client)
+void DB_OpenJumpTop(int client, int mode, int jumpType, int blockType)
 {
 	char query[1024];
 	
 	Transaction txn = SQL_CreateTransaction();
 
-	FormatEx(query, sizeof(query), sql_jumpstats_gettop, jumpTopType[client], jumpTopMode[client], jumpTopBlockType[client], jumpTopType[client], jumpTopMode[client], jumpTopBlockType[client], JS_TOP_RECORD_COUNT);
+	FormatEx(query, sizeof(query), sql_jumpstats_gettop, jumpType, mode, blockType, jumpType, mode, blockType, JS_TOP_RECORD_COUNT);
 	txn.AddQuery(query);
 
-	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_GetJumpTop, DB_TxnFailure_Generic, GetClientUserId(client), DBPrio_Low);
+	DataPack data = new DataPack();
+	data.WriteCell(GetClientUserId(client));
+	data.WriteCell(mode);
+	data.WriteCell(jumpType);
+	data.WriteCell(blockType);
+
+	SQL_ExecuteTransaction(gH_DB, txn, DB_TxnSuccess_GetJumpTop, DB_TxnFailure_Generic_DataPack, data, DBPrio_Low);
 }
 
-void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] results, any[] queryData)
+void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[] results, any[] queryData)
 {
-	int client = GetClientOfUserId(userID);
+	data.Reset();
+	int client = GetClientOfUserId(data.ReadCell());
+	int mode = data.ReadCell();
+	int type = data.ReadCell();
+	int blockType = data.ReadCell();
+	delete data;
+
 	if (!IsValidClient(client))
 	{
 		return;
 	}
 
+	jumpTopMode[client] = mode;
+	jumpTopType[client] = type;
+
 	int rows = SQL_GetRowCount(results[0]);
 	if (rows == 0)
 	{
 		GOKZ_PrintToChat(client, true, "%t", "No Jumpstats Found");
+		DisplayJumpTopBlockTypeMenu(client, mode, type);
 		return;
 	}
 	
 	char display[128], alias[33], title[65];
 	int steamid, block, strafes;
 	float distance, sync, pre, max, airtime;
-	
+	int overlap, deadair, releaseW;
+
 	Menu menu = new Menu(MenuHandler_JumpTopList);
 	menu.Pagination = 5;
 	
-	if (jumpTopBlockType[client] == 0)
+	if (blockType == 0)
 	{
-		FormatEx(title, sizeof(title), "%s %s %T", gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]], "Top", client);
+		menu.SetTitle("%T", "Jump Top Submenu - Title (Jump)", client, gC_ModeNames[mode], gC_JumpTypes[type]);
+
+		FormatEx(title, sizeof(title), "%s %s %T", gC_ModeNames[mode], gC_JumpTypes[type], "Top", client);
 		strcopy(display, sizeof(display), "----------------------------------------------------------------");
 		display[strlen(title)] = '\0';
 		
@@ -58,18 +76,33 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 			sync = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Sync)) / GOKZ_DB_JS_SYNC_PRECISION;
 			pre = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Pre)) / GOKZ_DB_JS_PRE_PRECISION;
 			max = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Max)) / GOKZ_DB_JS_MAX_PRECISION;
+			overlap = SQL_FetchInt(results[0], JumpstatDB_Top20_Overlap);
+			deadair = SQL_FetchInt(results[0], JumpstatDB_Top20_DeadAir);
+			releaseW = SQL_FetchInt(results[0], JumpstatDB_Top20_ReleaseW);
 			airtime = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Air)) / GOKZ_DB_JS_AIRTIME_PRECISION;
 			
 			FormatEx(display, sizeof(display), "#%-2d   %.4f   %s", i + 1, distance, alias);
-			menu.AddItem(IntToStringEx(i), display);
+			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
-			PrintToConsole(client, "#%-2d   %.4f   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
-				i + 1, distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
+			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump)
+			{
+				PrintToConsole(client, "#%-2d   %.4f   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
+					i + 1, distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
+					overlap, "Overlap", deadair, "DeadAir", releaseW, "ReleaseW");
+			}
+			else
+			{
+				PrintToConsole(client, "#%-2d   %.4f   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t]", 
+					i + 1, distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
+					overlap, "Overlap", deadair, "DeadAir");
+			}
 		}
 	}
 	else
 	{
-		FormatEx(title, sizeof(title), "%s %T %s %T", gC_ModeNames[jumpTopMode[client]], "Block", client, gC_JumpTypes[jumpTopType[client]], "Top", client);
+		menu.SetTitle("%T", "Jump Top Submenu - Title (Block Jump)", client, gC_ModeNames[mode], gC_JumpTypes[type]);
+
+		FormatEx(title, sizeof(title), "%s %T %s %T", gC_ModeNames[mode], "Block", client, gC_JumpTypes[type], "Top", client);
 		strcopy(display, sizeof(display), "----------------------------------------------------------------");
 		display[strlen(title)] = '\0';
 		
@@ -87,13 +120,26 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 			sync = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Sync)) / GOKZ_DB_JS_SYNC_PRECISION;
 			pre = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Pre)) / GOKZ_DB_JS_PRE_PRECISION;
 			max = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Max)) / GOKZ_DB_JS_MAX_PRECISION;
+			overlap = SQL_FetchInt(results[0], JumpstatDB_Top20_Overlap);
+			deadair = SQL_FetchInt(results[0], JumpstatDB_Top20_DeadAir);
+			releaseW = SQL_FetchInt(results[0], JumpstatDB_Top20_ReleaseW);
 			airtime = float(SQL_FetchInt(results[0], JumpstatDB_Top20_Air)) / GOKZ_DB_JS_AIRTIME_PRECISION;
 			
 			FormatEx(display, sizeof(display), "#%-2d   %d %T (%.4f)   %s", i + 1, block, "Block", client, distance, alias);
-			menu.AddItem(IntToStringEx(i), display);
+			menu.AddItem(IntToStringEx(i), display, ITEMDRAW_DISABLED);
 			
-			PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t]", 
-				i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air");
+			if (type == JumpType_LongJump || type == JumpType_LadderJump || type == JumpType_WeirdJump)
+			{
+				PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t | %d %t]", 
+					i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
+					overlap, "Overlap", deadair, "DeadAir", releaseW, "ReleaseW");
+			}
+			else
+			{
+				PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t]", 
+					i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
+					overlap, "Overlap", deadair, "DeadAir");
+			}
 		}
 	}
 	menu.Display(client, MENU_TIME_FOREVER);
@@ -105,7 +151,7 @@ void DB_TxnSuccess_GetJumpTop(Handle db, int userID, int numQueries, Handle[] re
 void DisplayJumpTopModeMenu(int client)
 {
 	Menu menu = new Menu(MenuHandler_JumpTopMode);
-	menu.SetTitle("%T %T", "Jumpstats", client, "Top", client);
+	menu.SetTitle("%T", "Jump Top Mode Menu - Title", client);
 	GOKZ_MenuAddModeItems(client, menu, false);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -115,7 +161,7 @@ void DisplayJumpTopTypeMenu(int client, int mode)
 	jumpTopMode[client] = mode;
 	
 	Menu menu = new Menu(MenuHandler_JumpTopType);
-	menu.SetTitle("%s %T %T", gC_ModeNames[jumpTopMode[client]], "Jumpstats", client, "Top", client);
+	menu.SetTitle("%T", "Jump Top Type Menu - Title", client, gC_ModeNames[jumpTopMode[client]]);
 	JumpTopTypeMenuAddItems(menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -130,12 +176,13 @@ static void JumpTopTypeMenuAddItems(Menu menu)
 	}
 }
 
-void DisplayJumpTopBlockTypeMenu(int client, int type)
+void DisplayJumpTopBlockTypeMenu(int client, int mode, int type)
 {
+	jumpTopMode[client] = mode;
 	jumpTopType[client] = type;
 	
 	Menu menu = new Menu(MenuHandler_JumpTopBlockType);
-	menu.SetTitle("%s %s %T", gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]], "Top", client);
+	menu.SetTitle("%T", "Jump Top Block Type Menu - Title", client, gC_ModeNames[jumpTopMode[client]], gC_JumpTypes[jumpTopType[client]]);
 	JumpTopBlockTypeMenuAddItems(client, menu);
 	menu.Display(client, MENU_TIME_FOREVER);
 }
@@ -147,12 +194,6 @@ static void JumpTopBlockTypeMenuAddItems(int client, Menu menu)
 	menu.AddItem("jump", str);
 	FormatEx(str, sizeof(str), "%T %T", "Block", client, "Jump Records", client);
 	menu.AddItem("blockjump", str);
-}
-
-void DisplayJumpTopMenu(int client, int blockType)
-{
-	jumpTopBlockType[client] = blockType;
-	DB_GetJumpTop(client);
 }
 
 
@@ -177,7 +218,7 @@ public int MenuHandler_JumpTopType(Menu menu, MenuAction action, int param1, int
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = type
-		DisplayJumpTopBlockTypeMenu(param1, param2);
+		DisplayJumpTopBlockTypeMenu(param1, jumpTopMode[param1], param2);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
@@ -194,7 +235,7 @@ public int MenuHandler_JumpTopBlockType(Menu menu, MenuAction action, int param1
 	if (action == MenuAction_Select)
 	{
 		// param1 = client, param2 = block type
-		DisplayJumpTopMenu(param1, param2);
+		DB_OpenJumpTop(param1, jumpTopMode[param1], jumpTopType[param1], param2);
 	}
 	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
@@ -210,14 +251,7 @@ public int MenuHandler_JumpTopList(Menu menu, MenuAction action, int param1, int
 {
 	if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
 	{
-		if (jumpTopType[param1] == JumpType_LadderJump)
-		{
-			DisplayJumpTopTypeMenu(param1, jumpTopMode[param1]);
-		}
-		else
-		{
-			DisplayJumpTopBlockTypeMenu(param1, jumpTopType[param1]);
-		}
+		DisplayJumpTopBlockTypeMenu(param1, jumpTopMode[param1], jumpTopType[param1]);
 	}
 	else if (action == MenuAction_End)
 	{

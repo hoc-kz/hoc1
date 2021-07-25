@@ -4,6 +4,7 @@
 #include <sdktools>
 
 #include <gokz/core>
+#include <gokz/vip>
 
 #undef REQUIRE_EXTENSIONS
 #undef REQUIRE_PLUGIN
@@ -31,6 +32,7 @@ int gI_BeamSprite;
 int gI_HaloSprite;
 bool gB_Hooking[MAXPLAYERS + 1];
 float gF_HookingTarget[MAXPLAYERS + 1][3];
+int gI_HookColor[MAXPLAYERS + 1][4];
 
 
 
@@ -85,6 +87,20 @@ public void OnMapStart()
 public void OnClientConnected(int client)
 {
 	gB_Hooking[client] = false;
+	gI_HookColor[client] = gI_HookColorValues[gI_VIPOptionDefaults[VIPOption_HookColor]];
+}
+
+public void OnClientCookiesCached(int client)
+{
+	gI_HookColor[client] = gI_HookColorValues[GOKZ_VIP_GetOption(client, VIPOption_HookColor)];
+}
+
+public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
+{
+	if (StrEqual(option, gC_VIPOptionNames[VIPOption_HookColor]))
+	{
+		gI_HookColor[client] = gI_HookColorValues[newValue];
+	}
 }
 
 public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3], float angles[3], int &weapon, int &subtype, int &cmdnum, int &tickcount, int &seed, int mouse[2])
@@ -113,7 +129,7 @@ public Action OnPlayerRunCmd(int client, int &buttons, int &impulse, float vel[3
 	{
 		eyePosition[2] -= 22.0;
 
-		TE_SetupBeamPoints(eyePosition, gF_HookingTarget[client], gI_BeamSprite, gI_HaloSprite, 0, 0, 0.06, 1.0, 1.0, 0, 0.0, {255, 0, 255, 255}, 0);
+		TE_SetupBeamPoints(eyePosition, gF_HookingTarget[client], gI_BeamSprite, gI_HaloSprite, 0, 0, 0.06, 1.0, 1.0, 0, 0.0, gI_HookColor[client], 0);
 		TE_SendToAll();
 	}
 

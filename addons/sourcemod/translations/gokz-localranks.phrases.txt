@@ -392,6 +392,21 @@
 		"en"		"{1} block {2} record of {3}: {4} block ({5} jump)"
 		"ru"		"{1} блок {2} поставил рекорд на {3}: {4} блок ({5} прыжок)"
 	}
+	"Invalid SteamID"
+	{
+		"en"		"{darkred}Invalid SteamID (Format: STEAM_1:X:X)."
+		"ru"		"{darkred}Недопустимый SteamID (Формат: STEAM_1:X:X)."
+	}
+	"Invalid Mode"
+	{
+		"en"		"{darkred}Invalid mode (Options: CLASSIC, VANILLA)"
+		"ru"		"{darkred}Несуществующий режим (Режимы: CLASSIC, VANILLA)"
+	}
+	"Invalid Jumptype"
+	{
+		"en"		"{darkred}Invalid jumptype (Options: LJ, BH, MBH, WJ, LAJ, LAH, JB, LBH, LWJ)"
+		"ru"		"{darkred}Неверный тип прыжка (Варианты: LJ, BH, MBH, WJ, LAJ, LAH, JB, LBH, LWJ)"
+	}
 
 
 	// =====[ MAP TOP MENU ]=====
@@ -550,7 +565,7 @@
 	{
 		// Recently Broken Records
 		//
-		"en"		"Recently Broken Records\n "
+		"en"		"Recently Broken Records\n \nSelect a Mode"
 	}
 	"Recent Records Style Menu - Title"
 	{
@@ -559,7 +574,7 @@
 		// Mode - Vanilla
 		//
 		"#format"	"{1:s}"
-		"en"		"Recently Broken Records\n \nMode - {1}\n "
+		"en"		"Recently Broken Records\n \nMode - {1}\n \nSelect a Style"
 	}
 	"Recent Records Time Type Menu - Title"
 	{
@@ -640,72 +655,249 @@
 		"en"		"Block"
 		"ru"		"Блок"
 	}
+	"ReleaseW"
+	{
+		"en"		"W"
+	}
+	"DeadAir"
+	{
+		"en"		"DA"
+	}
+	"Overlap"
+	{
+		"en"		"OL"
+	}
 
+	
 	// =====[ PROFILE ]=====
-	"Profile - Player"
+	"Profile Menu - Title"
 	{
-		"en"		"Player"
+		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:d},{6:d},{7:d},{8:d},{9:d},{10:d},{11:0.1f},{12:d},{13:d},{14:0.1f}"
+		"en"		"Player - {1}\nFrom - {2}\n \nFirst Seen - {3}\nLast Seen - {4}\n \nRank - {5}/{6}\nLevel - {7}\nPrestige - {8}\n \nCompletion - {9}/{10} ({11}%%)\nPRO Completion - {12}/{13} ({14}%%)\n "
 	}
-	"Profile - From"
+	"Profile Menu - Title (No Levels)"
 	{
-		"en"		"From"
+		"#format"	"{1:s},{2:s},{3:s},{4:s},{5:d},{6:d},{7:0.1f},{8:d},{9:d},{10:0.1f}"
+		"en"		"Player - {1}\nFrom - {2}\n \nFirst Seen - {3}\nLast Seen - {4}\n \nCompletion - {5}/{6} ({7}%%)\nPRO Completion - {8}/{9} ({10}%%)\n "
 	}
-	"Profile - Rank"
-	{
-		"en"		"Rank"
-	}
-	"Profile - Level"
-	{
-		"en"		"Level"
-	}
-	"Profile - Prestige"
-	{
-		"en"		"Prestige"
-	}
-	"Profile - First Seen"
-	{
-		"en"		"First Seen"
-	}
-	"Profile - Last Seen"
-	{
-		"en"		"Last Seen"
-	}
-	"Profile - NUB Completion"
-	{
-		"en"		"NUB Completion"
-	}
-	"Profile - PRO Completion"
-	{
-		"en"		"PRO Completion"
-	}
-	"Profile - Completed Maps"
+	"Profile Menu - Completed Maps"
 	{
 		"en"		"Completed Maps"
 	}
-	"Profile - Uncompleted Maps"
+	"Profile Menu - Completed Maps (PRO)"
+	{
+		"en"		"Completed Maps (PRO)"
+	}
+	"Profile Menu - Uncompleted Maps"
 	{
 		"en"		"Uncompleted Maps"
 	}
-	
-	// =====[ COMPLETED MAPS ]=====
-	"Overall Completed Maps Menu - Title"
+	"Profile Menu - Uncompleted Maps (PRO)"
 	{
-		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Completed Maps\n \nPlayer - {2}\n "
+		"en"		"Uncompleted Maps (PRO)"
 	}
-	"Overall Uncompleted Maps Menu - Title"
-	{
-		"#format"	"{1:s},{2:s}"
-		"en"		"{1} Uncompleted Maps\n \nPlayer - {2}\n "
-	}
-	"Player No Maps Completed"
+	"Profile Map Completion - None Completed"
 	{
 		"#format"	"{1:s}"
 		"en"		"{lime}{1} {grey}has not completed any map."
 	}
-	"Player All Maps Completed"
+	"Profile Map Completion - None Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map {blue}PRO{grey}."
+	}
+	"Profile Map Completion - All Completed"
 	{
 		"#format"	"{1:s}"
 		"en"		"{lime}{1} {grey}has completed all maps."
+	}
+	"Profile Map Completion - All Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps {blue}PRO{grey}."
+	}
+	"Profile Map Completion Submenu - Title (Completed)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Completed Maps\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	"Profile Map Completion Submenu - Title (Completed PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Completed Maps (PRO)\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	"Profile Map Completion Submenu - Title (Uncompleted)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Uncompleted Maps\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	"Profile Map Completion Submenu - Title (Uncompleted PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"Uncompleted Maps (PRO)\n \nPlayer - {1}\nMode - Any\nStyle - Any\n "
+	}
+	
+	
+	
+	// =====[ MAP COMPLETION ]=====
+	"Map Completion Menu - Completed Maps"
+	{
+		"en"		"Completed Maps"
+	}
+	"Map Completion Menu - Completed Maps (PRO)"
+	{
+		"en"		"Completed Maps (PRO)"
+	}
+	"Map Completion Menu - Uncompleted Maps"
+	{
+		"en"		"Uncompleted Maps"
+	}
+	"Map Completion Menu - Uncompleted Maps (PRO)"
+	{
+		"en"		"Uncompleted Maps (PRO)"
+	}
+	"Map Completion Mode Menu - Title"
+	{
+		"#format"	"{1:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\n \nSelect a Mode"
+	}
+	"Map Completion Style Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\n \nSelect a Style"
+	}
+	"Map Completion Menu - Title"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Map Completion\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Completed)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Completed Maps\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Completed PRO)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Completed Maps (PRO)\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Uncompleted)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Uncompleted Maps\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion Submenu - Title (Uncompleted PRO)"
+	{
+		"#format"	"{1:s},{2:s},{3:s}"
+		"en"		"Uncompleted Maps (PRO)\n \nPlayer - {1}\nMode - {2}\nStyle - {3}\n "
+	}
+	"Map Completion - None Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map."
+	}
+	"Map Completion - None Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has not completed any map {blue}PRO{grey}."
+	}
+	"Map Completion - All Completed"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps."
+	}
+	"Map Completion - All Completed (PRO)"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}has completed all maps {blue}PRO{grey}."
+	}
+	
+	
+	
+	// =====[ JUMPSTATS PB MENU ]=====
+	"Jump Stats Mode Menu - Title"
+	{
+		"#format"	"{1:s}"
+		"en"		"Jumpstats\n \nPlayer - {1}\n \nSelect a Mode"
+	}
+	"Jump Stats Block Type Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Jumpstats\n \nPlayer - {1}\nMode - {2}\n \nSelect a Category"
+	}
+	"Jump Stats Submenu - Title (Jump)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Jumpstats\n \nPlayer - {1}\nMode - {2}\n "
+	}
+	"Jump Stats Submenu - Title (Block Jump)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Block Jumpstats\n \nPlayer - {1}\nMode - {2}\n "
+	}
+	"Jump Stats Menu - No Jump Stats"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}does not have any jumpstats."
+	}
+	"Jump Stats Menu - No Block Jump Stats"
+	{
+		"#format"	"{1:s}"
+		"en"		"{lime}{1} {grey}does not have any block jumpstats."
+	}
+	"Jump Stats - Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} jumpstats for {2} <STEAM_1:{3}:{4}>"
+	}
+	"Jump Stats - Block Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} block jumpstats for {2} <STEAM_1:{3}:{4}>"
+	}
+	
+	
+	
+	// =====[ JUMPSTATS RECORD PRINT ]=====
+	"Print Jump Records - Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} jump records for {2} <STEAM_1:{3}:{4}>"
+	}
+	"Print Jump Records - Block Jump Console Header"
+	{
+		"#format"	"{1:s},{2:s},{3:d},{4:d}"
+		"en"		"{1} block jump records for {2} <STEAM_1:{3}:{4}>"
+	}
+	"Print Jump Records Usage"
+	{
+		"en"		"Usage: !printjumprecords <STEAM_1:X:X>"
+	}
+	
+	
+	// =====[ JUMPTOP MENU ]=====
+	"Jump Top Mode Menu - Title"
+	{
+		"en"		"Jumpstats Top\n \nSelect a Mode"
+	}
+	"Jump Top Type Menu - Title"
+	{
+		"#format"	"{1:s}"
+		"en"		"Jumpstats Top\n \nMode - {1}\n \nSelect a Type"
+	}
+	"Jump Top Block Type Menu - Title"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Jumpstats Top\n \nMode - {1}\nType - {2}\n \nSelect a Category"
+	}
+	"Jump Top Submenu - Title (Jump)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Jumpstats Top\n \nMode - {1}\nType - {2}\n "
+	}
+	"Jump Top Submenu - Title (Block Jump)"
+	{
+		"#format"	"{1:s},{2:s}"
+		"en"		"Block Jumpstats Top\n \nMode - {1}\nType - {2}\n "
 	}
 }

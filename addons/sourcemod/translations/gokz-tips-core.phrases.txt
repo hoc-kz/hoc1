@@ -44,4 +44,12 @@
 		"en"		"{grey}Have you set up your virtual buttons perfectly? Use {default}!vb{grey} to lock them in place."
 		"ru"		"{grey}Ты настроил под себя виртуальные кнопки? Используй {default}!vb{grey} для их фиксации."
 	}
+	"!fov"
+	{
+		"en"		"{grey}Use {default}!fov <angle> {grey}to change your field of view."
+	}
+	"!tp"
+	{
+		"en"		"{grey}Use {default}!thirdperson/!tp {grey}to toggle between first person and third person view."
+	}
 }

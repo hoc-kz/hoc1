@@ -15,6 +15,8 @@
 #define ITEM_INFO_PAUSE "pause"
 #define ITEM_INFO_START "start"
 
+#define PRO_MENU_RESTART_DISABLE_TIME 8.0
+
 
 
 // =====[ EVENTS ]=====
@@ -105,7 +107,7 @@ static void ShowTPMenu(KZPlayer player, HUDInfo info)
 	menu.ExitButton = false;
 	menu.Pagination = MENU_NO_PAGINATION;
 	TPMenuSetTitle(player, menu, info);
-	TPMenuAddItems(player, menu);
+	TPMenuAddItems(player, menu, info);
 	menu.Display(player.ID, MENU_TIME_FOREVER);
 	gB_MenuShowing[player.ID] = true;
 }
@@ -114,30 +116,53 @@ static void TPMenuSetTitle(KZPlayer player, Menu menu, HUDInfo info)
 {
 	if (player.TimerRunning && player.TimerText == TimerText_TPMenu)
 	{
-		menu.SetTitle(FormatTimerTextForMenu(player, info));
+		menu.SetTitle("%s\n ", FormatTimerTextForMenu(player, info));
 	}
 }
 
-static void TPMenuAddItems(KZPlayer player, Menu menu)
+static void TPMenuAddItems(KZPlayer player, Menu menu, HUDInfo info)
 {
 	switch (player.TPMenu)
 	{
 		case TPMenu_Simple:
 		{
 			TPMenuAddItemCheckpoint(player, menu);
-			TPMenuAddItemTeleport(player, menu);
+			TPMenuAddItemTeleport(player, menu, player.CanTeleportToCheckpoint);
 			TPMenuAddItemPause(player, menu);
-			TPMenuAddItemStart(player, menu);
+			TPMenuAddItemStart(player, menu, true);
 		}
 		case TPMenu_Advanced:
 		{
 			TPMenuAddItemCheckpoint(player, menu);
-			TPMenuAddItemTeleport(player, menu);
-			TPMenuAddItemPrevCheckpoint(player, menu);
-			TPMenuAddItemNextCheckpoint(player, menu);
-			TPMenuAddItemUndo(player, menu);
+			TPMenuAddItemTeleport(player, menu, player.CanTeleportToCheckpoint);
+			TPMenuAddItemPrevCheckpoint(player, menu, player.CanPrevCheckpoint);
+			TPMenuAddItemNextCheckpoint(player, menu, player.CanNextCheckpoint);
+			TPMenuAddItemUndo(player, menu, player.CanUndoTeleport);
 			TPMenuAddItemPause(player, menu);
-			TPMenuAddItemStart(player, menu);
+			TPMenuAddItemStart(player, menu, true);
+		}
+		case TPMenu_SimplePro:
+		{
+			bool timerRunning = player.TimerRunning;
+			bool timerRunningLong = timerRunning && (info.Time >= PRO_MENU_RESTART_DISABLE_TIME);
+
+			TPMenuAddItemCheckpoint(player, menu);
+			TPMenuAddItemTeleport(player, menu, !timerRunning && player.CanTeleportToCheckpoint);
+			TPMenuAddItemPause(player, menu);
+			TPMenuAddItemStart(player, menu, !timerRunningLong);
+		}
+		case TPMenu_AdvancedPro:
+		{
+			bool timerRunning = player.TimerRunning;
+			bool timerRunningLong = timerRunning && (info.Time >= PRO_MENU_RESTART_DISABLE_TIME);
+
+			TPMenuAddItemCheckpoint(player, menu);
+			TPMenuAddItemTeleport(player, menu, !timerRunning && player.CanTeleportToCheckpoint);
+			TPMenuAddItemPrevCheckpoint(player, menu, !timerRunning && player.CanPrevCheckpoint);
+			TPMenuAddItemNextCheckpoint(player, menu, !timerRunning && player.CanNextCheckpoint);
+			TPMenuAddItemUndo(player, menu, !timerRunning && player.CanUndoTeleport);
+			TPMenuAddItemPause(player, menu);
+			TPMenuAddItemStart(player, menu, !timerRunningLong);
 		}
 	}
 }
@@ -154,7 +179,7 @@ static void TPMenuAddItemCheckpoint(KZPlayer player, Menu menu)
 	menu.AddItem(ITEM_INFO_CHECKPOINT, display, ITEMDRAW_DEFAULT);
 }
 
-static void TPMenuAddItemTeleport(KZPlayer player, Menu menu)
+static void TPMenuAddItemTeleport(KZPlayer player, Menu menu, bool enabled)
 {
 	char display[24];
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Teleport", player.ID);
@@ -163,7 +188,7 @@ static void TPMenuAddItemTeleport(KZPlayer player, Menu menu)
 		Format(display, sizeof(display), "%s (#%d)", display, player.TeleportCount);
 	}
 	
-	if (player.CanTeleportToCheckpoint)
+	if (enabled)
 	{
 		menu.AddItem(ITEM_INFO_TELEPORT, display, ITEMDRAW_DEFAULT);
 	}
@@ -173,11 +198,11 @@ static void TPMenuAddItemTeleport(KZPlayer player, Menu menu)
 	}
 }
 
-static void TPMenuAddItemPrevCheckpoint(KZPlayer player, Menu menu)
+static void TPMenuAddItemPrevCheckpoint(KZPlayer player, Menu menu, bool enabled)
 {
 	char display[24];
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Prev CP", player.ID);
-	if (player.CanPrevCheckpoint)
+	if (enabled)
 	{
 		menu.AddItem(ITEM_INFO_PREV, display, ITEMDRAW_DEFAULT);
 	}
@@ -187,11 +212,11 @@ static void TPMenuAddItemPrevCheckpoint(KZPlayer player, Menu menu)
 	}
 }
 
-static void TPMenuAddItemNextCheckpoint(KZPlayer player, Menu menu)
+static void TPMenuAddItemNextCheckpoint(KZPlayer player, Menu menu, bool enabled)
 {
 	char display[24];
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Next CP", player.ID);
-	if (player.CanNextCheckpoint)
+	if (enabled)
 	{
 		menu.AddItem(ITEM_INFO_NEXT, display, ITEMDRAW_DEFAULT);
 	}
@@ -201,11 +226,11 @@ static void TPMenuAddItemNextCheckpoint(KZPlayer player, Menu menu)
 	}
 }
 
-static void TPMenuAddItemUndo(KZPlayer player, Menu menu)
+static void TPMenuAddItemUndo(KZPlayer player, Menu menu, bool enabled)
 {
 	char display[24];
 	FormatEx(display, sizeof(display), "%T", "TP Menu - Undo TP", player.ID);
-	if (player.CanUndoTeleport)
+	if (enabled)
 	{
 		menu.AddItem(ITEM_INFO_UNDO, display, ITEMDRAW_DEFAULT);
 	}
@@ -230,22 +255,28 @@ static void TPMenuAddItemPause(KZPlayer player, Menu menu)
 	}
 }
 
-static void TPMenuAddItemStart(KZPlayer player, Menu menu)
+static void TPMenuAddItemStart(KZPlayer player, Menu menu, bool enabled)
 {
+	int style = ITEMDRAW_DEFAULT;
+	if (!enabled)
+	{
+		style = ITEMDRAW_DISABLED;
+	}
+
 	char display[24];
 	if (player.StartPositionType == StartPositionType_Spawn)
 	{
 		FormatEx(display, sizeof(display), "%T", "TP Menu - Respawn", player.ID);
-		menu.AddItem(ITEM_INFO_START, display, ITEMDRAW_DEFAULT);
+		menu.AddItem(ITEM_INFO_START, display, style);
 	}
 	else if (player.TimerRunning)
 	{
 		FormatEx(display, sizeof(display), "%T", "TP Menu - Restart", player.ID);
-		menu.AddItem(ITEM_INFO_START, display, ITEMDRAW_DEFAULT);
+		menu.AddItem(ITEM_INFO_START, display, style);
 	}
 	else
 	{
 		FormatEx(display, sizeof(display), "%T", "TP Menu - Start", player.ID);
-		menu.AddItem(ITEM_INFO_START, display, ITEMDRAW_DEFAULT);
+		menu.AddItem(ITEM_INFO_START, display, style);
 	}
 } 

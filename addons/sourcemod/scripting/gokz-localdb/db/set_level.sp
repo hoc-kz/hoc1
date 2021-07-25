@@ -13,7 +13,7 @@ void DB_SetLevel(int client, int experience, int prestige)
 
 	char query[256];
 
-	FormatEx(query, sizeof(query), sql_levels_upsert, GetSteamAccountID(client), experience, prestige);
+	FormatEx(query, sizeof(query), sql_levels_update, experience, prestige, GetSteamAccountID(client));
 	txn.AddQuery(query);
 	
 	SQL_ExecuteTransaction(gH_DB, txn, _, DB_TxnFailure_Generic, _, DBPrio_Normal);

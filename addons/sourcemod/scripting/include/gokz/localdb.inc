@@ -43,6 +43,9 @@ enum
 	JumpstatDB_Top20_Sync, 
 	JumpstatDB_Top20_Pre, 
 	JumpstatDB_Top20_Max, 
+	JumpstatDB_Top20_Overlap,
+	JumpstatDB_Top20_DeadAir,
+	JumpstatDB_Top20_ReleaseW,
 	JumpstatDB_Top20_Air
 };
 

@@ -85,8 +85,10 @@ enum
 	Style_Normal = 0, 
 	Style_AutoBhop,
 	Style_WOnly,
+	Style_Sideways,
 	Style_SlowMotion,
 	Style_Negev,
+	Style_Deagle,
 	STYLE_COUNT
 };
 
@@ -181,10 +183,9 @@ enum
 #define GOKZ_PAUSE_COOLDOWN 1.0
 #define GOKZ_TIMER_START_NO_TELEPORT_TICKS 4
 #define GOKZ_TIMER_START_GROUND_TICKS 4
+#define GOKZ_TIMER_START_NOCLIP_TICKS 4
 #define GOKZ_TIMER_SOUND_COOLDOWN 0.15
 #define GOKZ_VIRTUAL_BUTTON_USE_DETECTION_TIME 2.0
-#define GOKZ_COLLISION_GROUP_STANDARD 2
-#define GOKZ_COLLISION_GROUP_NOTRIGGER 1
 
 #define GOKZ_SOUND_CHECKPOINT "buttons/blip1.wav"
 #define GOKZ_SOUND_TELEPORT "buttons/blip1.wav"
@@ -268,8 +269,10 @@ stock char gC_StyleNames[STYLE_COUNT][] =
 	"Normal",
 	"Auto-Bhop",
 	"W-Only",
+	"Sideways",
 	"Slow-Motion",
-	"Negev"
+	"Negev",
+	"Deagle"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
@@ -277,8 +280,10 @@ stock char gC_StyleNamesShort[STYLE_COUNT][] =
 	"NORMAL",
 	"AUTO-BHOP",
 	"W-ONLY",
+	"SIDEWAYS",
 	"SLOW-MOTION",
-	"NEGEV"
+	"NEGEV",
+	"DEAGLE"
 };
 
 stock char gC_CoreOptionNames[OPTION_COUNT][] = 
@@ -1187,8 +1192,11 @@ native bool GOKZ_GetValidJump(int client);
  * @param client		Client index.
  * @param team			Which team to switch to.
  * @param restorePos	Whether to restore saved position if leaving spectators.
+ * @param forceChange	Force join the team, if true the function always returns true.
+ * @param forceTeam		Ignore team restrictions.
+ * @param
  */
-native void GOKZ_JoinTeam(int client, int team, bool restorePos = true);
+native bool GOKZ_JoinTeam(int client, int team, bool restorePos = true, bool forceChange = true, bool forceTeam = false);
 
 
 
@@ -1201,7 +1209,7 @@ native void GOKZ_JoinTeam(int client, int team, bool restorePos = true);
  * @param team			Which team to switch to if not on one.
  * @param restorePos	Whether to restore saved position if leaving spectators.
  */
-stock void GOKZ_RespawnPlayer(int client, int team = CS_TEAM_T, bool restorePos = true)
+stock void GOKZ_RespawnPlayer(int client, int team = CS_TEAM_CT, bool restorePos = true)
 {
 	if (IsSpectating(client))
 	{

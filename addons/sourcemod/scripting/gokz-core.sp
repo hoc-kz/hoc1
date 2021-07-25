@@ -45,6 +45,7 @@ int gI_TeleportCmdNum[MAXPLAYERS + 1];
 bool gB_OriginTeleported[MAXPLAYERS + 1];
 bool gB_VelocityTeleported[MAXPLAYERS + 1];
 bool gB_GodMode[MAXPLAYERS + 1];
+bool gB_ThirdPerson[MAXPLAYERS + 1];
 bool gB_LateLoad;
 
 ConVar gCV_gokz_chat_prefix;
@@ -150,6 +151,7 @@ public void OnLibraryAdded(const char[] name)
 public void OnClientPutInServer(int client)
 {
 	OnClientPutInServer_GodMode(client);
+	OnClientPutInServer_ThirdPerson(client);
 	OnClientPutInServer_Timer(client);
 	OnClientPutInServer_Pause(client);
 	OnClientPutInServer_Teleports(client);
@@ -159,6 +161,7 @@ public void OnClientPutInServer(int client)
 	OnClientPutInServer_Options(client);
 	OnClientPutInServer_BhopTriggers(client);
 	OnClientPutInServer_Triggerfix(client);
+	OnClientPutInServer_Noclip(client);
 	HookClientEvents(client);
 }
 
@@ -214,6 +217,7 @@ public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) //
 		OnPlayerSpawn_FirstSpawn(client);
 		OnPlayerSpawn_GodMode(client);
 		OnPlayerSpawn_PlayerCollision(client);
+		OnPlayerSpawn_ThirdPerson(client);
 	}
 }
 
@@ -224,6 +228,7 @@ public Action OnPlayerDeath(Event event, const char[] name, bool dontBroadcast) 
 	{
 		OnPlayerDeath_Timer(client);
 		OnPlayerDeath_ValidJump(client);
+		OnPlayerDeath_ThirdPerson(client);
 	}
 	return Plugin_Continue;
 }
@@ -290,14 +295,7 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 public void GOKZ_OnJoinTeam(int client, int team)
 {
 	OnJoinTeam_Pause(client, team);
-}
-
-public Action OnPlayerJoinTeam(Event event, const char[] name, bool dontBroadcast)
-{
-	int client = GetClientOfUserId(event.GetInt("userid"));
-	int team = event.GetInt("team");
-	int oldteam = event.GetInt("oldteam");
-	OnPlayerJoinTeam_JoinTeam(client, team, oldteam);
+	OnJoinTeam_ThirdPerson(client, team);
 }
 
 
@@ -407,9 +405,8 @@ static void HookEvents()
 	HookEvent("player_spawn", OnPlayerSpawn, EventHookMode_Post);
 	HookEvent("player_death", OnPlayerDeath, EventHookMode_Pre);
 	HookEvent("round_start", OnRoundStart, EventHookMode_PostNoCopy);
-	HookEvent("player_team", OnPlayerJoinTeam, EventHookMode_Post);
 	AddNormalSoundHook(view_as<NormalSHook>(OnNormalSound));
-	
+
 	GameData gameData = new GameData("sdktools.games");
 	int offset;
 	

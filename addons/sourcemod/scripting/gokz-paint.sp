@@ -381,7 +381,7 @@ void RegisterCommands()
 	RegConsoleCmd("+paint", CommandPaintStart, "[KZ] Start painting.");
 	RegConsoleCmd("-paint", CommandPaintEnd, "[KZ] Stop painting.");
 	RegConsoleCmd("sm_paint", CommandPaint, "[KZ] Place a paint.");
-	RegConsoleCmd("sm_paintoptions", CommandPaintOptions, "[KZ] Open the paint options.");
+	RegConsoleCmd("sm_po", CommandPaintOptions, "[KZ] Open the paint options.");
 }
 
 public Action CommandPaintStart(int client, int args)

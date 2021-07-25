@@ -19,6 +19,14 @@
 		"chi"		"{grey}高级存点菜单已开启."
 		"ru"		"{grey}Продвинутое меню телепортации включено."
 	}
+	"Option - Teleport Menu - Enable (Simple PRO)"
+	{
+		"en"		"{grey}The simple pro teleport menu has been enabled."
+	}
+	"Option - Teleport Menu - Enable (Advanced PRO)"
+	{
+		"en"		"{grey}The advanced pro teleport menu has been enabled."
+	}
 	"Option - Info Panel - Enable"
 	{
 		"en"		"{grey}Your centre information panel has been enabled."

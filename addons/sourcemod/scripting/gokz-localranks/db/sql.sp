@@ -346,6 +346,42 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     ORDER BY a.Created DESC \
     LIMIT %d";
 
+char sql_getcompletedmainmapcourses[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND MapCourses.Course=0 \
+	ORDER BY Maps.Name";
+
+char sql_getcompletedmainmapcourses_pro[] = "\
+SELECT DISTINCT Maps.Name \
+	FROM Times \
+	INNER JOIN MapCourses ON MapCourses.MapCourseID=Times.MapCourseID \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool AND Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND MapCourses.Course=0 AND Times.Teleports=0 \
+	ORDER BY Maps.Name";
+
+char sql_getuncompletedmainmapcourses[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
+char sql_getuncompletedmainmapcourses_pro[] = "\
+SELECT Maps.Name \
+	FROM MapCourses \
+	INNER JOIN Maps ON Maps.MapID=MapCourses.MapID \
+	WHERE Maps.InRankedPool=1 AND MapCourses.Course=0 AND MapCourses.MapCourseID NOT IN ( \
+    SELECT DISTINCT Times.MapCourseID \
+    FROM Times \
+    WHERE Times.SteamID32=%d AND Times.Mode=%d AND Times.Style=%d AND Times.Teleports=0) \
+	ORDER BY Maps.Name, MapCourses.Course";
+
 char sql_getcompletedmainmapcoursesoverall[] = "\
 SELECT DISTINCT Maps.Name \
 	FROM Times \
@@ -387,7 +423,7 @@ SELECT Maps.Name \
 // =====[ JUMPSTATS ]=====
 
 char sql_jumpstats_gettop[] = "\
-SELECT p.SteamID32, p.Alias, j.Block, j.Distance, j.Strafes, j.Sync, j.Pre, j.Max, j.Airtime \
+SELECT p.SteamID32, p.Alias, j.Block, j.Distance, j.Strafes, j.Sync, j.Pre, j.Max, j.Overlap, j.DeadAir, j.ReleaseW, j.Airtime \
 	FROM \
 		Jumpstats j \
     INNER JOIN \
@@ -437,6 +473,36 @@ SELECT JumpID, Distance, Block \
         IsBlockJump = %d \
     ORDER BY Block DESC, Distance DESC";
 
+char sql_jumpstats_getpbs[] = "\
+SELECT a.JumpType, a.Distance, a.Strafes, a.Sync, a.Pre, a.Max, a.Overlap, a.DeadAir, a.ReleaseW, a.Airtime \
+	FROM Jumpstats a \
+	INNER JOIN ( \
+		SELECT JumpType, MAX(Distance) _Distance \
+		FROM Jumpstats \
+		WHERE SteamID32 = %d AND Mode = %d AND IsBlockJump=0 \
+		GROUP BY JumpType ) b \
+	ON a.JumpType=b.JumpType and a.Distance=b._Distance \
+	WHERE a.SteamID32 = %d AND a.Mode = %d AND a.IsBlockJump=0 \
+	ORDER BY a.JumpType";
+
+char sql_jumpstats_getblockpbs[] = "\
+SELECT a.JumpType, a.Block, MAX(a.Distance), a.Strafes, a.Sync, a.Pre, a.Max, a.Overlap, a.DeadAir, a.ReleaseW, a.Airtime \
+	FROM Jumpstats a \
+	INNER JOIN ( \
+		SELECT JumpType, MAX(Block) _Block \
+		FROM Jumpstats \
+		WHERE SteamID32=%d AND Mode = %d AND IsBlockJump = 1 \
+		GROUP BY JumpType ) b \
+	ON a.JumpType=b.JumpType AND a.Block=b._Block \
+	WHERE a.SteamID32=%d AND a.Mode = %d \
+	GROUP BY a.JumpType, a.Block";
+
+char sql_jumpstats_getallrecords[] = "\
+SELECT Distance, Block, Strafes, Sync, Pre, Max, Overlap, DeadAir, ReleaseW, Airtime, Created \
+	FROM Jumpstats \
+	WHERE SteamID32=%d AND JumpType=%d AND Mode=%d AND IsBlockJump=%d \
+	ORDER BY Block DESC, Distance DESC";
+
 
 
 // =====[ PROFILE ]=====
@@ -456,12 +522,11 @@ SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
 		WHERE SteamID32=%d \
 		LIMIT 1 \
 	) AS p \
-	INNER JOIN Players ON Players.SteamID32=SteamID32 \
-	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+	WHERE NOT p.Found OR (Levels.Prestige > p.Prestige) OR (Levels.Experience > p.Experience AND Levels.Prestige = p.Prestige)";
 
 char sql_levels_maxrank_get[] = "\
 SELECT COUNT(DISTINCT Levels.SteamID32) \
 	FROM Levels \
-	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	INNER JOIN Players ON Players.SteamID32=Levels.SteamID32 \
 	WHERE Players.Cheater=0";
-
+	

@@ -189,6 +189,9 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	Sync INTEGER NOT NULL, \
 	Pre INTEGER NOT NULL, \
 	Max INTEGER NOT NULL, \
+	Overlap INTEGER NOT NULL, \
+	DeadAir INTEGER NOT NULL, \
+	ReleaseW INTEGER NOT NULL, \
 	Airtime INTEGER NOT NULL, \
 	Created INTEGER NOT NULL DEFAULT CURRENT_TIMESTAMP, \
 	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
@@ -208,6 +211,9 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	Sync INTEGER UNSIGNED NOT NULL, \
 	Pre INTEGER UNSIGNED NOT NULL, \
 	Max INTEGER UNSIGNED NOT NULL, \
+	Overlap INTEGER UNSIGNED NOT NULL, \
+	DeadAir INTEGER UNSIGNED NOT NULL, \
+	ReleaseW INTEGER NOT NULL, \
 	Airtime INTEGER UNSIGNED NOT NULL, \
 	Created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
 	CONSTRAINT PK_Jumpstats PRIMARY KEY (JumpID), \
@@ -215,8 +221,8 @@ CREATE TABLE IF NOT EXISTS Jumpstats ( \
 	ON UPDATE CASCADE ON DELETE CASCADE)";
 
 char sql_jumpstats_insert[] = "\
-INSERT INTO Jumpstats (SteamID32, JumpType, Mode, Distance, IsBlockJump, Block, Strafes, Sync, Pre, Max, Airtime) \
-	VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
+INSERT INTO Jumpstats (SteamID32, JumpType, Mode, Distance, IsBlockJump, Block, Strafes, Sync, Pre, Max, Overlap, DeadAir, ReleaseW, Airtime) \
+	VALUES (%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)";
 
 char sql_jumpstats_update[] = "\
 UPDATE Jumpstats \
@@ -231,6 +237,9 @@ UPDATE Jumpstats \
 		Sync=%d, \
 		Pre=%d, \
 		Max=%d, \
+		Overlap=%d, \
+		DeadAir=%d, \
+		ReleaseW=%d, \
 		Airtime=%d \
 	WHERE \
 		JumpID=%d";
@@ -265,6 +274,10 @@ DELETE \
 				LIMIT 1 \
 			) AS tmp \
 		)";
+
+char sql_jumpstats_deleteallrecords[] = "\
+DELETE FROM Jumpstats \
+	WHERE SteamID32=%d";
 
 char sql_jumpstats_getpbs[] = "\
 SELECT MAX(Distance), Mode, JumpType \
@@ -409,9 +422,19 @@ CREATE TABLE IF NOT EXISTS Levels ( \
 	CONSTRAINT FK_Levels_SteamID32 FOREIGN KEY (SteamID32) REFERENCES Players(SteamID32) \
 	ON UPDATE CASCADE ON DELETE CASCADE)";
 
-char sql_levels_upsert[] = "\
-REPLACE INTO Levels (SteamID32, Experience, Prestige) \
+char mysql_levels_insert[] = "\
+INSERT INTO Levels (SteamID32, Experience, Prestige) \
+	VALUES (%d, %d, %d) \
+	ON DUPLICATE KEY UPDATE SteamID32=SteamID32";
+
+char sqlite_levels_insert[] = "\
+INSERT OR IGNORE INTO Levels (SteamID32, Experience, Prestige) \
 	VALUES (%d, %d, %d)";
+
+char sql_levels_update[] = "\
+UPDATE Levels \
+	SET Experience=%d, Prestige=%d \
+	WHERE SteamID32=%d";
 
 char sql_levels_get[] = "\
 SELECT Experience, Prestige \
@@ -428,11 +451,10 @@ SELECT 1 + COUNT(DISTINCT Levels.SteamID32) \
 		WHERE SteamID32=%d \
 		LIMIT 1 \
 	) AS p \
-	INNER JOIN Players ON Players.SteamID32=SteamID32 \
-	WHERE NOT p.Found OR (Players.Cheater=0 AND Levels.Prestige >= p.Prestige AND Levels.Experience > p.Experience)";
+	WHERE NOT p.Found OR (Levels.Prestige > p.Prestige) OR (Levels.Experience > p.Experience AND Levels.Prestige = p.Prestige)";
 
 char sql_levels_maxrank_get[] = "\
 SELECT COUNT(DISTINCT Levels.SteamID32) \
 	FROM Levels \
-	INNER JOIN Players ON Players.SteamID32=Players.SteamID32 \
+	INNER JOIN Players ON Players.SteamID32=Levels.SteamID32 \
 	WHERE Players.Cheater=0";

@@ -50,6 +50,14 @@ static void PrintOptionChangeMessage(int client, HUDOption option, any newValue)
 				{
 					GOKZ_PrintToChat(client, true, "%t", "Option - Teleport Menu - Enable (Advanced)");
 				}
+				case TPMenu_SimplePro:
+				{
+					GOKZ_PrintToChat(client, true, "%t", "Option - Teleport Menu - Enable (Simple PRO)");
+				}
+				case TPMenu_AdvancedPro:
+				{
+					GOKZ_PrintToChat(client, true, "%t", "Option - Teleport Menu - Enable (Advanced PRO)");
+				}
 			}
 		}
 		case HUDOption_InfoPanel:

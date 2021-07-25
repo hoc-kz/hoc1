@@ -23,6 +23,8 @@ enum
 	JumpType_LadderJump, 
 	JumpType_Ladderhop, 
 	JumpType_Jumpbug,
+	JumpType_LowpreBhop,
+	JumpType_LowpreWeirdJump,
 	JumpType_Fall, 
 	JumpType_Other, 
 	JumpType_Invalid, 
@@ -81,7 +83,7 @@ enum
 #define JS_OPTION_CATEGORY "Jumpstats"
 #define JS_MAX_LADDERJUMP_OFFSET 2.0
 #define JS_MAX_BHOP_GROUND_TICKS 5
-#define JS_MAX_WEIRDJUMP_FALL_OFFSET 96.0
+#define JS_MAX_WEIRDJUMP_FALL_OFFSET 128.0
 #define JS_MAX_TRACKED_STRAFES 48
 #define JS_MIN_BLOCK_DISTANCE 186
 #define JS_MIN_LAJ_BLOCK_DISTANCE 50
@@ -101,6 +103,8 @@ stock char gC_JumpTypes[JUMPTYPE_COUNT][] =
 	"Ladder Jump", 
 	"Ladderhop", 
 	"Jumpbug",
+	"Lowpre Bunnyhop",
+	"Lowpre Weird Jump",
 	"Fall", 
 	"Unknown Jump",
 	"Invalid Jump"
@@ -115,6 +119,8 @@ stock char gC_JumpTypesShort[JUMPTYPE_COUNT][] =
 	"LAJ", 
 	"LAH", 
 	"JB", 
+	"LBH",
+	"LWJ",
 	"FL", 
 	"UNK",
 	"INV"
@@ -129,6 +135,8 @@ stock char gC_JumpTypeKeys[JUMPTYPE_COUNT][] =
 	"ladderjump", 
 	"ladderhop",
 	"jumpbug",
+	"lowprebhop",
+	"lowpreweirdjump",
 	"fall",
 	"unknown",
 	"invalid"

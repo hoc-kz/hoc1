@@ -42,6 +42,22 @@
 		"chi"		"{grey}你的BHOP距离未通过BHOP检查."
 		"ru"		"{grey}У вас не хватает bhop для его проверки."
 	}
+	
+	"Kick Player fps_max"
+	{
+		"en"		"Please set your fps_max to more than 120 to continue playing on this server"
+		"ru"		"Пожалуйста, поставьте значение fps_max выше 120 для продолжения игры на данном сервере"
+	}
+	"Warn Player fps_max"
+	{
+		"en"		"{darkred}Please set your fps_max above 120 to continue playing. You will be kicked unless you change it!"
+		"ru"		"{darkred}Пожалуйста, поставьте значение fps_max выше 120 для продолжения игры, иначе вы будете кикнуты."
+	}
+	"Kick Player m_yaw"
+	{
+		"en"		"Your m_yaw value must be less or equal to 0.3 to play on this server"
+		"ru"		"Ваше значение m_yaw должно быть меньше или равно 0.3 для игры на этом сервере."
+	}
 
 
 	// =====[ CONSOLE MESSAGES ]=====

@@ -86,10 +86,7 @@ public void OnClientPutInServer(int client)
 
 public void OnClientDisconnect(int client)
 {
-	if (GOKZ_DB_IsClientSetUp(client))
-	{
-		GOKZ_DB_SetLevel(client, gI_Experience[client], gI_Prestige[client]);
-	}
+	UpdateInDatabase(client);
 }
 
 public void GOKZ_DB_OnClientSetup(int client, int steamID, bool cheater, int experience, int prestige, int rank, int maxrank)
@@ -192,6 +189,14 @@ void CreateConVars()
 	AutoExecConfig_CleanFile();
 }
 
+void UpdateInDatabase(int client)
+{
+	if (GOKZ_DB_IsClientSetUp(client))
+	{
+		GOKZ_DB_SetLevel(client, gI_Experience[client], gI_Prestige[client]);
+	}
+}
+
 
 
 // =====[ PRIVATE ]=====
@@ -214,8 +219,8 @@ static void AddExperience(int client, int experience)
 	if (levelAfter != levelBefore)
 	{
 		GOKZ_PrintToChat(client, true, "%t", "Level Up", levelAfter);
+		UpdateInDatabase(client);
 		
 		Call_OnLevelChanged(client, levelAfter, gI_Prestige[client]);
 	}
 }
-

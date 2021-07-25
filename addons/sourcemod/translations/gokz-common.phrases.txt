@@ -104,4 +104,12 @@
 		"chi"		"高级"
 		"ru"		"Продвинутый"
 	}
+	"Options Menu - Simple PRO"
+	{
+		"en"		"Simple PRO"
+	}
+	"Options Menu - Advanced PRO"
+	{
+		"en"		"Advanced PRO"
+	}
 }

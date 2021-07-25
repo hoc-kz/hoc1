@@ -49,6 +49,7 @@ bool TimerStart(int client, int course, bool allowMidair = false, bool autoResta
 	if (!IsPlayerAlive(client)
 		 || JustStartedTimer(client)
 		 || JustTeleported(client) && !autoRestart
+		 || JustNoclipped(client)
 		 || !IsPlayerValidMoveType(client)
 		 || !allowMidair && (!Movement_GetOnGround(client) || JustLanded(client))
 		 || allowMidair && !Movement_GetOnGround(client) && (!GOKZ_GetValidJump(client) || GOKZ_GetHitPerf(client)))
@@ -324,16 +325,14 @@ static void PrintEndTimeString(int client)
 				GOKZ_PrintToChatAll(true, "%t", "Beat Map (NUB)", 
 					client, 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 			case TimeType_Pro:
 			{
 				GOKZ_PrintToChatAll(true, "%t", "Beat Map (PRO)", 
 					client, 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 		}
 	}
@@ -347,8 +346,7 @@ static void PrintEndTimeString(int client)
 					client, 
 					currentCourse[client], 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 			case TimeType_Pro:
 			{
@@ -356,8 +354,7 @@ static void PrintEndTimeString(int client)
 					client, 
 					currentCourse[client], 
 					GOKZ_FormatTime(GetCurrentTime(client)), 
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Mode)],
-					gC_ModeNamesShort[GOKZ_GetCoreOption(client, Option_Style)]);
+					GOKZ_FormatModeStyle(GOKZ_GetCoreOption(client, Option_Mode), GOKZ_GetCoreOption(client, Option_Style)));
 			}
 		}
 	}

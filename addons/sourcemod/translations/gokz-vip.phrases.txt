@@ -1,0 +1,71 @@
+﻿"Phrases"
+{
+	// =====[ CHAT MESSAGES ]=====
+	"Options Menu - Buy VIP"
+	{
+		"en"		"{grey}You need VIP to access this menu."
+	}
+	"Options Menu - Buy VIP Learn More"
+	{
+		"en"		"{grey}Learn more at {default}houseofclimb.com/pages/donate{grey}"
+	}
+	
+	
+	// =====[ OPTIONS MENU ]=====
+	"Options Menu - VIP"
+	{
+		"en"		"VIP"
+	}
+	"Options Menu - Player Model"
+	{
+		"en"		"Player Model"
+	}
+	"Options Menu - Chat Name Color"
+	{
+		"en"		"Chat Name Color"
+	}
+	"Options Menu - Hook Color"
+	{
+		"en"		"Hook Color"
+	}
+	"Options Menu - Grey"
+	{
+		"en"		"Grey"
+	}
+	"Options Menu - Lime"
+	{
+		"en"		"Lime"
+	}
+	"Options Menu - Green"
+	{ 
+		"en"		"Green"
+	}
+	"Options Menu - Light Blue"
+	{
+		"en"		"Light Blue"
+	}
+	"Options Menu - Blue"
+	{
+		"en"		"Blue"
+	}
+	"Options Menu - Red"
+	{
+		"en"		"Red"
+	}
+	"Options Menu - Purple"
+	{
+		"en"		"Purple"
+	}
+	"Options Menu - Orchid"
+	{
+		"en"		"Orchid"
+	}
+	"Options Menu - White"
+	{
+		"en"		"White"
+	}
+	"Options Menu - Yellow"
+	{
+		"en"		"Yellow"
+	}
+}

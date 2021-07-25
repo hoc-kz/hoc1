@@ -3,6 +3,7 @@
 #include <cstrike>
 
 #include <gokz/core>
+#include <gokz/vip>
 
 #include <autoexecconfig>
 #include <sourcemod-colors>
@@ -132,6 +133,33 @@ public Action OnPlayerJoinTeam(Event event, const char[] name, bool dontBroadcas
 
 
 
+// =====[ OTHER EVENTS ]=====
+
+public Action OnTextMsg(UserMsg msg_id, BfRead msg, const int[] players, int playersNum, bool reliable, bool init)
+{
+	char text[64];
+	PbReadString(msg, "params", text, sizeof(text), 0);
+
+	if (StrContains(text, "#SFUI_Notice_Killed_Teammate") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	if (StrContains(text, "#Cstrike_TitlesTXT_Game_teammate_attack") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	if (StrContains(text, "#Hint_try_not_to_injure_teammates") != -1)
+	{
+		return Plugin_Handled;
+	}
+
+	return Plugin_Continue;
+}
+
+
+
 // =====[ GENERAL ]=====
 
 void CreateConVars()
@@ -150,6 +178,8 @@ void HookEvents()
 {
 	HookEvent("player_disconnect", OnPlayerDisconnect, EventHookMode_Pre);
 	HookEvent("player_team", OnPlayerJoinTeam, EventHookMode_Pre);
+
+	HookUserMessage(GetUserMessageId("TextMsg"), OnTextMsg, true);
 }
 
 
@@ -196,15 +226,17 @@ void OnClientSayCommand_ChatProcessing(int client, const char[] command, const c
 		GOKZ_LV_FormatLevelTag(consoleLevelTag, sizeof(consoleLevelTag), level, prestige, false);
 	}
 
+	int nameColor = gI_ChatNameColorValues[GOKZ_VIP_GetOption(client, VIPOption_ChatNameColor)];
+
 	if (IsSpectating(client))
 	{
-		GOKZ_PrintToChatAll(false, "{default}%s *{lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		GOKZ_PrintToChatAll(false, "{default}%s *%c%s{default}: %s", chatLevelTag, nameColor, sanitisedName, sanitisedMessage);
 		PrintToConsoleAll("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 		PrintToServer("%s *%s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}
 	else
 	{
-		GOKZ_PrintToChatAll(false, "{default}%s {lime}%s{default}: %s", chatLevelTag, sanitisedName, sanitisedMessage);
+		GOKZ_PrintToChatAll(false, "{default}%s %c%s{default}: %s", chatLevelTag, nameColor, sanitisedName, sanitisedMessage);
 		PrintToConsoleAll("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 		PrintToServer("%s %s: %s", consoleLevelTag, sanitisedName, sanitisedMessage);
 	}

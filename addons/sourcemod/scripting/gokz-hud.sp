@@ -156,7 +156,15 @@ public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast) //
 
 public Action OnPlayerDeath(Event event, const char[] name, bool dontBroadcast) // player_death pre hook
 {
-	event.BroadcastDisabled = true; // Block death notices
+	int client = GetClientOfUserId(event.GetInt("userid"));
+	int attacker = GetClientOfUserId(event.GetInt("attacker"));
+	if (IsValidClient(client) && IsValidClient(attacker) && !IsFakeClient(client) && client != attacker)
+	{
+		return Plugin_Continue;
+	}
+
+	event.BroadcastDisabled = true;
+	return Plugin_Continue;
 }
 
 public void GOKZ_OnJoinTeam(int client, int team)
