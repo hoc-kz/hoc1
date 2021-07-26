@@ -4,6 +4,7 @@
 #include <sdktools>
 
 #include <movementapi>
+#include <gokz/styles>
 
 #undef REQUIRE_EXTENSIONS
 #undef REQUIRE_PLUGIN
@@ -140,7 +141,7 @@ public void SDKHook_OnClientPreThink_Post(int client)
 	// Don't tweak convars if GOKZ isn't running
 	if (gB_GOKZCore)
 	{
-		TweakConVars();
+		TweakConVars(client);
 	}
 }
 
@@ -232,12 +233,14 @@ void CreateConVars()
 	}
 }
 
-void TweakConVars()
+void TweakConVars(int client)
 {
 	for (int i = 0; i < MODECVAR_COUNT; i++)
 	{
 		gCV_ModeCVar[i].FloatValue = gF_ModeCVarValues[i];
 	}
+
+	GOKZ_ST_TweakStyleConVars(client);
 }
 
 void ReplicateConVars(int client)
@@ -255,4 +258,6 @@ void ReplicateConVars(int client)
 	{
 		gCV_ModeCVar[i].ReplicateToClient(client, FloatToStringEx(gF_ModeCVarValues[i]));
 	}
+
+	GOKZ_ST_ReplicateStyleConVars(client);
 } 

@@ -47,9 +47,18 @@ int gI_LastJumpTick[MAXPLAYERS + 1];
 int gI_LadderGrabTick[MAXPLAYERS + 1];
 bool gB_TouchingWorld[MAXPLAYERS + 1];
 
+#include "gokz-styles/natives.sp"
+
 
 
 // =====[ PLUGIN EVENTS ]=====
+
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
+{
+	CreateNatives();
+	RegPluginLibrary("gokz-styles");
+	return APLRes_Success;
+}
 
 public void OnPluginStart()
 {
@@ -96,7 +105,6 @@ public void OnClientPutInServer(int client)
 	gI_LadderGrabTick[client] = -999999;
 
 	HookClientEvents(client);
-	ReplicateConVars(client);
 }
 
 public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
@@ -125,8 +133,6 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 	{
 		return;
 	}
-
-	ReplicateConVars(client);
 
 	// Reset lagged movement (undo slow-motion style)
 	SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
@@ -185,15 +191,6 @@ public void OnClientPreThink_Post(int client)
 	if (!IsPlayerAlive(client))
 	{
 		return;
-	}
-
-	if (GetStyle(client) == Style_AutoBhop)
-	{
-		gCV_AutoBunnyHopping.BoolValue = true;
-	}
-	else
-	{
-		gCV_AutoBunnyHopping.BoolValue = false;
 	}
 
 	if (GetStyle(client) == Style_SlowMotion)
@@ -454,10 +451,6 @@ void CreateConVars()
 
 void ReplicateConVars(int client)
 {
-	// Replicate convars only when player changes style in GOKZ
-	// so that lagg isn't caused by other players using other
-	// styles, and also as an optimisation.
-	
 	if (IsFakeClient(client))
 	{
 		return;
@@ -470,6 +463,20 @@ void ReplicateConVars(int client)
 	else
 	{
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "0");
+	}
+}
+
+void TweakConVars(int client)
+{
+    int style = GetStyle(client);
+
+    if (style == Style_AutoBhop)
+	{
+		gCV_AutoBunnyHopping.BoolValue = true;
+	}
+	else
+	{
+		gCV_AutoBunnyHopping.BoolValue = false;
 	}
 }
 
