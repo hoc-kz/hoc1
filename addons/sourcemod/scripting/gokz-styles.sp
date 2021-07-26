@@ -36,6 +36,9 @@ public Plugin myinfo =
 #define MAX_LAH_GROUND_TICKS 5
 
 ConVar gCV_AutoBunnyHopping;
+ConVar gCV_Accelerate;
+ConVar gCV_Friction;
+ConVar gCV_JumpImpulse;
 
 bool gB_LadderJump[MAXPLAYERS + 1];
 float gF_LadderJumpTime[MAXPLAYERS + 1];
@@ -392,6 +395,11 @@ public void OnClientEndTouch(int client, int other)
 
 // =====[ GENERAL ]=====
 
+int GetMode(int client)
+{
+	return GOKZ_GetCoreOption(client, Option_Mode);
+}
+
 int GetStyle(int client)
 {
 	return GOKZ_GetCoreOption(client, Option_Style);
@@ -443,10 +451,14 @@ int GiveWeapon(int client, const char[] classname, int weaponSlot, int weaponTea
 void CreateConVars()
 {
 	gCV_AutoBunnyHopping = FindConVar("sv_autobunnyhopping");
+	gCV_Accelerate = FindConVar("sv_accelerate");
+	gCV_Friction = FindConVar("sv_friction");
+	gCV_JumpImpulse = FindConVar("sv_jump_impulse");
 
 	// Styles replicate it manually
-	gCV_AutoBunnyHopping.Flags &= ~FCVAR_NOTIFY;
-	gCV_AutoBunnyHopping.Flags &= ~FCVAR_REPLICATED;
+	gCV_AutoBunnyHopping.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_Accelerate.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_Friction.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
 }
 
 void ReplicateConVars(int client)
@@ -456,7 +468,10 @@ void ReplicateConVars(int client)
 		return;
 	}
 	
-	if (GetStyle(client) == Style_AutoBhop)
+	int mode = GetMode(client);
+	int style = GetStyle(client);
+
+	if (style == Style_AutoBhop)
 	{
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "1");
 	}
@@ -464,19 +479,56 @@ void ReplicateConVars(int client)
 	{
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "0");
 	}
+
+	if (style == Style_Ice)
+	{
+		if (mode == Mode_Classic)
+		{
+			gCV_Accelerate.ReplicateToClient(client, "0.975");
+			gCV_Friction.ReplicateToClient(client, "0.78");
+		}
+		else
+		{
+			gCV_Accelerate.ReplicateToClient(client, "0.825");
+			gCV_Friction.ReplicateToClient(client, "0.78");
+		}
+	}
 }
 
 void TweakConVars(int client)
 {
-    int style = GetStyle(client);
+	int mode = GetMode(client);
+	int style = GetStyle(client);
 
-    if (style == Style_AutoBhop)
+	if (style == Style_AutoBhop)
 	{
 		gCV_AutoBunnyHopping.BoolValue = true;
 	}
 	else
 	{
 		gCV_AutoBunnyHopping.BoolValue = false;
+	}
+
+	if (style == Style_Ice)
+	{ 
+		if (mode == Mode_Classic)
+		{
+			gCV_Accelerate.FloatValue = 0.975;
+			gCV_Friction.FloatValue = 0.78;
+
+			bool onGround = (GetEntityFlags(client) & FL_ONGROUND) != 0;
+			if (onGround)
+			{
+				float timeOnGround = FloatMax(0.0, GetEngineTime() - gF_OnGroundChangedTime[client]);
+				float impulseMultiplier = 0.75 + 0.25 * (FloatMin(1.0, timeOnGround / 0.15));
+				gCV_JumpImpulse.FloatValue = 301.993377 * impulseMultiplier;
+			}
+		}
+		else
+		{
+			gCV_Accelerate.FloatValue = 0.825;
+			gCV_Friction.FloatValue = 0.78;
+		}
 	}
 }
 

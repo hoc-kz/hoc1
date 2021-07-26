@@ -89,6 +89,7 @@ enum
 	Style_SlowMotion,
 	Style_Negev,
 	Style_Deagle,
+	Style_Ice,
 	STYLE_COUNT
 };
 
@@ -272,7 +273,8 @@ stock char gC_StyleNames[STYLE_COUNT][] =
 	"Sideways",
 	"Slow-Motion",
 	"Negev",
-	"Deagle"
+	"Deagle",
+	"Ice"
 };
 
 stock char gC_StyleNamesShort[STYLE_COUNT][] = 
@@ -283,7 +285,8 @@ stock char gC_StyleNamesShort[STYLE_COUNT][] =
 	"SIDEWAYS",
 	"SLOW-MOTION",
 	"NEGEV",
-	"DEAGLE"
+	"DEAGLE",
+	"ICE"
 };
 
 stock char gC_CoreOptionNames[OPTION_COUNT][] = 
