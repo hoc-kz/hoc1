@@ -459,6 +459,7 @@ void CreateConVars()
 	gCV_AutoBunnyHopping.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
 	gCV_Accelerate.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
 	gCV_Friction.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_JumpImpulse.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
 }
 
 void ReplicateConVars(int client)

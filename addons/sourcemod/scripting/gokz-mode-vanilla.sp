@@ -205,9 +205,14 @@ public void Movement_OnPlayerJump(int client, bool jumpbug)
 
 public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) && newValue == Mode_Vanilla)
+	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) || 
+		StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
-		ReplicateConVars(client);
+		int mode = GOKZ_GetCoreOption(client, Option_Mode);
+		if (mode == Mode_Vanilla)
+		{
+			ReplicateConVars(client);
+		}
 	}
 }
 

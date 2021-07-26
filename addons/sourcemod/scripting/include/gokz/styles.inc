@@ -44,5 +44,6 @@ public SharedPlugin __pl_gokz_styles =
 public void __pl_gokz_styles_SetNTVOptional()
 {
 	MarkNativeAsOptional("GOKZ_ST_ReplicateStyleConVars");
+	MarkNativeAsOptional("GOKZ_ST_TweakStyleConVars");
 }
 #endif

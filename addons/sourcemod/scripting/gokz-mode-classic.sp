@@ -250,9 +250,14 @@ public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType
 
 public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) && newValue == Mode_Classic)
+	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) || 
+		StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
-		ReplicateConVars(client);
+		int mode = GOKZ_GetCoreOption(client, Option_Mode);
+		if (mode == Mode_Classic)
+		{
+			ReplicateConVars(client);
+		}
 	}
 }
 
@@ -293,7 +298,6 @@ void ReplicateConVars(int client)
 	// Replicate convars only when player changes mode in GOKZ
 	// so that lagg isn't caused by other players using other
 	// modes, and also as an optimisation.
-	
 	if (IsFakeClient(client))
 	{
 		return;
