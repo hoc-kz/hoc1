@@ -99,7 +99,7 @@ SELECT Times.RunTime \
     LIMIT %d";
 
 char sql_getmaptop[] = "\
-SELECT t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
+SELECT t.TimeID, t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
     FROM Times t \
     INNER JOIN MapCourses mc ON mc.MapCourseID=t.MapCourseID \
     INNER JOIN Players p ON p.SteamID32=t.SteamID32 \
@@ -110,7 +110,7 @@ SELECT t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
     LIMIT %d";
 
 char sql_getmaptoppro[] = "\
-SELECT t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
+SELECT t.TimeID, t.SteamID32, p.Alias, t.RunTime AS PBTime, t.Teleports \
     FROM Times t \
     INNER JOIN MapCourses mc ON mc.MapCourseID=t.MapCourseID \
     INNER JOIN Players p ON p.SteamID32=t.SteamID32 \
@@ -328,7 +328,7 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     FROM Times AS b \
     WHERE a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
-    ORDER BY a.Created DESC \
+    ORDER BY a.TimeID DESC \
     LIMIT %d";
 
 char sql_getrecentrecords_pro[] = "\
@@ -343,7 +343,7 @@ SELECT Maps.Name, MapCourses.Course, MapCourses.MapCourseID, Players.Alias, a.Ru
     FROM Times AS b \
     WHERE b.Teleports=0 AND a.MapCourseID=b.MapCourseID AND a.Mode=b.Mode AND a.Style=b.Style \
     AND a.Created>b.Created AND a.RunTime>b.RunTime) \
-    ORDER BY a.Created DESC \
+    ORDER BY a.TimeID DESC \
     LIMIT %d";
 
 char sql_getcompletedmainmapcourses[] = "\

@@ -1,11 +1,11 @@
 
 void RegisterCommands()
 {
-	RegConsoleCmd("sm_jso", CommandJumpstats, "[KZ] Open the jumpstats options menu.");
+	RegConsoleCmd("sm_jso", CommandJumpstatsOptions, "[KZ] Open the jumpstats options menu.");
 	RegConsoleCmd("sm_jsalways", CommandAlwaysJumpstats, "[KZ] Toggle the always-on jumpstats.");
 }
 
-public Action CommandJumpstats(int client, int args)
+public Action CommandJumpstatsOptions(int client, int args)
 {
 	DisplayJumpstatsOptionsMenu(client);
 	return Plugin_Handled;

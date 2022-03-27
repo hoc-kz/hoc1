@@ -71,6 +71,14 @@
 		"chi"		"{grey}你现在屏蔽了你的武器显示."
 		"ru"		"{grey}Теперь вы скрыли свое оружие."
 	}
+	"Option - Show Controls - Enable"
+	{
+		"en"		"{grey}Replay controls are now shown, when available."
+	}
+	"Option - Show Controls - Disable"
+	{
+		"en"		"{grey}Replay controls are now hidden."
+	}
 
 
 	// =====[ INFO PANEL ]=====
@@ -147,6 +155,11 @@
 	{
 		"en"		"Respawn"
 	}
+	"TP Menu - Spectator Teleports"
+	{
+		"#format"	"{1:d}"
+		"en"		"Teleports: {1}"
+	}
 
 
 	// =====[ OPTIONS MENU ]=====
@@ -200,6 +213,10 @@
 		"en"		"Show weapon"
 		"chi"		"屏蔽武器显示"
 		"ru"		"Показать оружие"
+	}
+	"Options Menu - Show Controls"
+	{
+		"en"		"Show replay controls"
 	}
 
 

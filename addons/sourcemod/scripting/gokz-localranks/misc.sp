@@ -41,14 +41,14 @@ static bool LoadSounds()
 	{
 		return false;
 	}
-	
+
 	char downloadPath[256];
-	
+
 	kv.GetString("beatrecord", gC_BeatRecordSound, sizeof(gC_BeatRecordSound));
 	FormatEx(downloadPath, sizeof(downloadPath), "sound/%s", gC_BeatRecordSound);
 	AddFileToDownloadsTable(downloadPath);
 	PrecacheSound(gC_BeatRecordSound, true);
-	
+
 	delete kv;
 	return true;
 }
@@ -198,7 +198,7 @@ void AnnounceNewRecord(int client, int course, int mode, int style, int recordTy
 			}
 		}
 	}
-	
+
 	PlayBeatRecordSound(); // Play sound!
 }
 
@@ -220,7 +220,7 @@ void UpdateRecordMissed(int client)
 	{
 		return;
 	}
-	
+
 	int course = GOKZ_GetCourse(client);
 	int mode = GOKZ_GetCoreOption(client, Option_Mode);
 	int style = GOKZ_GetCoreOption(client, Option_Style);
@@ -232,11 +232,11 @@ void UpdateRecordMissed(int client)
 	bool proRecordExists = gB_RecordExistsCache_Pro[course][mode][style];
 	float proRecordTime = gF_RecordTimesCache_Pro[course][mode][style];
 	bool proRecordMissed = gB_RecordMissed[client][TimeType_Pro];
-	
+
 	if (nubRecordExists && !nubRecordMissed && currentTime >= nubRecordTime)
 	{
 		gB_RecordMissed[client][TimeType_Nub] = true;
-		
+
 		// Check if nub record is also the pro record, and call the forward appropriately
 		if (proRecordExists && FloatAbs(nubRecordTime - proRecordTime) < EPSILON)
 		{
@@ -275,7 +275,7 @@ void UpdatePBMissed(int client)
 	{
 		return;
 	}
-	
+
 	int course = GOKZ_GetCourse(client);
 	int mode = GOKZ_GetCoreOption(client, Option_Mode);
 	int style = GOKZ_GetCoreOption(client, Option_Style);
@@ -287,11 +287,11 @@ void UpdatePBMissed(int client)
 	bool proPBExists = gB_PBExistsCache_Pro[client][course][mode][style];
 	float proPBTime = gF_PBTimesCache_Pro[client][course][mode][style];
 	bool proPBMissed = gB_PBMissed[client][TimeType_Pro];
-	
+
 	if (nubPBExists && !nubPBMissed && currentTime >= nubPBTime)
 	{
 		gB_PBMissed[client][TimeType_Nub] = true;
-		
+
 		// Check if nub PB is also the pro PB, and call the forward appropriately
 		if (proPBExists && FloatAbs(nubPBTime - proPBTime) < EPSILON)
 		{

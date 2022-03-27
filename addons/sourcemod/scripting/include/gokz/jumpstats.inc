@@ -84,6 +84,7 @@ enum
 #define JS_MAX_LADDERJUMP_OFFSET 2.0
 #define JS_MAX_BHOP_GROUND_TICKS 5
 #define JS_MAX_WEIRDJUMP_FALL_OFFSET 128.0
+#define JS_TOUCH_GRACE_TICKS 3
 #define JS_MAX_TRACKED_STRAFES 48
 #define JS_MIN_BLOCK_DISTANCE 186
 #define JS_MIN_LAJ_BLOCK_DISTANCE 50
@@ -93,6 +94,7 @@ enum
 #define JS_FAILSTATS_MAX_TRACKED_TICKS 128
 #define JS_MIN_TELEPORT_DELAY 5
 #define JS_SPEED_MODIFICATION_TOLERANCE 0.1
+#define JS_OFFSET_EPSILON 0.03125
 
 stock char gC_JumpTypes[JUMPTYPE_COUNT][] = 
 {
@@ -256,7 +258,7 @@ enum struct Jump
 	int crouchRelease;
 	int crouchTicks;
 	int deadair;
-	int durationTicks;
+	int duration;
 	int originalType;
 	int overlap;
 	int releaseW;
@@ -264,7 +266,6 @@ enum struct Jump
 	int type;
 	float deviation;
 	float distance;
-	float duration;
 	float edge;
 	float height;
 	float maxSpeed;
@@ -434,6 +435,7 @@ public SharedPlugin __pl_gokz_jumpstats =
 #if !defined REQUIRE_PLUGIN
 public void __pl_gokz_jumpstats_SetNTVOptional()
 {
+	MarkNativeAsOptional("GOKZ_JS_GetDefaultOption");
 	MarkNativeAsOptional("GOKZ_JS_InvalidateJump");
 }
 #endif

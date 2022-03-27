@@ -2,6 +2,7 @@
 
 #include <sdkhooks>
 #include <sdktools>
+#include <dhooks>
 
 #include <movementapi>
 #include <gokz/styles>
@@ -29,7 +30,7 @@ public Plugin myinfo =
 
 #define UPDATER_URL GOKZ_UPDATER_BASE_URL..."gokz-mode-vanilla.txt"
 
-#define MODE_VERSION 8
+#define MODE_VERSION 12
 
 float gF_ModeCVarValues[MODECVAR_COUNT] = 
 {
@@ -61,14 +62,16 @@ float gF_ModeCVarValues[MODECVAR_COUNT] =
 
 bool gB_GOKZCore;
 ConVar gCV_ModeCVar[MODECVAR_COUNT];
-
-
+bool gB_ProcessingMaxSpeed[MAXPLAYERS + 1];
+Handle gH_GetPlayerMaxSpeed;
+Handle gH_GetPlayerMaxSpeed_SDKCall;
 
 // =====[ PLUGIN EVENTS ]=====
 
 public void OnPluginStart()
 {
 	CreateConVars();
+	HookEvents();
 }
 
 public void OnAllPluginsLoaded()
@@ -124,11 +127,39 @@ public void OnLibraryRemoved(const char[] name)
 
 public void OnClientPutInServer(int client)
 {
-	SDKHook(client, SDKHook_PreThinkPost, SDKHook_OnClientPreThink_Post);
+	if (IsValidClient(client))
+	{
+		HookClientEvents(client);
+	}
 	if (IsUsingMode(client))
 	{
 		ReplicateConVars(client);
 	}
+}
+
+void HookClientEvents(int client)
+{
+	DHookEntity(gH_GetPlayerMaxSpeed, true, client);
+	SDKHook(client, SDKHook_PreThinkPost, SDKHook_OnClientPreThink_Post);
+}
+
+public MRESReturn DHooks_OnGetPlayerMaxSpeed(int client, Handle hReturn)
+{
+	if (!IsUsingMode(client) || gB_ProcessingMaxSpeed[client])
+	{
+		return MRES_Ignored;
+	}
+	gB_ProcessingMaxSpeed[client] = true;
+	float maxSpeed = SDKCall(gH_GetPlayerMaxSpeed_SDKCall, client);
+	// Prevent players from running faster than 250u/s
+	if (maxSpeed > SPEED_NORMAL)
+	{
+		DHookSetReturn(hReturn, SPEED_NORMAL);
+		gB_ProcessingMaxSpeed[client] = false;
+		return MRES_Supercede;
+	}
+	gB_ProcessingMaxSpeed[client] = false;
+	return MRES_Ignored;
 }
 
 public void SDKHook_OnClientPreThink_Post(int client)
@@ -145,6 +176,21 @@ public void SDKHook_OnClientPreThink_Post(int client)
 	}
 }
 
+public Action Movement_OnJumpPost(int client)
+{
+	if (!IsUsingMode(client))
+	{
+		return Plugin_Continue;
+	}
+
+	KZPlayer player = KZPlayer(client);
+	if (gB_GOKZCore)
+	{
+		player.GOKZHitPerf = player.HitPerf;
+		player.GOKZTakeoffSpeed = player.TakeoffSpeed;
+	}
+	return Plugin_Continue;
+}
 public void Movement_OnStopTouchGround(int client, bool jumped)
 {
 	if (!IsUsingMode(client))
@@ -156,18 +202,7 @@ public void Movement_OnStopTouchGround(int client, bool jumped)
 	if (gB_GOKZCore)
 	{
 		player.GOKZHitPerf = player.HitPerf;
-		
-		// sv_enablebunnyhopping 0 enables a limit to bunnyhop speed. If the player
-		// hits a perfect bunnyhop over 1.1 x m_flMaxspeed, their speed is reduced.
-		float speedCap = GetEntPropFloat(client, Prop_Data, "m_flMaxspeed") * 1.1;
-		if (player.HitPerf && player.TakeoffSpeed > speedCap)
-		{
-			player.GOKZTakeoffSpeed = speedCap;
-		}
-		else
-		{
-			player.GOKZTakeoffSpeed = player.TakeoffSpeed;
-		}
+		player.GOKZTakeoffSpeed = player.TakeoffSpeed;
 	}
 }
 
@@ -183,23 +218,6 @@ public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType
 	{
 		player.GOKZHitPerf = false;
 		player.GOKZTakeoffSpeed = player.TakeoffSpeed;
-	}
-}
-
-public void Movement_OnPlayerJump(int client, bool jumpbug)
-{
-	if (!IsUsingMode(client))
-	{
-		return;
-	}
-	
-	KZPlayer player = KZPlayer(client);
-	if (jumpbug)
-	{
-		player.GOKZHitPerf = true;
-		
-		// That's an awful hack, but I couldn't reasonably get it to work otherwise
-		player.GOKZTakeoffSpeed = FloatMin(player.Speed, 286.0);
 	}
 }
 
@@ -226,6 +244,21 @@ bool IsUsingMode(int client)
 	return !gB_GOKZCore || GOKZ_GetCoreOption(client, Option_Mode) == Mode_Vanilla;
 }
 
+void HookEvents()
+{
+	GameData gameData = LoadGameConfigFile("movementapi.games");
+	int offset = gameData.GetOffset("GetPlayerMaxSpeed");
+	if (offset == -1)
+	{
+		SetFailState("Failed to get GetPlayerMaxSpeed offset");
+	}
+	gH_GetPlayerMaxSpeed = DHookCreate(offset, HookType_Entity, ReturnType_Float, ThisPointer_CBaseEntity, DHooks_OnGetPlayerMaxSpeed);
+
+	StartPrepSDKCall(SDKCall_Player);
+	PrepSDKCall_SetFromConf(gameData, SDKConf_Virtual, "GetPlayerMaxSpeed");
+	PrepSDKCall_SetReturnInfo(SDKType_Float, SDKPass_ByValue);
+	gH_GetPlayerMaxSpeed_SDKCall = EndPrepSDKCall();
+}
 
 
 // =====[ CONVARS ]=====

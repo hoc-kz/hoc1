@@ -146,6 +146,10 @@ public int MenuHandler_RecentRecordsMode(Menu menu, MenuAction action, int param
 	{
 		DisplayRecentRecordsStyleMenu(param1, param2);
 	}
+	else if (action == MenuAction_Cancel && param2 == MenuCancel_Exit)
+	{
+		DisplayRecentRecordsModeMenu(param1);
+	}
 	else if (action == MenuAction_End)
 	{
 		delete menu;

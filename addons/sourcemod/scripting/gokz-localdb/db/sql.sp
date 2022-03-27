@@ -172,6 +172,10 @@ INSERT INTO Times (SteamID32, MapCourseID, Mode, Style, RunTime, Teleports) \
 	FROM MapCourses \
 	WHERE MapID=%d AND Course=%d";
 
+char sql_times_delete[] = "\
+DELETE FROM Times \
+    WHERE TimeID=%d";
+
 
 
 // =====[ JUMPSTATS ]=====
@@ -278,6 +282,20 @@ DELETE \
 char sql_jumpstats_deleteallrecords[] = "\
 DELETE FROM Jumpstats \
 	WHERE SteamID32=%d";
+
+char sql_jumpstats_deleteallrecords[] = "\
+DELETE \
+	FROM \
+		Jumpstats \
+	WHERE \
+		SteamID32 = %d;";
+
+char sql_jumpstats_deletejump[] = "\
+DELETE \
+	FROM \
+		Jumpstats \
+	WHERE \
+		JumpID = %d;";
 
 char sql_jumpstats_getpbs[] = "\
 SELECT MAX(Distance), Mode, JumpType \

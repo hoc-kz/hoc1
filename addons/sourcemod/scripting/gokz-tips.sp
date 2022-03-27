@@ -61,7 +61,7 @@ public void OnPluginStart()
 		FormatEx(translation, sizeof(translation), "gokz-tips-%s.phrases", gC_PluginsWithTips[i]);
 		LoadTranslations(translation);
 	}
-	
+
 	CreateConVars();
 	RegisterCommands();
 	CreateTipsTimer();
@@ -73,14 +73,14 @@ public void OnAllPluginsLoaded()
 	{
 		Updater_AddPlugin(UPDATER_URL);
 	}
-	
+
 	char gokzPlugin[PLATFORM_MAX_PATH];
 	for (int i = 0; i < TIPS_PLUGINS_COUNT; i++)
 	{
 		FormatEx(gokzPlugin, sizeof(gokzPlugin), "gokz-%s", gC_PluginsWithTips[i]);
 		gC_PluginsWithTipsLoaded[i] = LibraryExists(gokzPlugin);
 	}
-	
+
 	TopMenu topMenu;
 	if (LibraryExists("gokz-core") && ((topMenu = GOKZ_GetOptionsTopMenu()) != null))
 	{
@@ -94,7 +94,7 @@ public void OnLibraryAdded(const char[] name)
 	{
 		Updater_AddPlugin(UPDATER_URL);
 	}
-	
+
 	char gokzPlugin[PLATFORM_MAX_PATH];
 	for (int i = 0; i < TIPS_PLUGINS_COUNT; i++)
 	{
@@ -145,10 +145,10 @@ void CreateConVars()
 {
 	AutoExecConfig_SetFile("gokz-tips", "sourcemod/gokz");
 	AutoExecConfig_SetCreateFile(true);
-	
+
 	gCV_gokz_tips_interval = AutoExecConfig_CreateConVar("gokz_tips_interval", "75", "How often GOKZ tips are printed to chat in seconds.", _, true, 1.0, false);
 	gCV_gokz_tips_interval.AddChangeHook(OnConVarChanged);
-	
+
 	AutoExecConfig_ExecuteFile();
 	AutoExecConfig_CleanFile();
 }
@@ -175,15 +175,15 @@ void LoadTipPhrases()
 	{
 		g_TipPhrases.Clear();
 	}
-	
+
 	char tipsPath[PLATFORM_MAX_PATH];
-	
+
 	BuildPath(Path_SM, tipsPath, sizeof(tipsPath), "translations/%s", TIPS_TIPS);
 	LoadTipPhrasesFromFile(tipsPath);
-	
+
 	BuildPath(Path_SM, tipsPath, sizeof(tipsPath), "translations/%s", TIPS_CORE);
 	LoadTipPhrasesFromFile(tipsPath);
-	
+
 	// Load tips for other loaded GOKZ plugins
 	for (int i = 0; i < TIPS_PLUGINS_COUNT; i++)
 	{
@@ -193,7 +193,7 @@ void LoadTipPhrases()
 			LoadTipPhrasesFromFile(tipsPath);
 		}
 	}
-	
+
 	ShuffleTipPhrases();
 }
 
@@ -204,7 +204,7 @@ void LoadTipPhrasesFromFile(const char[] filePath)
 	{
 		SetFailState("Failed to load file: \"%s\".", filePath);
 	}
-	
+
 	char phraseName[64];
 	kv.GotoFirstSubKey(true);
 	do
@@ -212,7 +212,7 @@ void LoadTipPhrasesFromFile(const char[] filePath)
 		kv.GetSectionName(phraseName, sizeof(phraseName));
 		g_TipPhrases.PushString(phraseName);
 	} while (kv.GotoNextKey(true));
-	
+
 	delete kv;
 }
 
@@ -243,7 +243,7 @@ public Action Timer_PrintTip(Handle timer)
 {
 	char tip[256];
 	g_TipPhrases.GetString(gI_CurrentTip, tip, sizeof(tip));
-	
+
 	for (int client = 1; client <= MaxClients; client++)
 	{
 		KZPlayer player = KZPlayer(client);
@@ -253,7 +253,7 @@ public Action Timer_PrintTip(Handle timer)
 			GOKZ_PrintToChat(client, true, "%t", tip);
 		}
 	}
-	
+
 	gI_CurrentTip = NextIndex(gI_CurrentTip, g_TipPhrases.Length);
 }
 
@@ -300,7 +300,7 @@ void OnOptionsMenuReady_OptionsMenu(TopMenu topMenu)
 	{
 		return;
 	}
-	
+
 	gTM_Options = topMenu;
 	gTMO_CatGeneral = gTM_Options.FindCategory(GENERAL_OPTION_CATEGORY);
 	gTMO_ItemTips = gTM_Options.AddItem(TIPS_OPTION_NAME, TopMenuHandler_Tips, gTMO_CatGeneral);
@@ -312,7 +312,7 @@ public void TopMenuHandler_Tips(TopMenu topmenu, TopMenuAction action, TopMenuOb
 	{
 		return;
 	}
-	
+
 	if (action == TopMenuAction_DisplayOption)
 	{
 		if (GOKZ_GetOption(param, TIPS_OPTION_NAME) == Tips_Disabled)

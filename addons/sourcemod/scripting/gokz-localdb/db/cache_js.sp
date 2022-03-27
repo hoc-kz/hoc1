@@ -24,7 +24,7 @@ void DB_CacheJSPBs(int client, int steamID)
 public void DB_TxnSuccess_CacheJSPBs(Handle db, int userID, int numQueries, Handle[] results, any[] queryData)
 {
 	int client = GetClientOfUserId(userID);
-	if (!IsClientAuthorized(client))
+	if (client < 1 || client > MaxClients || !IsClientAuthorized(client) || IsFakeClient(client))
 	{
 		return;
 	}
@@ -52,7 +52,7 @@ public void DB_TxnSuccess_CacheJSPBs(Handle db, int userID, int numQueries, Hand
 	}
 }
 
-static void ClearCache(int client)
+void ClearCache(int client)
 {
 	for (int mode = 0; mode < MODE_COUNT; mode += 1)
 	{

@@ -44,6 +44,7 @@ ConVar gCV_gokz_connection_messages;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
+	CreateNatives();
 	RegPluginLibrary("gokz-chat");
 	return APLRes_Success;
 }
@@ -56,6 +57,7 @@ public void OnPluginStart()
 	HookEvents();
 	
 	OnPluginStart_BlockRadio();
+	OnPluginStart_BlockChatWheel();
 }
 
 public void OnAllPluginsLoaded()
@@ -90,12 +92,18 @@ public void OnLibraryRemoved(const char[] name)
 
 public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs)
 {
-	if (gCV_gokz_chat_processing.BoolValue && IsClientInGame(client))
+	if (client > 0 && gCV_gokz_chat_processing.BoolValue && IsClientInGame(client))
 	{
 		OnClientSayCommand_ChatProcessing(client, command, sArgs);
 		return Plugin_Handled;
 	}
 	return Plugin_Continue;
+}
+
+public void OnClientConnected(int client)
+{
+	gC_PlayerTags[client][0] = '\0';
+	gC_PlayerTagColors[client][0] = '\0';
 }
 
 public void OnClientPutInServer(int client)
@@ -315,7 +323,7 @@ void PrintDisconnectMessage(int client, Event event) // Hooked to player_disconn
 
 
 
-// =====[ BLOCK RADIO ]=====
+// =====[ BLOCK RADIO AND CHATWHEEL]=====
 
 static char radioCommands[][] = 
 {
@@ -331,6 +339,12 @@ public void OnPluginStart_BlockRadio()
 	{
 		AddCommandListener(CommandBlock, radioCommands[i]);
 	}
+}
+
+public void OnPluginStart_BlockChatWheel()
+{
+	AddCommandListener(CommandBlock, "playerchatwheel");
+	AddCommandListener(CommandBlock, "chatwheel_ping");	
 }
 
 public Action CommandBlock(int client, const char[] command, int argc)
