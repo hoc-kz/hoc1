@@ -36,6 +36,9 @@ public Plugin myinfo =
 #define MAX_LAH_GROUND_TICKS 5
 
 ConVar gCV_AutoBunnyHopping;
+ConVar gCV_Accelerate;
+ConVar gCV_Friction;
+ConVar gCV_JumpImpulse;
 
 bool gB_LadderJump[MAXPLAYERS + 1];
 float gF_LadderJumpTime[MAXPLAYERS + 1];
@@ -47,9 +50,18 @@ int gI_LastJumpTick[MAXPLAYERS + 1];
 int gI_LadderGrabTick[MAXPLAYERS + 1];
 bool gB_TouchingWorld[MAXPLAYERS + 1];
 
+#include "gokz-styles/natives.sp"
+
 
 
 // =====[ PLUGIN EVENTS ]=====
+
+public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
+{
+	CreateNatives();
+	RegPluginLibrary("gokz-styles");
+	return APLRes_Success;
+}
 
 public void OnPluginStart()
 {
@@ -96,7 +108,6 @@ public void OnClientPutInServer(int client)
 	gI_LadderGrabTick[client] = -999999;
 
 	HookClientEvents(client);
-	ReplicateConVars(client);
 }
 
 public void OnPlayerSpawn(Event event, const char[] name, bool dontBroadcast)
@@ -125,8 +136,6 @@ public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 	{
 		return;
 	}
-
-	ReplicateConVars(client);
 
 	// Reset lagged movement (undo slow-motion style)
 	SetEntPropFloat(client, Prop_Send, "m_flLaggedMovementValue", 1.0);
@@ -185,15 +194,6 @@ public void OnClientPreThink_Post(int client)
 	if (!IsPlayerAlive(client))
 	{
 		return;
-	}
-
-	if (GetStyle(client) == Style_AutoBhop)
-	{
-		gCV_AutoBunnyHopping.BoolValue = true;
-	}
-	else
-	{
-		gCV_AutoBunnyHopping.BoolValue = false;
 	}
 
 	if (GetStyle(client) == Style_SlowMotion)
@@ -395,6 +395,11 @@ public void OnClientEndTouch(int client, int other)
 
 // =====[ GENERAL ]=====
 
+int GetMode(int client)
+{
+	return GOKZ_GetCoreOption(client, Option_Mode);
+}
+
 int GetStyle(int client)
 {
 	return GOKZ_GetCoreOption(client, Option_Style);
@@ -446,30 +451,85 @@ int GiveWeapon(int client, const char[] classname, int weaponSlot, int weaponTea
 void CreateConVars()
 {
 	gCV_AutoBunnyHopping = FindConVar("sv_autobunnyhopping");
+	gCV_Accelerate = FindConVar("sv_accelerate");
+	gCV_Friction = FindConVar("sv_friction");
+	gCV_JumpImpulse = FindConVar("sv_jump_impulse");
 
 	// Styles replicate it manually
-	gCV_AutoBunnyHopping.Flags &= ~FCVAR_NOTIFY;
-	gCV_AutoBunnyHopping.Flags &= ~FCVAR_REPLICATED;
+	gCV_AutoBunnyHopping.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_Accelerate.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_Friction.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
+	gCV_JumpImpulse.Flags &= ~(FCVAR_NOTIFY | FCVAR_REPLICATED);
 }
 
 void ReplicateConVars(int client)
 {
-	// Replicate convars only when player changes style in GOKZ
-	// so that lagg isn't caused by other players using other
-	// styles, and also as an optimisation.
-	
 	if (IsFakeClient(client))
 	{
 		return;
 	}
 	
-	if (GetStyle(client) == Style_AutoBhop)
+	int mode = GetMode(client);
+	int style = GetStyle(client);
+
+	if (style == Style_AutoBhop)
 	{
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "1");
 	}
 	else
 	{
 		gCV_AutoBunnyHopping.ReplicateToClient(client, "0");
+	}
+
+	if (style == Style_Ice)
+	{
+		if (mode == Mode_Classic)
+		{
+			gCV_Accelerate.ReplicateToClient(client, "0.975");
+			gCV_Friction.ReplicateToClient(client, "0.78");
+		}
+		else
+		{
+			gCV_Accelerate.ReplicateToClient(client, "0.825");
+			gCV_Friction.ReplicateToClient(client, "0.78");
+		}
+	}
+}
+
+void TweakConVars(int client)
+{
+	int mode = GetMode(client);
+	int style = GetStyle(client);
+
+	if (style == Style_AutoBhop)
+	{
+		gCV_AutoBunnyHopping.BoolValue = true;
+	}
+	else
+	{
+		gCV_AutoBunnyHopping.BoolValue = false;
+	}
+
+	if (style == Style_Ice)
+	{ 
+		if (mode == Mode_Classic)
+		{
+			gCV_Accelerate.FloatValue = 0.975;
+			gCV_Friction.FloatValue = 0.78;
+
+			bool onGround = (GetEntityFlags(client) & FL_ONGROUND) != 0;
+			if (onGround)
+			{
+				float timeOnGround = FloatMax(0.0, GetEngineTime() - gF_OnGroundChangedTime[client]);
+				float impulseMultiplier = 0.75 + 0.25 * (FloatMin(1.0, timeOnGround / 0.15));
+				gCV_JumpImpulse.FloatValue = 301.993377 * impulseMultiplier;
+			}
+		}
+		else
+		{
+			gCV_Accelerate.FloatValue = 0.825;
+			gCV_Friction.FloatValue = 0.78;
+		}
 	}
 }
 

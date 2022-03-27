@@ -4,6 +4,7 @@
 #include <sdktools>
 
 #include <movementapi>
+#include <gokz/styles>
 
 #undef REQUIRE_EXTENSIONS
 #undef REQUIRE_PLUGIN
@@ -178,7 +179,7 @@ public void SDKHook_OnClientPreThink_Post(int client)
 	// Don't tweak convars if GOKZ isn't running
 	if (gB_GOKZCore)
 	{
-		TweakConVars();
+		TweakConVars(client);
 	}
 }
 
@@ -249,9 +250,14 @@ public void Movement_OnChangeMovetype(int client, MoveType oldMovetype, MoveType
 
 public void GOKZ_OnOptionChanged(int client, const char[] option, any newValue)
 {
-	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) && newValue == Mode_Classic)
+	if (StrEqual(option, gC_CoreOptionNames[Option_Mode]) || 
+		StrEqual(option, gC_CoreOptionNames[Option_Style]))
 	{
-		ReplicateConVars(client);
+		int mode = GOKZ_GetCoreOption(client, Option_Mode);
+		if (mode == Mode_Classic)
+		{
+			ReplicateConVars(client);
+		}
 	}
 }
 
@@ -277,12 +283,14 @@ void CreateConVars()
 	}
 }
 
-void TweakConVars()
+void TweakConVars(int client)
 {
 	for (int i = 0; i < MODECVAR_COUNT; i++)
 	{
 		gCV_ModeCVar[i].FloatValue = gF_ModeCVarValues[i];
 	}
+
+	GOKZ_ST_TweakStyleConVars(client);
 }
 
 void ReplicateConVars(int client)
@@ -290,7 +298,6 @@ void ReplicateConVars(int client)
 	// Replicate convars only when player changes mode in GOKZ
 	// so that lagg isn't caused by other players using other
 	// modes, and also as an optimisation.
-	
 	if (IsFakeClient(client))
 	{
 		return;
@@ -300,6 +307,8 @@ void ReplicateConVars(int client)
 	{
 		gCV_ModeCVar[i].ReplicateToClient(client, FloatToStringEx(gF_ModeCVarValues[i]));
 	}
+
+	GOKZ_ST_ReplicateStyleConVars(client);
 }
 
 
