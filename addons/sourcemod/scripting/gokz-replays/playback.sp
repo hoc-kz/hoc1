@@ -783,28 +783,17 @@ static void PlaybackVersion1(int client, int bot, int &buttons)
 				botJumped[bot] = botButtons[bot] & IN_JUMP > 0;
 				hitBhop[bot] = (timeOnGround[bot] <= RP_MAX_BHOP_GROUND_TICKS) && botJumped[bot];
 				
-				if (botMode[bot] == Mode_SimpleKZ)
-				{
-					hitPerf[bot] = timeOnGround[bot] < 3 && botJumped[bot];
-				}
-				else
-				{
-					hitPerf[bot] = timeOnGround[bot] < 2 && botJumped[bot];
-				}
+				hitPerf[bot] = timeOnGround[bot] < 2 && botJumped[bot];
 				
 				if (hitPerf[bot])
 				{
-					if (botMode[bot] == Mode_SimpleKZ)
+					if (botMode[bot] == Mode_Vanilla)
 					{
-						botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], (0.2 * botLandingSpeed[bot] + 200));
-					}
-					else if (botMode[bot] == Mode_KZTimer)
-					{
-						botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], 380.0);
+						botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], 286.0);
 					}
 					else
 					{
-						botTakeoffSpeed[bot] = FloatMin(botLandingSpeed[bot], 286.0);
+						botTakeoffSpeed[bot] = botLandingSpeed[bot];
 					}
 				}
 			}

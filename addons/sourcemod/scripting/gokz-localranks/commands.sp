@@ -5,6 +5,7 @@ static float lastCommandTime[MAXPLAYERS + 1];
 void RegisterCommands()
 {
 	RegConsoleCmd("sm_top", CommandTop, "[KZ] Open a menu showing the top record holders.");
+	
 	RegConsoleCmd("sm_maptop", CommandMapTop, "[KZ] Open a menu showing the top main course times of a map. Usage: !maptop <map>");
 	RegConsoleCmd("sm_bmaptop", CommandBMapTop, "[KZ] Open a menu showing the top bonus times of a map. Usage: !bmaptop <#bonus> <map>");
 	RegConsoleCmd("sm_bonustop", CommandBMapTop, "[KZ] Open a menu showing the top bonus times of a map. Usage: !bonustop <#bonus> <map>");
@@ -22,12 +23,14 @@ void RegisterCommands()
 	RegConsoleCmd("sm_ljpb", CommandLJPB, "[KZ] Show PB Long Jump in chat. Usage: !ljpb <jumper>");
 	RegConsoleCmd("sm_bhpb", CommandBHPB, "[KZ] Show PB Bunnyhop in chat. Usage: !bhpb <jumper>");
 	RegConsoleCmd("sm_lbhpb", CommandLBHPB, "[KZ] Show PB Lowpre Bunnyhop in chat. Usage: !lbhpb <jumper>");
+	
 	RegConsoleCmd("sm_mbhpb", CommandMBHPB, "[KZ] Show PB Multi Bunnyhop in chat. Usage: !mbhpb <jumper>");
 	RegConsoleCmd("sm_wjpb", CommandWJPB, "[KZ] Show PB Weird Jump in chat. Usage: !wjpb <jumper>");
 	RegConsoleCmd("sm_lwjpb", CommandLWJPB, "[KZ] Show PB Lowpre Weird Jump in chat. Usage: !lwjpb <jumper>");
 	RegConsoleCmd("sm_lajpb", CommandLAJPB, "[KZ] Show PB Ladder Jump in chat. Usage: !lajpb <jumper>");
 	RegConsoleCmd("sm_lahpb", CommandLAHPB, "[KZ] Show PB Ladderhop in chat. Usage: !lahpb <jumper>");
 	RegConsoleCmd("sm_jbpb", CommandJBPB, "[KZ] Show PB Jumpbug in chat. Usage: !jbpb <jumper>");
+	
 	RegConsoleCmd("sm_js", CommandJS, "[KZ] Open a menu showing jumpstat PBs. Usage: !js <jumper>");
 	RegConsoleCmd("sm_jumpstats", CommandJS, "[KZ] Open a menu showing jumpstat PBs. Usage: !jumpstats <jumper>");
 	RegConsoleCmd("sm_jstop", CommandJSTop, "[KZ] Open a menu showing the top jumpstats.");
@@ -43,6 +46,7 @@ void RegisterCommands()
 	RegAdminCmd("sm_printjumprecords", CommandPrintJumpRecords, ADMFLAG_BAN, "[KZ] Print jump records of steamid to console. Usage: !printjumprecords <STEAM_1:X:X>");
 }
 
+
 public Action CommandTop(int client, int args)
 {
 	if (IsSpammingCommands(client))
@@ -53,6 +57,7 @@ public Action CommandTop(int client, int args)
 	DisplayPlayerTopModeMenu(client);
 	return Plugin_Handled;
 }
+
 
 public Action CommandMapTop(int client, int args)
 {
@@ -516,6 +521,7 @@ public Action CommandJSTop(int client, int args)
 	DisplayJumpTopModeMenu(client);
 	return Plugin_Handled;
 }
+
 
 void DisplayJumpstatRecordCommand(int client, int args, int jumpType)
 {

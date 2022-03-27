@@ -316,20 +316,6 @@ void OnClientPutInServer_JoinTeam(int client)
 	hasSavedPosition[client] = false;
 }
 
-static Action Timer_ForceJoinTeam(Handle timer, int userid)
-{
-	int client = GetClientOfUserId(userid);
-	if (IsValidClient(client))
-	{
-		int team = GetClientTeam(client);
-		if (team == 0)
-		{
-			GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
-		}
-	}
-	return Plugin_Stop;
-}
-
 void OnTimerStart_JoinTeam(int client)
 {
 	hasSavedPosition[client] = false;
@@ -642,6 +628,5 @@ void OnMapStart_FixMissingSpawns()
 
 static void AutoJoinTeam(int client)
 {
-	int team = GetRandomInt(CS_TEAM_T, CS_TEAM_CT);
-	JoinTeam(client, team, false);
+	GOKZ_JoinTeam(client, CS_TEAM_CT, false);
 }

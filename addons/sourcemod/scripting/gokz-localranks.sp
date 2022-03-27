@@ -60,15 +60,20 @@ float gF_RecordTimesCache_Pro[GOKZ_MAX_COURSES][MODE_COUNT][STYLE_COUNT];
 #include "gokz-localranks/db/cache_pbs.sp"
 #include "gokz-localranks/db/cache_records.sp"
 #include "gokz-localranks/db/create_tables.sp"
+
 #include "gokz-localranks/db/get_completion.sp"
+
 #include "gokz-localranks/db/js_top.sp"
+
 #include "gokz-localranks/db/map_top.sp"
+ 
 #include "gokz-localranks/db/player_top.sp"
 #include "gokz-localranks/db/print_average.sp"
 #include "gokz-localranks/db/print_js.sp"
 #include "gokz-localranks/db/print_pbs.sp"
 #include "gokz-localranks/db/print_records.sp"
 #include "gokz-localranks/db/process_new_time.sp"
+
 #include "gokz-localranks/db/recent_records.sp"
 #include "gokz-localranks/db/update_ranked_map_pool.sp"
 #include "gokz-localranks/db/profile.sp"
@@ -186,22 +191,22 @@ public void GOKZ_DB_OnTimeInserted(int client, int steamID, int mapID, int cours
 }
 
 public void GOKZ_LR_OnTimeProcessed(
-	int client, 
-	int steamID, 
-	int mapID, 
-	int course, 
-	int mode, 
-	int style, 
-	float runTime, 
-	int teleportsUsed, 
-	bool firstTime, 
-	float pbDiff, 
-	int rank, 
-	int maxRank, 
-	bool firstTimePro, 
-	float pbDiffPro, 
-	int rankPro, 
-	int maxRankPro)
+                                    int client, 
+                                    int steamID, 
+                                    int mapID, 
+                                    int course, 
+                                    int mode, 
+                                    int style, 
+                                    float runTime, 
+                                    int teleportsUsed, 
+                                    bool firstTime, 
+                                    float pbDiff, 
+                                    int rank, 
+                                    int maxRank, 
+                                    bool firstTimePro, 
+                                    float pbDiffPro, 
+                                    int rankPro, 
+                                    int maxRankPro)
 {
 	if (mapID != GOKZ_DB_GetCurrentMapID())
 	{

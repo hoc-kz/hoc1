@@ -344,11 +344,6 @@ static void MapTopMenuAddItems(int client, Menu menu)
 	}
 }
 
-void ReopenMapTopMenu(int client)
-{
-	DisplayMapTopMenu(client, mapTopMode[client], mapTopStyle[client]);
-}
-
 
 
 // =====[ MENU HANDLERS ]=====

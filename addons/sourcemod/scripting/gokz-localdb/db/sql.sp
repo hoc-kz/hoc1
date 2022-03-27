@@ -280,10 +280,6 @@ DELETE \
 		)";
 
 char sql_jumpstats_deleteallrecords[] = "\
-DELETE FROM Jumpstats \
-	WHERE SteamID32=%d";
-
-char sql_jumpstats_deleteallrecords[] = "\
 DELETE \
 	FROM \
 		Jumpstats \

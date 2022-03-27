@@ -44,7 +44,6 @@ ConVar gCV_gokz_connection_messages;
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	CreateNatives();
 	RegPluginLibrary("gokz-chat");
 	return APLRes_Success;
 }
@@ -98,12 +97,6 @@ public Action OnClientSayCommand(int client, const char[] command, const char[] 
 		return Plugin_Handled;
 	}
 	return Plugin_Continue;
-}
-
-public void OnClientConnected(int client)
-{
-	gC_PlayerTags[client][0] = '\0';
-	gC_PlayerTagColors[client][0] = '\0';
 }
 
 public void OnClientPutInServer(int client)

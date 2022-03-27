@@ -158,8 +158,8 @@ void DB_TxnSuccess_GetJumpTop(Handle db, DataPack data, int numQueries, Handle[]
 			else
 			{
 				PrintToConsole(client, "#%-2d   %d %t (%.4f)   %s <STEAM_1:%d:%d>   [%d %t | %.2f%% %t | %.2f %t | %.2f %t | %.4f %t | %d %t | %d %t]", 
-					overlap, "Overlap", deadair, "DeadAir");
 					i + 1, block, "Block", distance, alias, steamid & 1, steamid >> 1, strafes, "Strafes", sync, "Sync", pre, "Pre", max, "Max", airtime, "Air",
+					overlap, "Overlap", deadair, "DeadAir");
 			}
 
 			jumpInfo[client][i][0] = steamid;
