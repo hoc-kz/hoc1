@@ -58,12 +58,12 @@ void UpdateGodMode(int client)
 	if (gB_GodMode[client])
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 0);
-		SetEntityFlags(client, GetEntityFlags(client) | FL_GODMODE);
+		//SetEntityFlags(client, GetEntityFlags(client) | FL_GODMODE);
 	}
 	else
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 2);
-		SetEntityFlags(client, GetEntityFlags(client) & ~FL_GODMODE);
+		//SetEntityFlags(client, GetEntityFlags(client) & ~FL_GODMODE);
 	}
 }
 
