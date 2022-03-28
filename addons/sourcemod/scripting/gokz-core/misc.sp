@@ -360,10 +360,13 @@ bool JoinTeam(int client, int newTeam, bool restorePos, bool forceChange, bool f
 			return false;
 		}
 
-		player.GetOrigin(savedOrigin[client]);
-		player.GetEyeAngles(savedAngles[client]);
-		savedOnLadder[client] = player.Movetype == MOVETYPE_LADDER;
-		hasSavedPosition[client] = true;
+		if (currentTeam != CS_TEAM_NONE)
+		{
+			player.GetOrigin(savedOrigin[client]);
+			player.GetEyeAngles(savedAngles[client]);
+			savedOnLadder[client] = player.Movetype == MOVETYPE_LADDER;
+			hasSavedPosition[client] = true;
+		}
 
 		if (forceChange && !player.Paused && !player.CanPause)
 		{
