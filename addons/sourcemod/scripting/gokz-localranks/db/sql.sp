@@ -423,7 +423,7 @@ SELECT Maps.Name \
 // =====[ JUMPSTATS ]=====
 
 char sql_jumpstats_gettop[] = "\
-SELECT p.SteamID32, p.Alias, j.Block, j.Distance, j.Strafes, j.Sync, j.Pre, j.Max, j.Overlap, j.DeadAir, j.ReleaseW, j.Airtime \
+SELECT j.JumpID, p.SteamID32, p.Alias, j.Block, j.Distance, j.Strafes, j.Sync, j.Pre, j.Max, j.Overlap, j.DeadAir, j.ReleaseW, j.Airtime \
 	FROM \
 		Jumpstats j \
     INNER JOIN \
