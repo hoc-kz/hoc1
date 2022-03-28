@@ -298,7 +298,7 @@ Action OnNormalSound_StopSounds(int entity)
 
 
 
-// =====[ JOIN TEAM HANDLING ]=====
+// =====[ JOIN TEAM HANDLING ]=====map
 
 static bool hasSavedPosition[MAXPLAYERS + 1];
 static float savedOrigin[MAXPLAYERS + 1][3];
@@ -307,13 +307,23 @@ static bool savedOnLadder[MAXPLAYERS + 1];
 
 void OnClientPutInServer_JoinTeam(int client)
 {
-	// After OnClientPutInServer, player is moved to the origin of a point_viewcontrol entity.
-	// We need to wait one tick before assign the player's team and teleport them to a valid spawn.
-	if (!IsFakeClient(client))
-	{
-		RequestFrame(AutoJoinTeam, client);
-	}
 	hasSavedPosition[client] = false;
+
+	CreateTimer(12.0, Timer_ForceJoinTeam, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+}
+
+static Action Timer_ForceJoinTeam(Handle timer, int userid)
+{
+	int client = GetClientOfUserId(userid);
+	if (IsValidClient(client))
+	{
+		int team = GetClientTeam(client);
+		if (team == 0)
+		{
+			GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
+		}
+	}
+	return Plugin_Stop;
 }
 
 void OnTimerStart_JoinTeam(int client)
@@ -378,6 +388,7 @@ bool JoinTeam(int client, int newTeam, bool restorePos, bool forceChange, bool f
 		else
 		{
 			player.StopTimer();
+
 			// Just joining a team alone can put you into weird invalid spawns. 
 			// Need to teleport the player to a valid one.
 			float spawnOrigin[3];
@@ -624,9 +635,4 @@ void OnMapStart_FixMissingSpawns()
 			TeleportEntity(newSpawn, origin, angles, NULL_VECTOR);
 		}
 	}
-}
-
-static void AutoJoinTeam(int client)
-{
-	GOKZ_JoinTeam(client, CS_TEAM_CT, false);
 }
