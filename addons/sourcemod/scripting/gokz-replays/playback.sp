@@ -311,8 +311,6 @@ static bool LoadPlayback(int client, int bot, char[] path)
 		return false;
 	}
 
-	LogMessage("Loading replay: %s", path);
-
 	File file = OpenFile(path, "rb");
 	
 	// Check magic number in header
