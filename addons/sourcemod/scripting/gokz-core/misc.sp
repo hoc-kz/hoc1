@@ -150,7 +150,7 @@ void ToggleNoclip(int client)
 
 void EnableNoclip(int client)
 {
-	if (IsPlayerAlive(client))
+	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		Movement_SetMovetype(client, MOVETYPE_NOCLIP);
 		GOKZ_StopTimer(client);
@@ -159,7 +159,7 @@ void EnableNoclip(int client)
 
 void DisableNoclip(int client)
 {
-	if (IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
+	if (IsValidClient(client) && IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
 	{
 		noclipReleaseTime[client] = GetGameTickCount();
 		Movement_SetMovetype(client, MOVETYPE_WALK);
@@ -184,7 +184,7 @@ void ToggleNoclipNotrigger(int client)
 
 void EnableNoclipNotrigger(int client)
 {
-	if (IsPlayerAlive(client))
+	if (IsValidClient(client) && IsPlayerAlive(client))
 	{
 		Movement_SetMovetype(client, MOVETYPE_NOCLIP);
 		SetEntProp(client, Prop_Send, "m_CollisionGroup", GOKZ_COLLISION_GROUP_NOTRIGGER);
@@ -194,7 +194,7 @@ void EnableNoclipNotrigger(int client)
 
 void DisableNoclipNotrigger(int client)
 {
-	if (IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
+	if (IsValidClient(client) && IsPlayerAlive(client) && Movement_GetMovetype(client) == MOVETYPE_NOCLIP)
 	{
 		noclipReleaseTime[client] = GetGameTickCount();
 		Movement_SetMovetype(client, MOVETYPE_WALK);
@@ -309,23 +309,27 @@ static bool savedOnLadder[MAXPLAYERS + 1];
 
 void OnClientPutInServer_JoinTeam(int client)
 {
-	hasSavedPosition[client] = false;
-
+	// Automatically put the player on a team if he doesn't choose one.
+	// The mp_force_pick_time convar is the built in way to do this, but that obviously
+	// does not call GOKZ_JoinTeam which includes a fix for spawning in the void when
+	// there is no valid spawns available. 
 	CreateTimer(12.0, Timer_ForceJoinTeam, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+
+	hasSavedPosition[client] = false;
 }
 
-static Action Timer_ForceJoinTeam(Handle timer, int userid)
+public Action Timer_ForceJoinTeam(Handle timer, int userid)
 {
-	int client = GetClientOfUserId(userid);
-	if (IsValidClient(client))
-	{
-		int team = GetClientTeam(client);
-		if (team == 0)
-		{
-			GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
-		}
-	}
-	return Plugin_Stop;
+    int client = GetClientOfUserId(userid);
+    if (IsValidClient(client))
+    {
+        int team = GetClientTeam(client);
+        if (team == CS_TEAM_NONE)
+        {
+            GOKZ_JoinTeam(client, CS_TEAM_SPECTATOR, false);
+        }
+    }
+    return Plugin_Stop;
 }
 
 void OnTimerStart_JoinTeam(int client)
