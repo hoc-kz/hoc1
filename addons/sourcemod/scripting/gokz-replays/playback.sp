@@ -1109,42 +1109,8 @@ static void SetBotStuff(int bot)
 	GOKZ_SetCoreOption(client, Option_Style, botStyle[bot]);
 	
 	// Set bot clan tag
-	bool usesStyle = botStyle[bot] != Style_Normal;
-	char tag[MAX_NAME_LENGTH];
-	if (!usesStyle)
-	{
-		if (botCourse[bot] == 0)
-		{  // Main course so tag "MODE NUB/PRO"
-			FormatEx(tag, sizeof(tag), "%s %s", 
-				gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
-		}
-		else
-		{  // Bonus course so tag "MODE B# NUB/PRO"
-			FormatEx(tag, sizeof(tag), "%s B%d %s", 
-				gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
-		}
-	}
-	else
-	{
-		if (botCourse[bot] == 0)
-		{  // Main course so tag "MODE+ NUB/PRO"
-			FormatEx(tag, sizeof(tag), "%s+ %s", 
-				gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
-		}
-		else
-		{  // Bonus course so tag "MODE+ B# NUB/PRO"
-			FormatEx(tag, sizeof(tag), "%s+ B%d %s", 
-				gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
-		}
-	}
-
-	CS_SetClientClanTag(client, tag);
-	
-	// Set bot name e.g. "DanZay (01:23.45)"
-	char name[MAX_NAME_LENGTH];
-	FormatEx(name, sizeof(name), "%s (%s)", botAlias[bot], GOKZ_FormatTime(botTime[bot]));
-	gB_HideNameChange = true;
-	SetClientName(client, name);
+	SetBotClanTag(bot);
+	SetBotName(bot);
 	
 	// Set bot team
 	GOKZ_JoinTeam(client, CS_TEAM_T, .forceTeam = true);
@@ -1198,28 +1164,43 @@ static void SetBotClanTag(int bot)
 
 	if (botReplayType[bot] == ReplayType_Run)
 	{
-		if (botCourse[bot] == 0)
+		bool usesStyle = botStyle[bot] != Style_Normal;
+		if (!usesStyle)
 		{
-			// KZT PRO
-			FormatEx(tag, sizeof(tag), "%s %s", 
-				gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			if (botCourse[bot] == 0)
+			{  // CLASSIC NUB/PRO
+				FormatEx(tag, sizeof(tag), "%s %s", 
+					gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			}
+			else
+			{  // CLASSIC B2 NUB/PRO
+				FormatEx(tag, sizeof(tag), "%s B%d %s", 
+					gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			}
 		}
 		else
 		{
-			// KZT B2 PRO
-			FormatEx(tag, sizeof(tag), "%s B%d %s", 
-				gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			if (botCourse[bot] == 0)
+			{  // CLASSIC+ NUB/PRO
+				FormatEx(tag, sizeof(tag), "%s+ %s", 
+					gC_ModeNamesShort[botMode[bot]], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			}
+			else
+			{  // CLASSIC+ B# NUB/PRO
+				FormatEx(tag, sizeof(tag), "%s+ B%d %s", 
+					gC_ModeNamesShort[botMode[bot]], botCourse[bot], gC_TimeTypeNames[GOKZ_GetTimeTypeEx(botTeleportsUsed[bot])]);
+			}
 		}
 	}
 	else if (botReplayType[bot] == ReplayType_Jump)
 	{
-		// KZT LJ
+		// CLASSIC LJ
 		FormatEx(tag, sizeof(tag), "%s %s",
 			gC_ModeNamesShort[botMode[bot]], gC_JumpTypesShort[botJumpType[bot]]);
 	}
 	else
 	{
-		// KZT
+		// CLASSIC
 		FormatEx(tag, sizeof(tag), "%s", 
 			gC_ModeNamesShort[botMode[bot]]);
 	}
