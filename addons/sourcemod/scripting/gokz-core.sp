@@ -352,6 +352,12 @@ public void OnMapStart()
 	OnMapStart_FixMissingSpawns();
 	OnMapStart_Checkpoints();
 	OnMapStart_TeamNumber();
+	OnMapStart_Demofix();
+}
+
+public void OnMapEnd()
+{
+	OnMapEnd_Demofix();
 }
 
 public void OnGameFrame()
