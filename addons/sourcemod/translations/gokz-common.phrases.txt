@@ -118,4 +118,12 @@
 	{
 		"en"		"Advanced PRO"
 	}
+	"Options Menu - Slow"
+	{
+		"en"		"Slow"
+	}
+	"Options Menu - Fast"
+	{
+		"en"		"Fast"
+	}
 }
